@@ -62,6 +62,7 @@ class ModelBuilder:
 from collections import defaultdict
 from repair_model import job_options,baseline_schedule,travel_hours
 from network import components
+from capability import interface_envelopes
 
 
 def solve_lp(m,objective=None,equalities=None):
@@ -168,6 +169,9 @@ def build_model(c,state,fc,branch='free',policy='joint'):
     batcost=np.array([m['throughput_cost'] for m in c['microgrids']]);dgcost=np.array([m['dg_cost'] for m in c['microgrids']])
     v['charge']=b.add_var('charge',(ns,nm,n),ub=ch[None,:,None],cost=probs[:,None,None]*dt*batcost[None,:,None])
     v['discharge']=b.add_var('discharge',(ns,nm,n),ub=dis[None,:,None],cost=probs[:,None,None]*dt*batcost[None,:,None])
+    # 显式MGO→DSO接口。跨期包络先进入模型，内部变量保留为分解见证。
+    v['pcc_p']=b.add_var('pcc_p',(ns,nm,n),lb=-np.inf)
+    v['pcc_q']=b.add_var('pcc_q',(ns,nm,n),lb=-np.inf)
     v['battery_mode']=b.add_var('battery_mode',(ns,nm,len(modes)),ub=1,integer=True)
     v['energy']=b.add_var('energy',(ns,nm,n+1),lb=(en*np.array([m['soc_min'] for m in c['microgrids']]))[None,:,None],ub=(en*np.array([m['soc_max'] for m in c['microgrids']]))[None,:,None])
     v['pv']=b.add_var('pv',(ns,nm,n),ub=fc['pv'])
@@ -266,6 +270,9 @@ def build_model(c,state,fc,branch='free',policy='joint'):
                 for a in angles:
                     co,si=float(np.cos(a)),float(np.sin(a))
                     b.add_row({v['pv'][s,m,t]:co,disv:co,chv:-co,v['mg_q'][s,m,t]:si,E:-inv[m]*inner},ub=0,name='inverter_rating')
+                node=c['mg_nodes'][m];sc=v['served_c'][s,node,t];sg=v['served_g'][s,node,t]
+                b.add_row({v['pcc_p'][s,m,t]:1,v['pv'][s,m,t]:-1,v['dg'][s,m,t]:-1,disv:-1,chv:1,sc:1,sg:1},0,0,'MGO_interface_P')
+                b.add_row({v['pcc_q'][s,m,t]:1,v['mg_q'][s,m,t]:-1,sc:ratio[node],sg:ratio[node]},0,0,'MGO_interface_Q')
         for t,h in enumerate(hours):
             k=block[t];eb=v['energized_bus'][s,:,k];pbal=[{} for _ in range(nb)];qbal=[{} for _ in range(nb)]
             # 外部电源注入及机组启动/出力必须处在已送电区域。
@@ -303,11 +310,11 @@ def build_model(c,state,fc,branch='free',policy='joint'):
             for q in range(ng):
                 _add(pbal[0],v['target_start'][s,q],-auxcoef[t,q]);_add(qbal[0],v['target_start'][s,q],-aux_tan*auxcoef[t,q])
             for m,node in enumerate(c['mg_nodes']):
-                for name,sign in (('pv',1),('dg',1),('discharge',1),('charge',-1)):_add(pbal[node],v[name][s,m,t],sign)
-                _add(qbal[node],v['mg_q'][s,m,t],1)
+                _add(pbal[node],v['pcc_p'][s,m,t],1);_add(qbal[node],v['pcc_q'][s,m,t],1)
             for i in range(nb):
                 for key,demand in (('served_c',dc),('served_g',dd)):
-                    _add(pbal[i],v[key][s,i,t],-1);_add(qbal[i],v[key][s,i,t],-ratio[i])
+                    if i not in c['mg_nodes']:
+                        _add(pbal[i],v[key][s,i,t],-1);_add(qbal[i],v[key][s,i,t],-ratio[i])
                     b.add_row({v[key][s,i,t]:1,eb[i]:-demand[i,t]},ub=0,name='load_energized')
                 rhs=fixed_aux[t] if i==0 else 0.;b.add_row(pbal[i],rhs,rhs,'nodal_p')
                 rhs=fixed_aux[t]*aux_tan if i==0 else 0.;b.add_row(qbal[i],rhs,rhs,'nodal_q')
@@ -319,6 +326,10 @@ def build_model(c,state,fc,branch='free',policy='joint'):
                 root=v['root'][s,r,k];vv=v['voltage'][s,i,t]
                 b.add_row({vv:1,root:vmax},ub=1+vmax,name='root_voltage')
                 b.add_row({vv:1,root:-vmax},lb=1-vmax,name='root_voltage')
+    envelopes=interface_envelopes(c,state,fc)
+    for envelope in envelopes:
+        s,j,stop=[envelope[k] for k in ('scenario','microgrid','stop')]
+        b.add_row({v['pcc_p'][s,j,t]:dt for t in range(stop)},envelope['lower_mwh'],envelope['upper_mwh'],'MGO_multiperiod_envelope')
     # 05 条件非预期性：只按已发生的预测故障报告区分未来场景。
     # 未报告损伤的真实工时没有进入模型。当前抢修日程全场景共享。
     def bind(ids,h,name):
@@ -340,11 +351,11 @@ def build_model(c,state,fc,branch='free',policy='joint'):
         'start_slots':starts,'auxcoef':auxcoef,'oncoef':oncoef,'capcoef':capcoef,'fixed_aux':fixed_aux,'fixed_on':fixed_on,'fixed_cap':fixed_cap,
         'roots':roots,'jobs':jobs,'job_indices':job_idx,'crew_context':ctx,'order_indices':order,'cost_objective':cost,
         'cost_constant':state['cost_accum']-now*c['crew']['hourly_cost'],'policy':policy,'branch':branch,
-        'past_reward':state['reward_accum'],'denominator':c['denominator']})
+        'past_reward':state['reward_accum'],'denominator':c['denominator'],'interface_envelopes':envelopes})
     return m
 
 
-def safe_seed(m,discharge=False,repair_rule=None,allow_start=True):
+def safe_seed(m,discharge=False,repair_rule=None,allow_start=True,battery_schedule=None):
     """构造并求解受限日程/径向接线的可行LP，作为MILP热启动。
 
     repair_rule仅生成初始候选，之后混合整数模型仍可优化作业/接线。
@@ -369,6 +380,8 @@ def safe_seed(m,discharge=False,repair_rule=None,allow_start=True):
         choices=np.flatnonzero(md['start_slots']>0) if md['branch']=='wait' else np.arange(len(md['start_slots']))
         if len(choices):x[v['target_start'][:,choices[0]]]=1
     x[v['battery_mode']]=0 if discharge else 1
+    if battery_schedule is not None:
+        x[v['battery_mode']]=np.broadcast_to(battery_schedule,v['battery_mode'].shape)
     completions=dict(md['crew_context']['fixed_completion'])
     for job,idx in zip(md['jobs'],md['job_indices']):
         for col,(start,end) in zip(idx,job['options']):
@@ -406,7 +419,9 @@ def safe_seed(m,discharge=False,repair_rule=None,allow_start=True):
     lb[mask]=ub[mask]=np.rint(x[mask])
     trial=LinearModel(m.c,np.zeros_like(m.integrality),lb,ub,m.A,m.row_lb,m.row_ub,m.var_indices,md)
     r=solve_lp(trial)
-    if r['x'] is not None and residual(m,r['x'])<=2e-5:r['seed_rule']=repair_rule or 'hold';return r
+    if r['x'] is not None and residual(m,r['x'])<=2e-5:
+        r['seed_rule']=(repair_rule or 'hold')+(':'+('mixed' if battery_schedule is not None else 'discharge' if discharge else 'charge'))
+        return r
     return None
 
 
@@ -439,16 +454,37 @@ def optimize(m,seconds=None,secondary_seconds=None):
     已找到恢复水平，不能声称全局词典序最优。R上下界用于D证据。
     """
     md=m.metadata;c=md['cfg'];cfg=c['solver'];start=time.perf_counter()
-    seeds=[]
-    variants=[('critical_first',True),(None,True)]
+    seeds=[];seed_log=[]
+    variants=[('critical_first',True),('nearest',True),(None,True)]
     if len(md['start_slots']) and md['branch']!='start':variants.append(('critical_first',False))
     for rule,allow_start in variants:
-        seed=safe_seed(m,repair_rule=rule,allow_start=allow_start)
-        if seed is None:seed=safe_seed(m,True,rule,allow_start)
-        if seed is not None:seeds.append(seed)
+        # 两种模式都评估。旧版“充电候选可行即跳过放电”会锁死SOC价值。
+        for discharge in (True,False):
+            seed=safe_seed(m,discharge,rule,allow_start)
+            seed_log.append({'repair_rule':rule or 'hold','allow_start':allow_start,'battery':'discharge' if discharge else 'charge',
+                             'feasible':seed is not None,'R':None if seed is None else float((md['past_reward']-seed['objective'])/md['denominator'])})
+            if seed is not None:seeds.append(seed)
+    # 再评估白天允许充电、其他时段放电的混合候选；MILP仍可改全部模式。
+    hours=md['hours'][md['mode_slots']]
+    mixed=((hours>=9)&(hours<15)).astype(float)[None,None,:]
+    trial=safe_seed(m,repair_rule='critical_first',battery_schedule=mixed)
+    seed_log.append({'repair_rule':'critical_first','allow_start':True,'battery':'day_charge_other_discharge',
+                     'feasible':trial is not None,'R':None if trial is None else float((md['past_reward']-trial['objective'])/md['denominator'])})
+    if trial is not None:seeds.append(trial)
     seed=min(seeds,key=lambda a:a['objective']) if seeds else None
     opts={'time_limit':float(seconds if seconds is not None else cfg['primary_seconds']),
           'mip_rel_gap':cfg['rel_gap'],'presolve':True,'disp':False}
+    # 保留当前路线/拓扑/启机，仅释放充放电模式作小邻域搜索；不能用其界
+    # 充当原MILP的最优界。随后仍求完整MILP，且始终保留已校核最好候选。
+    if seed is not None and opts['time_limit']>=1:
+        mask=m.integrality!=0;mask[m.var_indices['battery_mode'].ravel()]=False
+        lb=m.lb.copy();ub=m.ub.copy();lb[mask]=ub[mask]=np.rint(seed['x'][mask])
+        neighborhood=LinearModel(m.c,m.integrality,lb,ub,m.A,m.row_lb,m.row_ub,m.var_indices,md)
+        local=solve_mip(neighborhood,{**opts,'time_limit':min(2.,opts['time_limit']*.25)},seed['x'])
+        if local.x is not None and residual(m,local.x)<=2e-5 and m.c@local.x<seed['objective']-1e-8:
+            seed={'x':local.x,'objective':float(m.c@local.x),'seed_rule':'battery_neighborhood'}
+            seed_log.append({'repair_rule':'best_verified','battery':'optimized_modes','feasible':True,
+                             'R':float((md['past_reward']-seed['objective'])/md['denominator'])})
     out=solve_mip(m,opts,seed['x'] if seed is not None else None)
     candidates=[]
     if out.x is not None and residual(m,out.x)<=2e-5:candidates.append((out.x,'MILP'))
@@ -457,7 +493,7 @@ def optimize(m,seconds=None,secondary_seconds=None):
     rawbound=getattr(out,'mip_dual_bound',None)
     bound=float(rawbound) if rawbound is not None and np.isfinite(rawbound) else -np.inf
     if not candidates:return {'x':None,'status':int(out.status),'message':str(out.message),'certified_infeasible':out.status==2,
-                               'R_lower':None,'R_upper':None,'seconds':time.perf_counter()-start,'source':None}
+                               'R_lower':None,'R_upper':None,'seconds':time.perf_counter()-start,'source':None,'seed_candidates':seed_log}
     x,source=min(candidates,key=lambda a:float(m.c@a[0]));best=float(m.c@x)
     if out.status==0 and not np.isfinite(bound):bound=best
     denom=md['denominator'];past=md['past_reward'];rl=(past-best)/denom
@@ -475,11 +511,17 @@ def optimize(m,seconds=None,secondary_seconds=None):
         rr=solve_mip(secondary,{'time_limit':limit,'mip_rel_gap':cfg['rel_gap'],'presolve':True,'disp':False},x)
         if rr.x is not None and residual(secondary,rr.x)<=2e-5 and cost@rr.x<cost@x:x=rr.x
     rl=max(rl,float((past-m.c@x)/denom))
+    primary_rplan=float((past-best)/denom)
     return {'x':x,'status':int(out.status),'message':str(out.message),'source':source,
             'certified_infeasible':False,'R_lower':float(rl),'R_upper':float(max(rl,ru)),
             'R_plan':float((past-m.c@x)/denom),'cost_plan':float(cost@x+md['cost_constant']),
             'primary_objective_lower_bound':bound,'primary_objective_incumbent':best,
-            'max_residual':residual(m,x),'seconds':time.perf_counter()-start}
+            'max_residual':residual(m,x),'seconds':time.perf_counter()-start,'seed_candidates':seed_log,
+            'best_seed_R':None if seed is None else float((past-seed['objective'])/denom),
+            'primary_R_plan':primary_rplan,'absolute_R_gap':float(max(0.,ru-rl)),
+            'MILP_improvement_over_seed_R':None if seed is None else float((seed['objective']-best)/denom),
+            'secondary_R_loss':float(max(0.,primary_rplan-(past-m.c@x)/denom)),
+            'interface_envelope_count':len(md.get('interface_envelopes',[]))}
 
 
 def extract(m,x,scenario=0):

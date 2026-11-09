@@ -1,0 +1,47 @@
+{
+  "policies": {
+    "joint": {
+      "actual_weighted_recovery": 0.8117309547842956,
+      "actual_EENS_MWh": 23.544457415328637,
+      "actual_operation_cost_thousand": 63.48226891887524,
+      "manual_switch_operations": 11,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 5,
+      "startup_attempts": 1,
+      "reoptimizations": 21,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "当前策略沿一个合成风灾样本的实际执行，非全策略全场景最优韧性值"
+    },
+    "critical_first": {
+      "actual_weighted_recovery": 0.8143524690191843,
+      "actual_EENS_MWh": 23.151417634804133,
+      "actual_operation_cost_thousand": 63.81242122714226,
+      "manual_switch_operations": 11,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 5,
+      "startup_attempts": 1,
+      "reoptimizations": 21,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "当前策略沿一个合成风灾样本的实际执行，非全策略全场景最优韧性值"
+    },
+    "no_upward": {
+      "actual_weighted_recovery": 0.5254295532016717,
+      "actual_EENS_MWh": 63.971876705051606,
+      "actual_operation_cost_thousand": 31.84536645557171,
+      "manual_switch_operations": 11,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 5,
+      "startup_attempts": 0,
+      "reoptimizations": 21,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "当前策略沿一个合成风灾样本的实际执行，非全策略全场景最优韧性值"
+    }
+  },
+  "elapsed_seconds": 1434.5570075989963,
+  "capability_decomposition": true,
+  "quality_warning_count": 4,
+  "note": "r2：多模式候选、滚动MGO能量包络、资源/网络域分离；有限样本限时策略，ADMM尚未实现"
+}

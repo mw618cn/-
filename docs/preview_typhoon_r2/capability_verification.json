@@ -1,0 +1,10 @@
+{
+  "scope": "MGO局部全时域条件资源域：固定充放电模式，保留SOC/本地负荷/逆变器/同信息控制；网络可送范围另列",
+  "horizon_hours": 24.0,
+  "n_steps": 96,
+  "scenario_count": 2,
+  "decomposition_success": true,
+  "decomposition_residual": 1.1102230246251565e-15,
+  "tracking_p_max": 0.0,
+  "tracking_q_max": 0.0
+}

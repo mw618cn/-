@@ -143,7 +143,7 @@ def jsonable(v):
 def save_json(path,obj):
     p=Path(path);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(jsonable(obj),ensure_ascii=False,indent=2,allow_nan=False),encoding='utf-8')
 
-def write_workbook(result,phase,path,world=None):
+def write_workbook(result,phase,path,world=None,comparisons=None,capability=None,diagnostics=None):
     """实际执行轨迹和预测D分开保存，避免把预测最优值当成实际收益。"""
     b=Workbook();w=b.active;w.title='核心指标';w.append(['指标','实际执行结果'])
     labels={'actual_weighted_recovery':'实际加权恢复面积比','actual_EENS_MWh':'实际失供电量/MWh','actual_operation_cost_thousand':'实际运行成本/千元',
@@ -157,6 +157,9 @@ def write_workbook(result,phase,path,world=None):
     for i,h in enumerate(result['time_hours']):w.append([h,result['upward_p'][i],result['target_p'][i],result['aux'][i],sum(result['served_c'][i]),sum(result['served_g'][i]),result['recovery'][i],result['unit_online'][i]])
     w=b.create_sheet('SOC');w.append(['时间h','MG1','MG2','MG3'])
     for i,e in enumerate(result['energy']):w.append([i*result['dt'],*[e[j]/result['energy_capacity'][j] for j in range(3)]])
+    w=b.create_sheet('微网资源出力');w.append(['时间h','微网','PV/MW','DG/MW','充电/MW','放电/MW','PCC有功/MW','PCC无功/Mvar'])
+    for i,h in enumerate(result['time_hours']):
+        for j in range(3):w.append([h,f'MG{j+1}',*[result[k][i][j] for k in ('pv','dg','charge','discharge')],result.get('pcc_p',[[None]*3 for _ in result['time_hours']])[i][j],result.get('pcc_q',[[None]*3 for _ in result['time_hours']])[i][j]])
     w=b.create_sheet('故障与巡检修复');w.append(['事件序号','时刻h','事件','线路','损伤','说明'])
     for i,r in enumerate(result['events']):w.append([i,r['hour'],r['kind'],r.get('line',''),r.get('damage',''),r.get('note','')])
     w=b.create_sheet('开关与节点');w.append(['时间h','线路','物理闭合','带电','有功MW','无功Mvar'])
@@ -164,6 +167,23 @@ def write_workbook(result,phase,path,world=None):
         for e,name in enumerate(result['edge_names']):w.append([h,name,int(result['closed'][i][e]),int(result['energized_edges'][i][e]),result['flow_p'][i][e],result['flow_q'][i][e]])
     w=b.create_sheet('滚动D与证据');w.append(['时刻','所选行动','判定','D_R估计','D_R下界','D_R上界','是否证实','抢修候选数'])
     for r in result['rounds']:w.append([r['hour'],r['action'],r['decision'],r.get('D_estimate'),r.get('D_lower'),r.get('D_upper'),r.get('certified'),r['job_count']])
+    w=b.create_sheet('求解质量');w.append(['时刻h','分支','状态','来源','执行计划预测R','可行下界','最优上界','绝对R间隙','最好候选R','完整MILP对候选改善','包络约束数'])
+    for r in result['rounds']:
+        for branch,q in r['branches'].items():w.append([r['hour'],branch,q['message'],q['source'],q.get('R_plan'),q.get('R_lower'),q.get('R_upper'),q.get('absolute_R_gap'),q.get('best_seed_R'),q.get('MILP_improvement_over_seed_R'),q.get('interface_envelope_count')])
+    w=b.create_sheet('滚动能力包络');w.append(['决策时刻h','预测样本','微网','从当前起累计小时','净输出电量下界/MWh','净输出电量上界/MWh','继承SOC'])
+    for r in result['rounds']:
+        for q in r.get('interface_envelopes',[]):w.append([r['hour'],q['scenario'],f"MG{q['microgrid']+1}",q['stop']*result['dt'],q['lower_mwh'],q['upper_mwh'],r['inherited_SOC'][q['microgrid']]])
+    if comparisons:
+        w=b.create_sheet('策略对照');w.append(['策略','实际加权恢复面积比','EENS/MWh','成本/千元','主动开关次数','范围'])
+        for r in comparisons:
+            q=r['summary'];w.append([r['policy'],q['actual_weighted_recovery'],q['actual_EENS_MWh'],q['actual_operation_cost_thousand'],q['manual_switch_operations'],'禁反送为上送价值对照，规则基线仍保留协同'])
+    if capability:
+        w=b.create_sheet('能力域状态');w.append(['时刻h','微网资源P查询最小值/MW','微网资源P查询最大值/MW','初始预测网络可送P最小值/MW','初始预测网络可送P最大值/MW'])
+        for sl,bounds in zip(capability['slices'],capability['delivery_bounds']):
+            points=sl['points'];w.append([sl['hour'],min((a[0] for a in points),default=None),max((a[0] for a in points),default=None),bounds['lower'],bounds['upper']])
+    if diagnostics:
+        w=b.create_sheet('质量提醒');w.append(['编号','诊断说明'])
+        for i,msg in enumerate(diagnostics['warnings']):w.append([i+1,msg])
     if world is not None:
         w=b.create_sheet('风速与条件故障概率');w.append(['时间h','线路','沿线最大风速m/s','气象危险率1/h','尚未首损条件15min故障概率','实际首次故障时刻h'])
         for i,h in enumerate(result['time_hours']):

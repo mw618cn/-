@@ -68,7 +68,7 @@ def plot_dispatch(c,r,out):
         net=mg[:,j]-np.asarray(r['served_c'])[:,node]-np.asarray(r['served_g'])[:,node]
         stairs(axes[1],t,net,dt,label=f'MG{j+1} PCC净输出',color=COLORS[j],lw=1.6)
         axes[2].plot(np.arange(len(r['energy']))*dt,np.asarray(r['energy'])[:,j]/r['energy_capacity'][j],label=f'MG{j+1}',color=COLORS[j],lw=1.6)
-    axes[1].set(ylabel='功率 / MW',title='微网出力分项（来自实际执行，不是独立域逆映射证明）');axes[1].legend(ncol=3)
+    axes[1].set(ylabel='功率 / MW',title='微网PCC净输出：资源出力扣除本地供电负荷');axes[1].legend(ncol=3)
     axes[2].set(ylabel='SOC',title='继承真实SOC，终点保持原24小时');axes[2].legend(ncol=3)
     for ax in axes:timeaxis(ax)
     fig.suptitle('24小时主配微协同轨迹与储能状态｜实际执行',fontsize=17,fontweight='bold');fig.tight_layout(rect=(0,0,1,.96));return save(fig,out,'03_主配微24小时功率与SOC')
@@ -89,15 +89,15 @@ def plot_recovery(c,r,out):
 
 def plot_crew(c,r,out):
     fig,axes=plt.subplots(2,1,figsize=(15,7),sharex=True,gridspec_kw={'height_ratios':[1.2,1]});trace=r['crew_trace'];dt=r['dt'];start=0
-    colors={'travel':'#879eae','inspect':'#dc9c42','repair':'#228b82','idle':'#eff2f4'}
-    def key(item):return ('idle',-1) if item is None else ('travel' if item['travel_remaining']>1e-8 else item['kind'],item['edge'])
+    colors={'travel':'#879eae','inspect':'#dc9c42','repair':'#228b82','weather_wait':'#c7c9d3','idle':'#eff2f4'}
+    def key(item):return ('idle',-1) if item is None else ('travel' if item['travel_remaining']>1e-8 else 'weather_wait' if item.get('weather_wait') else item['kind'],item['edge'])
     for t in range(1,len(trace)+1):
         if t<len(trace) and key(trace[t])==key(trace[start]):continue
         kind,e=key(trace[start]);axes[0].broken_barh([(start*dt,(t-start)*dt)],(.15,.6),facecolors=colors[kind],edgecolor='white')
         if e>=0 and t-start>=2:axes[0].text((start+t)*dt/2,.45,c['edges'][e]['name'],ha='center',va='center',rotation=45,fontsize=8)
         start=t
     axes[0].set(ylim=(0,1),yticks=[],title='真实行程—巡检—维修；不安全风速下保留进度并等待')
-    axes[0].legend(handles=[Patch(color=v,label=k) for k,v in [('行程',colors['travel']),('巡检',colors['inspect']),('维修/天气等待',colors['repair'])]],ncol=3,loc='upper center',bbox_to_anchor=(.5,1.38))
+    axes[0].legend(handles=[Patch(color=v,label=k) for k,v in [('行程',colors['travel']),('有效巡检',colors['inspect']),('有效维修',colors['repair']),('天气等待',colors['weather_wait'])]],ncol=4,loc='upper center',bbox_to_anchor=(.5,1.38))
     for ev in r['events']:
         if '巡检完成' in ev['kind']:axes[1].scatter(ev['hour'],1,marker='v',color=COLORS[2],s=45)
         if '维修完成' in ev['kind']:axes[1].scatter(ev['hour'],.5,marker='o',color=COLORS[1],s=35)
@@ -117,23 +117,31 @@ def plot_D(r,out):
 
 def plot_capability(cap,out):
     if not cap:return []
-    fig=plt.figure(figsize=(15,7));ax=fig.add_subplot(121,projection='3d');other=fig.add_subplot(122)
+    fig=plt.figure(figsize=(16,8));ax=fig.add_subplot(121,projection='3d');energyax=fig.add_subplot(222);deliveryax=fig.add_subplot(224)
+    widths=[];hours=[]
     for j,sl in enumerate(cap['slices']):
-        a=np.asarray(sl['points']);color=plt.cm.viridis(j/max(1,len(cap['slices'])-1))
+        a=np.asarray(sl['points']);color=plt.cm.viridis(j/max(1,len(cap['slices'])-1));hours.append(sl['hour'])
+        widths.append([a[:,0].min(),a[:,0].max()] if len(a) else [np.nan,np.nan])
         if len(a)>=3:
             try:
                 hull=ConvexHull(a);q=a[hull.vertices];poly=np.c_[np.full(len(q),sl['hour']),q]
-                ax.add_collection3d(Poly3DCollection([poly],facecolor=color,edgecolor=color,alpha=.18));continue
+                ax.add_collection3d(Poly3DCollection([poly],facecolor=color,edgecolor=color,alpha=.22));continue
             except QhullError:pass
         if len(a):ax.plot(np.full(len(a),sl['hour']),a[:,0],a[:,1],color=color,lw=1)
-    ax.plot(cap['time_hours'],cap['reference_p'],cap['reference_q'],color='#bd4657',lw=1.8,label='同一完整预测轨迹')
-    ax.set(xlabel='时间 / h',ylabel='接口P / MW',zlabel='接口Q / Mvar',xlim=(0,24));ax.legend(fontsize=8)
+    ax.plot(cap['time_hours'],cap['reference_p'],cap['reference_q'],color='#bd4657',lw=2,label='同一整轨迹的MG净输出总和')
+    ax.set(xlabel='时间 / h',ylabel='Σ微网PCC有功 / MW',zlabel='Σ微网PCC无功 / Mvar',xlim=(0,24));ax.legend(fontsize=8)
     if cap['decomposition']:
         d=cap['decomposition'];energy=np.asarray(d['energy'])
-        for j in range(3):other.plot(np.linspace(0,cap['horizon_hours'],energy.shape[-1]),energy[j],label=f'MG{j+1}',color=COLORS[j])
-        other.set(xlabel='时间 / h',ylabel='储能MWh',title='整轨迹分解的跨期能量见证');other.legend();other.grid(alpha=.2)
-    fig.suptitle(f'多时段可分解支撑域｜每个投影保留{cap["n_steps"]}时段、{cap["scenario_count"]}个预测场景',fontsize=15,fontweight='bold')
-    fig.text(.5,.025,'固定离散方案后的系统条件投影；各截面不能任意拼接。红线是预测条件轨迹，不是未知真实未来的执行保证。',ha='center',fontsize=10,color='#687f91')
+        for j in range(3):energyax.plot(np.linspace(0,cap['horizon_hours'],energy.shape[-1]),energy[j],label=f'MG{j+1}',color=COLORS[j])
+        energyax.set(xlabel='时间 / h',ylabel='储能 / MWh',title='给定整条PCC轨迹的本地分解');energyax.legend(ncol=3,fontsize=8);energyax.grid(alpha=.2)
+    widths=np.asarray(widths);deliveryax.fill_between(hours,widths[:,0],widths[:,1],color=COLORS[1],alpha=.18,label='Σ微网PCC净输出范围')
+    bounds=cap.get('delivery_bounds',[])
+    if bounds:
+        hh=[q['hour'] for q in bounds];lo=[np.nan if q['lower'] is None else q['lower'] for q in bounds];hi=[np.nan if q['upper'] is None else q['upper'] for q in bounds]
+        deliveryax.plot(hh,lo,color='#b84955',ls='--',label='主配接口净上送范围');deliveryax.plot(hh,hi,color='#b84955',ls='--')
+    deliveryax.set(xlim=(0,24),xlabel='时间 / h',ylabel='净有功 / MW',title='不同接口：微网资源与主配可送范围');deliveryax.legend(fontsize=8);deliveryax.grid(alpha=.2)
+    fig.suptitle(f'多时段微网条件资源域内近似｜{cap["n_steps"]}时段、{cap["scenario_count"]}预测样本；固定充放电模式',fontsize=14,fontweight='bold')
+    fig.text(.5,.025,'各截面不能任意拼接。右下绿色为Σ微网PCC，红线为主配接口（另含配网负荷与网络约束），并非同一接口的包含关系。实际执行见图03。',ha='center',fontsize=9,color='#687f91')
     fig.tight_layout(rect=(0,.07,1,.93));return save(fig,out,'07_24小时能力域与分解证书')
 
 def plot_phase(phase,out):
@@ -148,20 +156,26 @@ def plot_phase(phase,out):
     else:ax.text2D(.1,.5,'有效网格不足，未补画曲面',transform=ax.transAxes)
     ax.set(xlabel='主网剩余α',ylabel='初始SOC',zlabel='可行计划D_R差 / 百分点',title='两个可行计划的差值曲面')
     mesh=top.pcolormesh(x,y,np.ma.masked_invalid(z),shading='nearest',cmap='BrBG',norm=norm);fig.colorbar(mesh,ax=top,fraction=.05,pad=.02)
-    if len(finite) and finite.min()<0<finite.max():top.contour(x,y,np.ma.masked_invalid(z),levels=[0],colors=INK,linewidths=1.5)
+    # 未判网格不画临界线；插值过零不构成临界判据。
+    if np.any(cls==0) and np.any(cls==1) and len(finite) and finite.min()<0<finite.max():
+        top.contour(x,y,np.ma.masked_invalid(z),levels=[0],colors=INK,linewidths=1.5)
     top.set(xlabel='主网剩余α',ylabel='初始SOC',title='同一数值网格俯视图（不是认证分区）')
     cmap=ListedColormap(['#2c9677','#3971a4','#a587b8','#e8c563','#bdc6cc','#de8c7e']);cert.pcolormesh(x,y,cls,shading='nearest',cmap=cmap,vmin=-.5,vmax=5.5,edgecolor='white')
     for i in range(len(ys)):
-        for j in range(len(xs)):cert.text(xs[j],ys[i],['启','等','平','未判','启不可行','等不可行'][int(cls[i,j])],ha='center',va='center',fontsize=9)
+        for j in range(len(xs)):
+            xx=xs[j]+(.06 if j==0 else -.06 if j==len(xs)-1 else 0)*(max(xs)-min(xs))
+            yy=ys[i]+(.04 if i==0 else -.04 if i==len(ys)-1 else 0)*(max(ys)-min(ys))
+            cert.text(xx,yy,['启','等','平','未判','启不可行','等不可行'][int(cls[i,j])],ha='center',va='center',fontsize=9)
     cert.set(xlabel='主网剩余α',ylabel='初始SOC',title='由上下界给出的决策证据')
     for pane in (top,cert):pane.set(xlim=(min(xs),max(xs)),ylim=(min(ys),max(ys)),xticks=xs,yticks=ys)
-    fig.suptitle('D_R相图：每格重新优化两分支｜估计与认证分开',fontsize=17,fontweight='bold')
+    count=sum(bool(q.get('certified')) for q in phase['records'])
+    fig.suptitle(f'D_R相图：{count}/{len(phase["records"])}格已判定｜曲面为可行计划差值，非已证临界面',fontsize=16,fontweight='bold')
     fig.text(.5,.03,'固定当前观测、真实初始故障和同一预测随机数。黄色是求解界未分离；灰色仅表示当前预测模型已证启动不可行。',ha='center',fontsize=10)
     fig.tight_layout(rect=(0,.09,1,.93));return save(fig,out,'08_D_R曲面与认证决策相图')
 
 def plot_comparison(results,out):
     if len(results)<2:return []
-    fig,axes=plt.subplots(1,3,figsize=(16,5));labels={'joint':'联合优化','critical_first':'重要负荷规则','nearest':'就近规则','no_upward':'禁反送对照'}
+    fig,axes=plt.subplots(1,3,figsize=(16,5));labels={'joint':'联合滚动','critical_first':'重要负荷规则','nearest':'就近规则','no_upward':'禁止向上支撑'}
     for j,r in enumerate(results):stairs(axes[0],np.asarray(r['time_hours']),np.asarray(r['recovery'])*100,r['dt'],label=labels[r['policy']],color=COLORS[j],lw=1.8)
     timeaxis(axes[0]);axes[0].set(ylabel='加权恢复率%',title='同一真实台风样本');axes[0].legend()
     names=[labels[r['policy']] for r in results]
@@ -169,7 +183,7 @@ def plot_comparison(results,out):
         bars=ax.bar(names,[r['summary'][key] for r in results],color=COLORS[:len(results)])
         for b,r in zip(bars,results):ax.text(b.get_x()+b.get_width()/2,b.get_height(),f'{r["summary"][key]:.2f}',ha='center',va='bottom')
         ax.set_title(title);ax.grid(axis='y',alpha=.2)
-    fig.suptitle('信息—抢修—重构—启动协同的策略对照｜资源与实际灾害相同',fontsize=16,fontweight='bold');fig.tight_layout(rect=(0,0,1,.93));return save(fig,out,'09_策略对照与韧性收益')
+    fig.suptitle('抢修规则与向上支撑权限的对照｜资源与实际灾害相同',fontsize=16,fontweight='bold');fig.tight_layout(rect=(0,0,1,.93));return save(fig,out,'09_策略对照与韧性收益')
 
 def plot_network(c,r,out):
     xy=c['plot_xy'];fig,axes=plt.subplots(2,2,figsize=(21,11));served=np.asarray(r['served_c'])+np.asarray(r['served_g']);demand=(c['profiles']['critical']+c['profiles']['general']).T

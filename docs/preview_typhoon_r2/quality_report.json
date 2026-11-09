@@ -1,0 +1,130 @@
+{
+  "version": "2026-11-09-r2",
+  "warnings": [
+    "joint有19/22次分支未证明最优；实际指标不等于最优韧性。",
+    "critical_first有7/22次分支未证明最优；实际指标不等于最优韧性。",
+    "no_upward有20/30次分支未证明最优；实际指标不等于最优韧性。",
+    "相图仅0/9格取得判据；未判点不能用来认定临界线。"
+  ],
+  "policies": {
+    "joint": {
+      "branch_solves": 22,
+      "time_limit_count": 19,
+      "max_R_gap": 0.10850820719986554,
+      "discharge_MWh": 6.676738448729827,
+      "first_discharge_hour": 0.0,
+      "statistics_error": 0.0,
+      "interface_envelopes_per_round": [
+        36,
+        36,
+        36,
+        36,
+        36,
+        36,
+        36,
+        36,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        24,
+        24,
+        24,
+        24,
+        18,
+        18
+      ]
+    },
+    "critical_first": {
+      "branch_solves": 22,
+      "time_limit_count": 7,
+      "max_R_gap": 0.09220659778150253,
+      "discharge_MWh": 7.025108418727655,
+      "first_discharge_hour": 0.0,
+      "statistics_error": 0.0,
+      "interface_envelopes_per_round": [
+        36,
+        36,
+        36,
+        36,
+        36,
+        36,
+        36,
+        36,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        24,
+        24,
+        24,
+        18,
+        18,
+        18
+      ]
+    },
+    "no_upward": {
+      "branch_solves": 30,
+      "time_limit_count": 20,
+      "max_R_gap": 0.19526722087370918,
+      "discharge_MWh": 4.621869762653345,
+      "first_discharge_hour": 0.0,
+      "statistics_error": 1.1102230246251565e-16,
+      "interface_envelopes_per_round": [
+        36,
+        36,
+        36,
+        36,
+        36,
+        36,
+        36,
+        36,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        30,
+        24,
+        24,
+        24,
+        24,
+        18,
+        18
+      ]
+    }
+  },
+  "comparisons": [
+    {
+      "baseline": "critical_first",
+      "same_trajectory": false,
+      "delta_R": -0.0026215142348887666,
+      "delta_EENS_MWh": -0.3930397805245036,
+      "scope": "抢修日程规则对照，双方均保留电力协同"
+    },
+    {
+      "baseline": "no_upward",
+      "same_trajectory": false,
+      "delta_R": 0.28630140158262385,
+      "delta_EENS_MWh": 40.42741928972297,
+      "scope": "允许主配反送的单路径贡献；非三层完全分离基线"
+    }
+  ],
+  "phase": {
+    "grid_points": 9,
+    "certified_points": 0
+  },
+  "capability": {
+    "decomposition_success": true,
+    "resource_zero_hours": [],
+    "tracking_error": 0.0
+  },
+  "scope": "本报告用于质量诊断，不证明全局最优、统计显著性或暂态安全；ADMM未实现。"
+}

@@ -17,7 +17,7 @@ keep=['horizon_hours','step_minutes','base_mva','alpha','grid_reference_mw','gri
 p={k:base[k] for k in keep};p.update({'case_name':'typhoon_dynamic_33','switch_minutes':60,'switch_min_hold_hours':1,'switch_max_per_line':4,'switch_max_total':24,
  'switch_cost':.02,'allow_upward':1,'critical_weight':5,'general_weight':1,'restore_tolerance':.0002,
  'crew.speed_kmh':30,'crew.road_detour_factor':1.35,'crew.safe_wind_ms':18,'crew.hourly_cost':.12,'crew.decision_hours':1,
- 'crew.depot_x_km':8,'crew.depot_y_km':-8,'solver.primary_seconds':5,'solver.secondary_seconds':1,'solver.phase_seconds':3,'solver.rel_gap':.02,
+ 'crew.depot_x_km':8,'crew.depot_y_km':-8,'solver.primary_seconds':8,'solver.secondary_seconds':1,'solver.phase_seconds':8,'solver.rel_gap':.02,
  'weather.seed':5,'weather.history_hours':4,'weather.fault_interval_hours':1,'weather.outer_exponent':.8,'weather.surface_factor':.9,'weather.pv_wind_derating':.45,
  'replan_hours':2,'capability_interval_hours':1,'phase_restore_tolerance':.001})
 for k in ['max_mw','min_mw','ramp_mw_per_hour','q_max_mvar','s_mva','aux_power_factor','last_start_hour','start_cost','fuel_cost']:
@@ -45,8 +45,8 @@ track=[[-4,-8,6,42,8],[0,6,6,44,8],[4,20,6,46,8],[8,38,6,40,8],[12,58,6,32,8],[2
 sheet('台风路径',['time_hour','center_x_km','center_y_km','max_wind_ms','radius_max_km'],['时间h','中心X/km','中心Y/km','参考最大风速m/s','最大风速半径km'],track,'移动Rankine型简化风场；全部参数为合成示例，不声称Holland完整物理标定')
 curve=getrows('24小时曲线');sheet('24小时曲线',list(curve[0]),list(curve[0]),[[r[k] for k in curve[0]] for r in curve], '96个15分钟PV/负荷/价格系数；台风进一步影响PV预测与实际出力')
 aux=getrows('启动曲线');sheet('启动曲线',['time_hour','aux_power_mw'],['启动历时h','辅助功率MW'],[[r['time_hour'],r['aux_power_mw']] for r in aux], '完整启动辅助功率持续曲线；模型和实际执行共用')
-settings={'forecast_scenarios':2,'compute_capability':'是','capability_directions':4,'compute_phase_map':'是','phase_alphas':'0,0.5,1',
-          'phase_socs':'0.35,0.65,0.85','run_comparisons':'是','run_coordination_baseline':'否','policies':'joint,critical_first','output_dir':'results'}
+settings={'forecast_scenarios':2,'compute_capability':'是','capability_directions':8,'compute_phase_map':'是','phase_alphas':'0,0.5,1',
+          'phase_socs':'0.35,0.65,0.85','run_comparisons':'是','run_coordination_baseline':'是','policies':'joint,critical_first','output_dir':'results'}
 sheet('运行设置',['parameter','value','description'],['项目','值','说明'],[[k,v,'joint联合优化；critical_first重要负荷规则；nearest就近规则；可关闭附加分析加快首跑'] for k,v in settings.items()],
  '首次运行完整24h。相图与域耗时较多，可先改为否；所有比较共用同一真实风灾样本')
 w=b.create_sheet('说明',0)

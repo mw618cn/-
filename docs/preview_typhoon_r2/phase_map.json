@@ -1,0 +1,1789 @@
+{
+  "scope": "初始状态下当前预测模型D_R；每格重优化，未判与不可行分开；不使用固定整数LP费用代替D",
+  "alphas": [
+    0.0,
+    0.5,
+    1.0
+  ],
+  "socs": [
+    0.35,
+    0.65,
+    0.85
+  ],
+  "records": [
+    {
+      "D_estimate": 0.009679144449844634,
+      "D_lower": -0.11774282837615058,
+      "D_upper": 0.1274219728259952,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.647131621183001,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.647131621183001,
+          "cost_plan": 52.902521307591954,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -156.3578038720877,
+          "max_residual": 1.4058199049316045e-14,
+          "seconds": 14.24699021098786,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6338472833529695
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6273597349794051
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6463382241575014
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6398506757839383
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": false,
+              "R": null
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": false,
+              "R": null
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6471316211829965
+            }
+          ],
+          "best_seed_R": 0.6471316211829965,
+          "primary_R_plan": 0.647131621183001,
+          "absolute_R_gap": 0.11774282837615058,
+          "MILP_improvement_over_seed_R": 4.587624482791441e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 1.4058199049316045e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 1.4058199049316045e-14,
+              "SOC_balance": 1.1102230246251565e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6374524767331564,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6374524767331564,
+          "cost_plan": 50.86190740357591,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -154.01916097472503,
+          "max_residual": 8.881784197001252e-16,
+          "seconds": 15.429794651005068,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6194434264533237
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6129558780797606
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.631934367257857
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6254468188842938
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": false,
+              "R": null
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": false,
+              "R": null
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.3793203000453584
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.3728327516717947
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6374524767331539
+            }
+          ],
+          "best_seed_R": 0.6374524767331539,
+          "primary_R_plan": 0.6374524767331564,
+          "absolute_R_gap": 0.1274219728259952,
+          "MILP_improvement_over_seed_R": 2.587890733882351e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 8.881784197001252e-16,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 8.881784197001252e-16,
+              "SOC_balance": 1.0408340855860843e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 0.0,
+      "soc": 0.35
+    },
+    {
+      "D_estimate": 0.00957094457024954,
+      "D_lower": -0.10003031623437397,
+      "D_upper": 0.10960126080462351,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6648441333247777,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6648441333247777,
+          "cost_plan": 53.23514116209928,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -160.63744252501436,
+          "max_residual": 1.4988010832439613e-14,
+          "seconds": 15.460719020004035,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6523531925202413
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6273597349794051
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6648441333247739
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6398506757839384
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5739713374696064
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": false,
+              "R": null
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6549482118696668
+            }
+          ],
+          "best_seed_R": 0.6648441333247739,
+          "primary_R_plan": 0.6648441333247777,
+          "absolute_R_gap": 0.10003031623437397,
+          "MILP_improvement_over_seed_R": 3.764204703828874e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 1.4988010832439613e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 1.4988010832439613e-14,
+              "SOC_balance": 1.1275702593849246e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6552731887545281,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6552731887545281,
+          "cost_plan": 51.56251642074865,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -158.32494252501436,
+          "max_residual": 3.885780586188048e-15,
+          "seconds": 16.370579173002625,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6427822479499938
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6129558780797606
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6552731887545263
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6254468188842938
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5620861163856821
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": false,
+              "R": null
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.4010620317812718
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.3728327516717947
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6453772672994189
+            }
+          ],
+          "best_seed_R": 0.6552731887545263,
+          "primary_R_plan": 0.6552731887545281,
+          "absolute_R_gap": 0.10960126080462351,
+          "MILP_improvement_over_seed_R": 1.764470954919785e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 3.885780586188048e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 3.885780586188048e-15,
+              "SOC_balance": 2.1337098754514727e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 0.0,
+      "soc": 0.65
+    },
+    {
+      "D_estimate": 0.00957094457024954,
+      "D_lower": -0.09484027753552304,
+      "D_upper": 0.10441122210577258,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6700341720236286,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6700341720236286,
+          "cost_plan": 53.28530116209929,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -161.89144252501436,
+          "max_residual": 2.375877272697835e-14,
+          "seconds": 14.43867740900896,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6575432312190921
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6273597349794052
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6700341720236249
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6398506757839382
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5797841343074052
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": false,
+              "R": null
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.660138250568517
+            }
+          ],
+          "best_seed_R": 0.6700341720236249,
+          "primary_R_plan": 0.6700341720236286,
+          "absolute_R_gap": 0.09484027753552304,
+          "MILP_improvement_over_seed_R": 3.646573306834222e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 2.375877272697835e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 2.375877272697835e-14,
+              "SOC_balance": 3.3306690738754696e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.660463227453379,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.660463227453379,
+          "cost_plan": 51.612676420748656,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -159.57894252501436,
+          "max_residual": 1.9040324872321435e-14,
+          "seconds": 16.316051219997462,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6479722866488449
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6129558780797607
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6604632274533777
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6254468188842934
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5732937140054416
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": false,
+              "R": null
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.4062520704801225
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.3728327516717942
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6505673059982694
+            }
+          ],
+          "best_seed_R": 0.6604632274533777,
+          "primary_R_plan": 0.660463227453379,
+          "absolute_R_gap": 0.10441122210577258,
+          "MILP_improvement_over_seed_R": 1.411576763935828e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 1.9040324872321435e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 1.9040324872321435e-14,
+              "SOC_balance": 3.3306690738754696e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 0.0,
+      "soc": 0.85
+    },
+    {
+      "D_estimate": 0.004723139212669647,
+      "D_lower": -0.09549361413850121,
+      "D_upper": 0.10021675335117097,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6693808354206504,
+          "R_upper": 0.7648744495591517,
+          "R_plan": 0.6693808354206504,
+          "cost_plan": 53.44023490086688,
+          "primary_objective_lower_bound": -184.80643698466577,
+          "primary_objective_incumbent": -161.7335854939452,
+          "max_residual": 5.440092820663267e-15,
+          "seconds": 17.316703881006106,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.656900372374578
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6547378562500566
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6693808354206483
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6672183192961268
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5771647250170858
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.5750239392758493
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6606313752353895
+            }
+          ],
+          "best_seed_R": 0.6693808354206483,
+          "primary_R_plan": 0.6693808354206504,
+          "absolute_R_gap": 0.09549361413850133,
+          "MILP_improvement_over_seed_R": 2.117365145903742e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 5.440092820663267e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 5.440092820663267e-15,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6646576962079808,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6646576962079808,
+          "cost_plan": 52.75964515004604,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -160.59239620493298,
+          "max_residual": 8.104628079763643e-15,
+          "seconds": 16.369010599009925,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6521772331619077
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6500147170373872
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6646576962079777
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6624951800834571
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5768863036794274
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.5747455179381901
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6411802049066051
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6390176887820848
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6559082360227197
+            }
+          ],
+          "best_seed_R": 0.6646576962079777,
+          "primary_R_plan": 0.6646576962079808,
+          "absolute_R_gap": 0.10021675335117086,
+          "MILP_improvement_over_seed_R": 3.176047718855613e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 8.104628079763643e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 8.104628079763643e-15,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 0.5,
+      "soc": 0.35
+    },
+    {
+      "D_estimate": 0.004723139212669647,
+      "D_lower": -0.08654103994044338,
+      "D_upper": 0.09126417915311313,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6783334096187082,
+          "R_upper": 0.7648744495591517,
+          "R_plan": 0.6783334096187082,
+          "cost_plan": 53.061480072572834,
+          "primary_objective_lower_bound": -184.80643698466577,
+          "primary_objective_incumbent": -163.89667688801325,
+          "max_residual": 6.8833827526759706e-15,
+          "seconds": 15.221864417006145,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6658529465726343
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6547378562500566
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6783334096187049
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6672183192961268
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5849497830653632
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.5750239392758493
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6684479659220596
+            }
+          ],
+          "best_seed_R": 0.6783334096187049,
+          "primary_R_plan": 0.6783334096187082,
+          "absolute_R_gap": 0.08654103994044349,
+          "MILP_improvement_over_seed_R": 3.4113105128449177e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 6.8833827526759706e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 6.8833827526759706e-15,
+              "SOC_balance": 1.1102230246251565e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6736102704060386,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6736102704060386,
+          "cost_plan": 52.26150356516986,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -162.755487599001,
+          "max_residual": 1.0935696792557792e-14,
+          "seconds": 17.68234042999393,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6611298073599646
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6500147170373871
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.673610270406035
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6624951800834571
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5846713617277042
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.5747455179381901
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6501327791046614
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6390176887820848
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6637248267093899
+            }
+          ],
+          "best_seed_R": 0.673610270406035,
+          "primary_R_plan": 0.6736102704060386,
+          "absolute_R_gap": 0.09126417915311302,
+          "MILP_improvement_over_seed_R": 3.52894190983957e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 1.0935696792557792e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 1.0935696792557792e-14,
+              "SOC_balance": 1.5785983631388945e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 0.5,
+      "soc": 0.65
+    },
+    {
+      "D_estimate": 0.004723139212669758,
+      "D_lower": -0.08135100124159234,
+      "D_upper": 0.0860741404542622,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6835234483175593,
+          "R_upper": 0.7648744495591517,
+          "R_plan": 0.6835234483175593,
+          "cost_plan": 53.14459624826699,
+          "primary_objective_lower_bound": -184.80643698466577,
+          "primary_objective_incumbent": -165.15067688801327,
+          "max_residual": 2.5337371090117244e-14,
+          "seconds": 15.716960568999639,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6710429852714846
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6547378562500565
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.683523448317555
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.667218319296127
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5901398217642145
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.575023939275849
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6736380046209103
+            }
+          ],
+          "best_seed_R": 0.683523448317555,
+          "primary_R_plan": 0.6835234483175593,
+          "absolute_R_gap": 0.08135100124159245,
+          "MILP_improvement_over_seed_R": 4.352361688802136e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 2.5337371090117244e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 2.5326962749261384e-14,
+              "SOC_balance": 1.1102230246251565e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6788003091048895,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6788003091048895,
+          "cost_plan": 52.26954414133751,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -164.00948759900098,
+          "max_residual": 1.0963452368173421e-14,
+          "seconds": 21.633360000007087,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6663198460588148
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6500147170373864
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6788003091048853
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.662495180083457
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5898614004265549
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.5747455179381902
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6553228178035125
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6390176887820838
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6689148654082401
+            }
+          ],
+          "best_seed_R": 0.6788003091048853,
+          "primary_R_plan": 0.6788003091048895,
+          "absolute_R_gap": 0.0860741404542621,
+          "MILP_improvement_over_seed_R": 4.117098894812832e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 1.0963452368173421e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 1.0963452368173421e-14,
+              "SOC_balance": 4.440892098500626e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 0.5,
+      "soc": 0.85
+    },
+    {
+      "D_estimate": -6.025562208300528e-06,
+      "D_lower": -0.08801634606304298,
+      "D_upper": 0.0880103205008348,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6768581034961086,
+          "R_upper": 0.7648744495591517,
+          "R_plan": 0.6768581034961086,
+          "cost_plan": 54.256047195135665,
+          "primary_objective_lower_bound": -184.80643698466577,
+          "primary_objective_incumbent": -163.5402182978009,
+          "max_residual": 6.8035854727810374e-15,
+          "seconds": 15.027227422004216,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6643776404500354
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6622151243255148
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6768581034961064
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.674695587371585
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5795111338908684
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.5773703481496312
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6681086433108472
+            }
+          ],
+          "best_seed_R": 0.6768581034961064,
+          "primary_R_plan": 0.6768581034961086,
+          "absolute_R_gap": 0.0880163460630431,
+          "MILP_improvement_over_seed_R": 2.234996542898394e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 6.8035854727810374e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 6.810524366684945e-15,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6768641290583169,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6768641290583169,
+          "cost_plan": 54.18867118992789,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -163.54167417423028,
+          "max_residual": 2.4022450695326825e-14,
+          "seconds": 16.05423839300056,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6643836660122439
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6622211498877227
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6768641290583141
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6747016129337933
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5795111338908678
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.5773703481496307
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.665081747294828
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6629192311703073
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6681146688730557
+            }
+          ],
+          "best_seed_R": 0.6768641290583141,
+          "primary_R_plan": 0.6768641290583169,
+          "absolute_R_gap": 0.08801032050083468,
+          "MILP_improvement_over_seed_R": 2.940784924866308e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 2.4022450695326825e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 2.4022450695326825e-14,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 1.0,
+      "soc": 0.35
+    },
+    {
+      "D_estimate": -6.02556220841155e-06,
+      "D_lower": -0.07906377186498537,
+      "D_upper": 0.07905774630277707,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6858106776941663,
+          "R_upper": 0.7648744495591517,
+          "R_plan": 0.6858106776941663,
+          "cost_plan": 54.97593799246114,
+          "primary_objective_lower_bound": -184.80643698466577,
+          "primary_objective_incumbent": -165.70330969186887,
+          "max_residual": 2.8949065367100957e-14,
+          "seconds": 15.302337158005685,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6733302146480926
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6622151243255148
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.685810677694163
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.674695587371585
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5872961919391441
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.5773703481496311
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6759252339975178
+            }
+          ],
+          "best_seed_R": 0.685810677694163,
+          "primary_R_plan": 0.6858106776941663,
+          "absolute_R_gap": 0.07906377186498548,
+          "MILP_improvement_over_seed_R": 3.176047718855613e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 2.8949065367100957e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 2.8949065367100957e-14,
+              "SOC_balance": 1.6653345369377348e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6858167032563747,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6858167032563747,
+          "cost_plan": 53.965689467861935,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -165.70476556829828,
+          "max_residual": 4.39648317751562e-14,
+          "seconds": 21.194424068991793,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6733362402102997
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6622211498877227
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6858167032563703
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6747016129337933
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.587296191939144
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.5773703481496306
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6740343214928842
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6629192311703073
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6759312595597254
+            }
+          ],
+          "best_seed_R": 0.6858167032563703,
+          "primary_R_plan": 0.6858167032563747,
+          "absolute_R_gap": 0.07905774630277695,
+          "MILP_improvement_over_seed_R": 4.352361688802136e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 4.39648317751562e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 4.39648317751562e-14,
+              "SOC_balance": 2.636779683484747e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 1.0,
+      "soc": 0.65
+    },
+    {
+      "D_estimate": -6.02556220841155e-06,
+      "D_lower": -0.07387373316613433,
+      "D_upper": 0.07386770760392602,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6910007163930173,
+          "R_upper": 0.7648744495591517,
+          "R_plan": 0.6910007163930173,
+          "cost_plan": 55.02609799246114,
+          "primary_objective_lower_bound": -184.80643698466577,
+          "primary_objective_incumbent": -166.9573096918689,
+          "max_residual": 1.8318679906315083e-14,
+          "seconds": 15.81004683500214,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6785202533469432
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6622151243255147
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.691000716393013
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6746955873715852
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5924862306379954
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.577370348149631
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6811152726963684
+            }
+          ],
+          "best_seed_R": 0.691000716393013,
+          "primary_R_plan": 0.6910007163930173,
+          "absolute_R_gap": 0.07387373316613444,
+          "MILP_improvement_over_seed_R": 4.352361688802136e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 1.8318679906315083e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 1.8318679906315083e-14,
+              "SOC_balance": 1.3877787807814457e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6910067419552257,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6910067419552257,
+          "cost_plan": 54.015849467861926,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -166.9587655682983,
+          "max_residual": 2.4022450695326825e-14,
+          "seconds": 16.504132568006753,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6785262789091504
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6622211498877222
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6910067419552215
+            },
+            {
+              "repair_rule": "nearest",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6747016129337932
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.5924862306379951
+            },
+            {
+              "repair_rule": "hold",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.5773703481496308
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "discharge",
+              "feasible": true,
+              "R": 0.6792243601917346
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": false,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.6629192311703066
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.6811212982585751
+            }
+          ],
+          "best_seed_R": 0.6910067419552215,
+          "primary_R_plan": 0.6910067419552257,
+          "absolute_R_gap": 0.07386770760392591,
+          "MILP_improvement_over_seed_R": 4.234730291807484e-15,
+          "secondary_R_loss": 0.0,
+          "interface_envelope_count": 36,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 2.4022450695326825e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 2.4022450695326825e-14,
+              "SOC_balance": 1.942890293094024e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 1.0,
+      "soc": 0.85
+    }
+  ],
+  "units": "恢复率之差（乘100为百分点）"
+}

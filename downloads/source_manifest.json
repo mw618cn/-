@@ -1,8 +1,8 @@
 {
   "file": "tdm_source_code.zip",
-  "bytes": 5090700,
-  "sha256": "1f0ea93b1106d1a8ea773cf36155ef0c1eaf6b3cf08de1521f41ec50d481ca5c",
-  "source_files": 125,
-  "tests": "32 passed",
-  "scope": "Typhoon dynamic version, retained IEEE33/six-node/advanced source and documented previews; generated runs excluded"
+  "bytes": 7791187,
+  "sha256": "2f8d84dbace182d44232d5df6c0677672883d70a4da587879d8eaed3217636d8",
+  "source_files": 145,
+  "tests": "34 passed",
+  "scope": "Current r2 source plus explicitly retained older versions; generated runs excluded"
 }

@@ -1,39 +1,20 @@
 {
-  "file": "tdm_typhoon_33.zip",
-  "bytes": 843646,
-  "sha256": "c89d913696b3545a936ec72fcd846b8712236b489e26573260a3c7cfe8d308ca",
-  "entry": "tdm_typhoon_33/main.py",
-  "parameters": "tdm_typhoon_33/参数数据.xlsx",
-  "python_files": 8,
+  "version": "2026-11-09-r2",
+  "full": {
+    "file": "tdm_typhoon_33_r2.zip",
+    "bytes": 1814792,
+    "sha256": "ad6fdca665f632e5faed1476c39a6b84d8cdb180c3549f9c4d4df1b25ff3dacf"
+  },
+  "patch": {
+    "file": "tdm_typhoon_33_r2_patch.zip",
+    "bytes": 94074,
+    "sha256": "3e3650afa7b9c8ff20663a02e2f42db2ff9379f38f40324e71c93d61cabb0117"
+  },
+  "python_files": 10,
+  "patch_python_files": 7,
+  "entry": "tdm_typhoon_33_r2/main.py",
   "horizon_hours": 24,
   "steps": 96,
-  "distribution_nodes": 33,
-  "total_nodes": 35,
-  "microgrids": 3,
-  "default_forecast_scenarios": 2,
-  "innovations": [
-    "启动/等待决策边界",
-    "多时段可分解支撑域",
-    "信息驱动的抢修—重构—启动协同"
-  ],
-  "tests": "32 passed",
-  "default_phase_certification": "9/9 unknown under short time limit",
-  "files": [
-    "README.md",
-    "analysis.py",
-    "data.py",
-    "main.py",
-    "network.py",
-    "plots.py",
-    "power_model.py",
-    "repair_model.py",
-    "requirements.txt",
-    "weather.py",
-    "三个创新点与代码对应.md",
-    "参数数据.xlsx",
-    "示例图/00_33节点主配微与全部开关位置.png",
-    "示例图/01_台风移动与动态故障.png",
-    "示例图/08_D_R曲面与认证决策相图.png",
-    "验证说明.md"
-  ]
+  "tests": "34 passed + full-day execution checks",
+  "scope": "Centralized MILP with explicit rolling MGO interfaces/energy envelopes; local conditional domains; no ADMM"
 }

@@ -61,6 +61,10 @@ def decide(c,state,fc,policy='joint',seconds=None,secondary_seconds=None,compare
         result.update(action=chosen,job_count=len(records[chosen][0].metadata['jobs']))
     else:chosen=None;result.update(action='no_verified_plan',job_count=0)
     result['branches']={k:{a:b for a,b in r.items() if a!='x'} for k,(m,r) in records.items()}
+    if chosen is not None:
+        result['interface_envelope_count']=len(records[chosen][0].metadata['interface_envelopes'])
+        result['interface_envelopes']=records[chosen][0].metadata['interface_envelopes']
+        result['inherited_SOC']=[float(state['energy'][j]/mg['energy_mwh']) for j,mg in enumerate(c['microgrids'])]
     return result,records.get(chosen),records
 
 
@@ -125,7 +129,7 @@ def simulate(c,world,policy='joint',output=None,progress=print,capture_initial=F
     """完整96步真实执行；事件或定期触发重新优化，不把一次预测当成全天结果。"""
     state=initial_state(c,world);initial=copy.deepcopy(state);dt=c['dt'];events=[];rounds=[]
     for e in np.flatnonzero(state['damaged']):_event(events,0,'初始已报告故障',c,int(e),note='由灾前风场历史生成；损伤轻重未知')
-    result={k:[] for k in ('served_c','served_g','flow_p','flow_q','closed','energized_edges','energized_bus','voltage','target_p','aux','upward_p','unit_online','recovery','pv','dg','charge','discharge','damaged','crew_trace')}
+    result={k:[] for k in ('served_c','served_g','flow_p','flow_q','closed','energized_edges','energized_bus','voltage','target_p','aux','upward_p','unit_online','recovery','pv','dg','charge','discharge','pcc_p','pcc_q','damaged','crew_trace')}
     energy=[state['energy'].copy()];active_plan=None;selected=None;lastsolve=-1e9;trigger=True;initial_capture=None;emergencies=0
     for step in range(c['n_steps']):
         state['step']=step;h=step*dt;trigger=observe_faults(c,state,world,events) or trigger
@@ -170,7 +174,7 @@ def simulate(c,world,policy='joint',output=None,progress=print,capture_initial=F
         realpv=c['profiles']['pv'][:,step]*np.clip(1-c['weather']['pv_wind_derating']*world['wind'][c['mg_edge_indices'],step]/50,.2,1)
         if np.max(d['pv'][:,t]-realpv,initial=0)>2e-5:raise RuntimeError('当前计划超出真实可用PV，需更新预测口径')
         if np.max(np.abs(d['energy'][:,t]-state['energy']),initial=0)>2e-5:raise RuntimeError('滚动SOC未继承')
-        for key in ('served_c','served_g','flow_p','flow_q','target_p','aux','upward_p','pv','dg','charge','discharge'):
+        for key in ('served_c','served_g','flow_p','flow_q','target_p','aux','upward_p','pv','dg','charge','discharge','pcc_p','pcc_q'):
             result[key].append(np.asarray(d[key][...,t]).tolist())
         result['closed'].append(proposed.tolist());result['energized_edges'].append(np.rint(d['energized_edge'][:,k]).tolist())
         result['energized_bus'].append(np.rint(d['energized_bus'][:,k]).tolist());result['voltage'].append(np.sqrt(np.maximum(d['voltage'][:,t],0)).tolist())
@@ -184,7 +188,9 @@ def simulate(c,world,policy='joint',output=None,progress=print,capture_initial=F
         state['cost_accum']+=float(running);state['energy']=d['energy'][:,t+1].copy();energy.append(state['energy'].copy());state['previous_pg']=float(d['target_p'][t])
         result['damaged'].append(state['damaged'].astype(int).tolist())
         dispatch_crew(c,state,d,events,h)
-        active=state['crew']['active'];result['crew_trace'].append(copy.deepcopy(active))
+        active=copy.deepcopy(state['crew']['active'])
+        if active is not None:active['weather_wait']=bool(active['travel_remaining']<=1e-8 and world['wind'][active['edge'],step]>c['crew']['safe_wind_ms']+1e-8)
+        result['crew_trace'].append(active)
         trigger=advance_crew(c,state,world,events)
     result.update(policy=policy,time_hours=(np.arange(c['n_steps'])*dt).tolist(),dt=dt,energy=np.asarray(energy).tolist(),
         energy_capacity=[m['energy_mwh'] for m in c['microgrids']],edge_names=[e['name'] for e in c['edges']],events=events,rounds=rounds)
@@ -200,37 +206,62 @@ def simulate(c,world,policy='joint',output=None,progress=print,capture_initial=F
 
 
 def compute_capability(m,x,c,output,progress=print):
-    """固定离散方案，保留全96时段和预测场景；每个点附高维可行见证。"""
-    fixed=freeze(m,x);idx=fixed.var_indices;ns,n=idx['flow_p'].shape[0],idx['flow_p'].shape[-1];tx=c['tx']
-    stride=max(1,int(round(c['capability_interval_hours']/c['dt'])));slices=[];witnesses={'incumbent':np.asarray(x).copy()};reference_p=-x[idx['flow_p'][:,tx,:]];reference_q=-x[idx['flow_q'][:,tx,:]]
-    for t in range(0,n,stride):
+    """MGO局部资源域与网络可送能力分开；保留全时域及全部预测样本。
+
+    图形局部LP只固定充放电模式；全局网络可送范围另算。逐时切片不能
+    任意拼接。分解证书针对给定整轨迹，不代表所有接口指令都可分解。
+    """
+    from capability import build_resource_model
+    state=m.metadata['state'];fc=m.metadata['forecast'];v=m.var_indices
+    ns,n=v['flow_p'].shape[0],v['flow_p'].shape[-1]
+    modes=np.rint(x[v['battery_mode']][:,:,m.metadata['mode_map']])
+    local=build_resource_model(c,state,fc,modes);idx=local.var_indices
+    stride=max(1,int(round(c['capability_interval_hours']/c['dt'])))
+    slices=[];delivery=[];witnesses={}
+    reference_all_p=x[v['pcc_p']];reference_all_q=x[v['pcc_q']]
+    refp=reference_all_p.sum(axis=1);refq=reference_all_q.sum(axis=1)
+    network=freeze(m,x);tx=c['tx']
+    times=list(range(0,n,stride))
+    for t in times:
         points=[]
         for j,a in enumerate(np.linspace(0,2*np.pi,c['settings']['capability_directions'],endpoint=False)):
-            obj=np.zeros_like(fixed.c);obj[idx['flow_p'][0,tx,t]]=np.cos(a);obj[idx['flow_q'][0,tx,t]]=np.sin(a)
-            r=solve_lp(fixed,obj)
-            if r['x'] is not None and residual(fixed,r['x'])<=1e-6:
-                z=r['x'];points.append([-float(z[idx['flow_p'][0,tx,t]]),-float(z[idx['flow_q'][0,tx,t]])]);witnesses[f't{t}_d{j}']=z
-        slices.append({'hour':float(m.metadata['hours'][t]),'points':points})
-        if progress:progress(f'[能力域] {len(slices)} / {len(range(0,n,stride))}，完整{n}时段；t={m.metadata["hours"][t]:g}h',flush=True)
+            obj=np.zeros_like(local.c);obj[idx['pcc_p'][0,:,t]]=-np.cos(a);obj[idx['pcc_q'][0,:,t]]=-np.sin(a)
+            r=solve_lp(local,obj)
+            if r['x'] is not None and residual(local,r['x'])<=1e-6:
+                z=r['x'];points.append([float(z[idx['pcc_p'][0,:,t]].sum()),float(z[idx['pcc_q'][0,:,t]].sum())]);witnesses[f't{t}_d{j}']=z
+        slices.append({'hour':float(fc['hours'][t]),'points':points})
+        bounds=[]
+        for sign in (-1,1):
+            obj=np.zeros_like(network.c);obj[v['flow_p'][0,tx,t]]=sign
+            rr=solve_lp(network,obj)
+            if rr['x'] is not None:bounds.append(-float(rr['x'][v['flow_p'][0,tx,t]]))
+        delivery.append({'hour':float(fc['hours'][t]),'lower':min(bounds) if bounds else None,'upper':max(bounds) if bounds else None})
+        if progress:progress(f'[能力域] {len(slices)}/{len(times)}，资源域与网络可送范围分开；完整{n}时段',flush=True)
     eq=[]
-    for s in range(ns):
-        for t in range(n):
-            eq.append(({int(idx['flow_p'][s,tx,t]):-1},float(reference_p[s,t])))
-            eq.append(({int(idx['flow_q'][s,tx,t]):-1},float(reference_q[s,t])))
-    cert=solve_lp(fixed,m.metadata['cost_objective'],eq)
-    tracking_p=np.inf if cert['x'] is None else float(np.max(np.abs(-cert['x'][idx['flow_p'][:,tx,:]]-reference_p),initial=0))
-    tracking_q=np.inf if cert['x'] is None else float(np.max(np.abs(-cert['x'][idx['flow_q'][:,tx,:]]-reference_q),initial=0))
-    success=cert['x'] is not None and residual(fixed,cert['x'])<=1e-6 and max(tracking_p,tracking_q)<=1e-6
-    witness=extract(m,cert['x'],0) if success else None
-    result={'scope':'固定离散方案和已报告任务下的全时域预测场景条件投影，不是独立MGO域或实际未知未来安全保证',
-            'horizon_hours':float(n*c['dt']),'n_steps':n,'scenario_count':ns,'slices':slices,'reference_p':reference_p[0].tolist(),
-            'reference_q':reference_q[0].tolist(),'reference_all_p':reference_p.tolist(),'reference_all_q':reference_q.tolist(),
-            'tracking_p_max':tracking_p,'tracking_q_max':tracking_q,'time_hours':m.metadata['hours'].tolist(),'decomposition_success':bool(success),
-            'decomposition_residual':residual(fixed,cert['x']) if success else None,
-            'decomposition':{k:witness[k] for k in ('dg','pv','charge','discharge','energy','served_c','served_g')} if success else None}
+    for scenario in range(ns):
+        for j in range(3):
+            for t in range(n):
+                eq.extend([({int(idx['pcc_p'][scenario,j,t]):1},float(reference_all_p[scenario,j,t])),
+                           ({int(idx['pcc_q'][scenario,j,t]):1},float(reference_all_q[scenario,j,t]))])
+    cert=solve_lp(local,equalities=eq)
+    rp=np.inf if cert['x'] is None else float(np.max(np.abs(cert['x'][idx['pcc_p']]-reference_all_p),initial=0))
+    rq=np.inf if cert['x'] is None else float(np.max(np.abs(cert['x'][idx['pcc_q']]-reference_all_q),initial=0))
+    success=cert['x'] is not None and residual(local,cert['x'])<=1e-6 and max(rp,rq)<=1e-6
+    decomposition=None
+    if success:
+        z=cert['x'];witnesses['decomposition']=z
+        decomposition={k:z[idx[k]][0] for k in ('dg','pv','charge','discharge','energy','served_c','served_g')}
+    result={'scope':'MGO局部全时域条件资源域：固定充放电模式，保留SOC/本地负荷/逆变器/同信息控制；网络可送范围另列',
+            'horizon_hours':float(n*c['dt']),'n_steps':n,'scenario_count':ns,'slices':slices,'delivery_bounds':delivery,
+            'reference_p':refp[0].tolist(),'reference_q':refq[0].tolist(),
+            'reference_all_p':reference_all_p.tolist(),'reference_all_q':reference_all_q.tolist(),
+            'tracking_p_max':rp,'tracking_q_max':rq,'time_hours':fc['hours'].tolist(),
+            'decomposition_success':bool(success),'decomposition_residual':residual(local,cert['x']) if success else None,
+            'decomposition':decomposition,'envelopes_used_in_dispatch':m.metadata['interface_envelopes'],
+            'delivery_scope':'初始预测且固定全局离散方案下的主配接口范围；不是实际全天执行轨迹'}
     output=Path(output);output.mkdir(exist_ok=True,parents=True);save_json(output/'capability.json',result)
-    if success:witnesses['decomposition']=cert['x']
-    np.savez_compressed(output/'full_horizon_witnesses.npz',**witnesses);return jsonable(result)
+    np.savez_compressed(output/'full_horizon_witnesses.npz',**witnesses)
+    return jsonable(result)
 
 
 def phase_map(c,state,output,progress=print):
