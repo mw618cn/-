@@ -1,0 +1,33 @@
+{
+  "policies": {
+    "joint": {
+      "actual_weighted_recovery": 0.7746328862412207,
+      "actual_EENS_MWh": 29.4040327939832,
+      "actual_operation_cost_thousand": 60.4178873958216,
+      "manual_switch_operations": 11,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 5,
+      "startup_attempts": 1,
+      "reoptimizations": 21,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "当前策略沿一个合成风灾样本的实际执行，非全策略全场景最优韧性值"
+    },
+    "critical_first": {
+      "actual_weighted_recovery": 0.7801881189341432,
+      "actual_EENS_MWh": 28.06179582791448,
+      "actual_operation_cost_thousand": 59.26595586427218,
+      "manual_switch_operations": 13,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 5,
+      "startup_attempts": 1,
+      "reoptimizations": 21,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "当前策略沿一个合成风灾样本的实际执行，非全策略全场景最优韧性值"
+    }
+  },
+  "elapsed_seconds": 629.67178164699,
+  "capability_decomposition": true,
+  "note": "有限预测样本和限时滚动策略实际执行；D证据针对当前预测模型，ADMM尚未实现"
+}

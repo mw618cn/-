@@ -1,0 +1,52 @@
+{
+  "hour": 0.0,
+  "policy": "joint",
+  "D_estimate": null,
+  "D_lower": null,
+  "D_upper": null,
+  "certified": true,
+  "decision": "当前预测模型已证当前启动不可行",
+  "classification": "start_infeasible",
+  "action": "wait",
+  "job_count": 2,
+  "branches": {
+    "start": {
+      "status": 2,
+      "message": "Infeasible",
+      "certified_infeasible": true,
+      "R_lower": null,
+      "R_upper": null,
+      "seconds": 1.9144682129990542,
+      "source": null
+    },
+    "wait": {
+      "status": 1,
+      "message": "Time limit reached",
+      "source": "MILP",
+      "certified_infeasible": false,
+      "R_lower": 0.4129401545189522,
+      "R_upper": 1.0,
+      "R_plan": 0.4129401545189522,
+      "cost_plan": 27.345669117027946,
+      "primary_objective_lower_bound": null,
+      "primary_objective_incumbent": -99.77323557942057,
+      "max_residual": 1.1934897514720433e-14,
+      "seconds": 3.1556258700002218,
+      "validation": {
+        "passed": true,
+        "checks": {
+          "matrix_and_bounds": 1.1934897514720433e-14,
+          "crew_route_timing": 0.0,
+          "switch_operations": 0.0,
+          "forest_cycles": 0.0,
+          "component_source": 0.0,
+          "nodal_PQ": 1.1934897514720433e-14,
+          "SOC_balance": 0.0,
+          "conditional_nonanticipativity": 0.0
+        },
+        "tolerance": 2e-05,
+        "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "scope": "固定离散方案和已报告任务下的全时域预测场景条件投影，不是独立MGO域或实际未知未来安全保证",
+  "n_steps": 96,
+  "scenario_count": 2,
+  "decomposition_success": true,
+  "decomposition_residual": 2.3092638912203256e-14,
+  "tracking_p_max": 0.0,
+  "tracking_q_max": 0.0
+}

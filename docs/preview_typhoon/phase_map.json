@@ -1,0 +1,637 @@
+{
+  "scope": "初始状态下当前预测模型D_R；每格重优化，未判与不可行分开；不使用固定整数LP费用代替D",
+  "alphas": [
+    0.0,
+    0.5,
+    1.0
+  ],
+  "socs": [
+    0.35,
+    0.65,
+    0.85
+  ],
+  "records": [
+    {
+      "D_estimate": 0.014403856899647405,
+      "D_lower": -0.13751471457974196,
+      "D_upper": 0.15191857147938936,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6273597349794097,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6273597349794097,
+          "cost_plan": 52.72379099063671,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -151.5805860635205,
+          "max_residual": 1.4058199049316045e-14,
+          "seconds": 4.7363990349986125,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 1.4058199049316045e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 1.4058199049316045e-14,
+              "SOC_balance": 4.163336342344337e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6129558780797623,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6129558780797623,
+          "cost_plan": 51.11443097245956,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -148.10037375678826,
+          "max_residual": 2.1094237467877974e-15,
+          "seconds": 5.697870938005508,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 2.1094237467877974e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 2.1094237467877974e-15,
+              "SOC_balance": 5.204170427930421e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 0.0,
+      "soc": 0.35
+    },
+    {
+      "D_estimate": 0.014403856899647405,
+      "D_lower": -0.13751471457974196,
+      "D_upper": 0.15191857147938936,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6273597349794097,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6273597349794097,
+          "cost_plan": 52.72379099063671,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -151.5805860635205,
+          "max_residual": 1.4058199049316045e-14,
+          "seconds": 4.984167822010932,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 1.4058199049316045e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 1.4058199049316045e-14,
+              "SOC_balance": 9.71445146547012e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6129558780797623,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6129558780797623,
+          "cost_plan": 51.11443097245956,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -148.10037375678826,
+          "max_residual": 2.1094237467877974e-15,
+          "seconds": 5.744731204002164,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 2.1094237467877974e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 2.1094237467877974e-15,
+              "SOC_balance": 9.71445146547012e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 0.0,
+      "soc": 0.65
+    },
+    {
+      "D_estimate": 0.014403856899647405,
+      "D_lower": -0.13751471457974196,
+      "D_upper": 0.15191857147938936,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6273597349794097,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6273597349794097,
+          "cost_plan": 52.708994099276296,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -151.5805860635205,
+          "max_residual": 1.4058199049316045e-14,
+          "seconds": 4.8888077619922115,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 1.4058199049316045e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 1.4058199049316045e-14,
+              "SOC_balance": 9.71445146547012e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6129558780797623,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6129558780797623,
+          "cost_plan": 51.11443097245956,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -148.10037375678826,
+          "max_residual": 2.1094237467877974e-15,
+          "seconds": 5.792602343994076,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 2.1094237467877974e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 2.1094237467877974e-15,
+              "SOC_balance": 1.5265566588595902e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 0.0,
+      "soc": 0.85
+    },
+    {
+      "D_estimate": 0.004723139212669758,
+      "D_lower": -0.11013659330909098,
+      "D_upper": 0.11485973252176085,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6547378562500606,
+          "R_upper": 0.7648744495591517,
+          "R_plan": 0.6547378562500606,
+          "cost_plan": 52.74896466730836,
+          "primary_objective_lower_bound": -184.80643698466577,
+          "primary_objective_incumbent": -158.19559725428434,
+          "max_residual": 4.288236432614667e-15,
+          "seconds": 4.441012996001518,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 4.288236432614667e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 4.288236432614667e-15,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6500147170373909,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6500147170373909,
+          "cost_plan": 52.326032988444126,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -157.05440796527205,
+          "max_residual": 5.412337245047638e-15,
+          "seconds": 5.581614178998279,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 5.412337245047638e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 5.412337245047638e-15,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 0.5,
+      "soc": 0.35
+    },
+    {
+      "D_estimate": 0.004723139212669758,
+      "D_lower": -0.11013659330909098,
+      "D_upper": 0.11485973252176085,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6547378562500606,
+          "R_upper": 0.7648744495591517,
+          "R_plan": 0.6547378562500606,
+          "cost_plan": 52.667349952025994,
+          "primary_objective_lower_bound": -184.80643698466577,
+          "primary_objective_incumbent": -158.19559725428434,
+          "max_residual": 4.288236432614667e-15,
+          "seconds": 4.5042253470019205,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 4.288236432614667e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 4.288236432614667e-15,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6500147170373909,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6500147170373909,
+          "cost_plan": 52.326032988444126,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -157.05440796527205,
+          "max_residual": 5.412337245047638e-15,
+          "seconds": 5.3385085290065035,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 5.412337245047638e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 5.412337245047638e-15,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 0.5,
+      "soc": 0.65
+    },
+    {
+      "D_estimate": 0.004723139212669758,
+      "D_lower": -0.11013659330909098,
+      "D_upper": 0.11485973252176085,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6547378562500606,
+          "R_upper": 0.7648744495591517,
+          "R_plan": 0.6547378562500606,
+          "cost_plan": 52.627922952862264,
+          "primary_objective_lower_bound": -184.80643698466577,
+          "primary_objective_incumbent": -158.19559725428434,
+          "max_residual": 4.288236432614667e-15,
+          "seconds": 4.481439809998847,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 4.288236432614667e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 4.288236432614667e-15,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6500147170373909,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6500147170373909,
+          "cost_plan": 52.28441528509116,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -157.05440796527205,
+          "max_residual": 5.412337245047638e-15,
+          "seconds": 5.143577537004603,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 5.412337245047638e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 5.412337245047638e-15,
+              "SOC_balance": 0.0,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 0.5,
+      "soc": 0.85
+    },
+    {
+      "D_estimate": -0.0007041068447917187,
+      "D_lower": -0.10265932523363297,
+      "D_upper": 0.10195521838884136,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6622151243255187,
+          "R_upper": 0.7648744495591517,
+          "R_plan": 0.6622151243255187,
+          "cost_plan": 53.17334626748631,
+          "primary_objective_lower_bound": -184.80643698466577,
+          "primary_objective_incumbent": -160.00223005813996,
+          "max_residual": 2.2901819329845807e-14,
+          "seconds": 4.560850232010125,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 2.2901819329845807e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 2.2908758223749714e-14,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6629192311703104,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6629192311703104,
+          "cost_plan": 48.0523783948035,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -160.1723540272665,
+          "max_residual": 4.8780424144467815e-15,
+          "seconds": 5.355139276012778,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 4.8780424144467815e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 4.8780424144467815e-15,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 1.0,
+      "soc": 0.35
+    },
+    {
+      "D_estimate": -0.0007041068447918297,
+      "D_lower": -0.10265932523363297,
+      "D_upper": 0.10195521838884125,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6622151243255187,
+          "R_upper": 0.7648744495591517,
+          "R_plan": 0.6622151243255187,
+          "cost_plan": 53.17334626748631,
+          "primary_objective_lower_bound": -184.80643698466577,
+          "primary_objective_incumbent": -160.00223005813996,
+          "max_residual": 2.2901819329845807e-14,
+          "seconds": 4.437625862003188,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 2.2901819329845807e-14,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 2.2908758223749714e-14,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6629192311703105,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6629192311703105,
+          "cost_plan": 48.0523783948035,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -160.17235402726652,
+          "max_residual": 6.8035854727810374e-15,
+          "seconds": 5.315142284001922,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 6.8035854727810374e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 6.810524366684945e-15,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 1.0,
+      "soc": 0.65
+    },
+    {
+      "D_estimate": -0.0007041068447918297,
+      "D_lower": -0.10265932523363297,
+      "D_upper": 0.10195521838884125,
+      "classification": "unknown",
+      "certified": false,
+      "branches": {
+        "start": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6622151243255187,
+          "R_upper": 0.7648744495591517,
+          "R_plan": 0.6622151243255187,
+          "cost_plan": 53.085053504328414,
+          "primary_objective_lower_bound": -184.80643698466577,
+          "primary_objective_incumbent": -160.00223005813996,
+          "max_residual": 6.8035854727810374e-15,
+          "seconds": 4.573225658998126,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 6.8035854727810374e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 6.810524366684945e-15,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        },
+        "wait": {
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.6629192311703105,
+          "R_upper": 0.7648744495591516,
+          "R_plan": 0.6629192311703105,
+          "cost_plan": 47.908023131645606,
+          "primary_objective_lower_bound": -184.80643698466574,
+          "primary_objective_incumbent": -160.17235402726652,
+          "max_residual": 6.8035854727810374e-15,
+          "seconds": 5.164524645006168,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 6.8035854727810374e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 6.810524366684945e-15,
+              "SOC_balance": 5.551115123125783e-17,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      },
+      "alpha": 1.0,
+      "soc": 0.85
+    }
+  ],
+  "units": "恢复率之差（乘100为百分点）"
+}
