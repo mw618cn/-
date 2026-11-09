@@ -1,0 +1,7 @@
+{
+  "version": "r3",
+  "controller": "每步连续MPC+周期/事件联合MILP",
+  "bound_scope": "有限因果作业策略类",
+  "ADMM": false,
+  "timezone": "Asia/Shanghai"
+}

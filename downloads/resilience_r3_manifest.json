@@ -1,0 +1,13 @@
+{
+  "version": "2026-11-10-r3",
+  "file": "tdm_resilience_r3.zip",
+  "bytes": 2367426,
+  "sha256": "461bd1ee3636edd3108971e0c50e1f2a99c374a6fd7bd2c95efb0be12208b9ce",
+  "files": 125,
+  "runtime_python_modules": 14,
+  "entry": "tdm_resilience_r3/main.py",
+  "parameter": "tdm_resilience_r3/参数数据.xlsx",
+  "tests": "43 repository tests; 9 standalone mechanism tests; full 96-step physical/rolling audit",
+  "plots": "Original SimSun required; no substitute-font previews included",
+  "scope": "Central MILP/LP and finite causal crew policy class; conditional backward SOC tube; no ADMM/POMDP global proof"
+}

@@ -1,0 +1,193 @@
+{
+  "policies": {
+    "joint": {
+      "actual_weighted_recovery": 0.8164665383556162,
+      "actual_EENS_MWh": 23.550004829568934,
+      "actual_operation_cost_thousand": 63.678445960970826,
+      "manual_switch_operations": 12,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 3,
+      "startup_attempts": 1,
+      "reoptimizations": 39,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "有限因果作业策略类的首步滚动执行；检查信息与作业承诺分开；非完整POMDP最优值"
+    },
+    "critical_first": {
+      "actual_weighted_recovery": 0.8161082554081109,
+      "actual_EENS_MWh": 23.636571971403782,
+      "actual_operation_cost_thousand": 63.574565390768996,
+      "manual_switch_operations": 12,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 3,
+      "startup_attempts": 1,
+      "reoptimizations": 39,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "有限因果作业策略类的首步滚动执行；检查信息与作业承诺分开；非完整POMDP最优值"
+    }
+  },
+  "quality": {
+    "version": "2026-11-10-r3",
+    "warnings": [
+      "joint有38/40次分支未证明最优；实际指标不等于最优韧性。",
+      "critical_first有38/40次分支未证明最优；实际指标不等于最优韧性。",
+      "相图仅0/9格取得判据；未判点不能用来认定临界线。",
+      "等值机组辅机峰值比例偏高，须以真实启动曲线校准；不能直接当成大型火电/燃机实证。"
+    ],
+    "policies": {
+      "joint": {
+        "branch_solves": 40,
+        "unclosed_bound_count": 38,
+        "max_R_gap": 0.38531128371345535,
+        "discharge_MWh": 7.474600000000001,
+        "first_discharge_hour": 0.0,
+        "statistics_error": 1.1102230246251565e-16,
+        "interface_envelopes_per_round": [
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          24,
+          24,
+          24,
+          24,
+          24,
+          18,
+          18,
+          18,
+          12,
+          12
+        ]
+      },
+      "critical_first": {
+        "branch_solves": 40,
+        "unclosed_bound_count": 38,
+        "max_R_gap": 0.38531128371345535,
+        "discharge_MWh": 7.474600000000001,
+        "first_discharge_hour": 0.0,
+        "statistics_error": 3.552713678800501e-15,
+        "interface_envelopes_per_round": [
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          36,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          30,
+          24,
+          24,
+          24,
+          24,
+          24,
+          18,
+          18,
+          18,
+          12,
+          12
+        ]
+      }
+    },
+    "comparisons": [
+      {
+        "baseline": "critical_first",
+        "same_trajectory": false,
+        "delta_R": 0.000358282947505284,
+        "delta_EENS_MWh": 0.08656714183484837,
+        "scope": "抢修日程规则对照，双方均保留电力协同"
+      }
+    ],
+    "phase": {
+      "grid_points": 9,
+      "certified_points": 0
+    },
+    "capability": {
+      "decomposition_success": true,
+      "resource_zero_hours": [],
+      "tracking_error": 0.0
+    },
+    "scope": "有限因果策略类、有限预测样本的数值校核；不证明一般POMDP最优、样本外递归可行或暂态安全；ADMM未实现。",
+    "rolling": {
+      "controller_steps": 96,
+      "joint_MILP": 39,
+      "continuous_LP": 57,
+      "backward_passed_steps": 96
+    },
+    "actual_physics": {
+      "nodal_PQ_max_residual": 1.2212453270876722e-14,
+      "SOC_max_residual": 2.498001805406602e-16,
+      "damaged_line_closed": false
+    },
+    "parameter_scale": {
+      "aux_peak_ratio": 0.3125,
+      "aux_energy_MWh": 0.5,
+      "calibration": "MATPOWER接线/RX/PQ可追溯；气象/道路/机组与损伤先验仍为合成参数"
+    }
+  },
+  "capability": {
+    "decomposition_success": true,
+    "decomposition_residual": 3.1086244689504383e-15,
+    "trajectory_inner_hull": {
+      "vertices": 194,
+      "policy_vector_dimension": 384,
+      "fixed_modes": true,
+      "convex_combination_residual": 1.915134717478395e-15,
+      "scope": "固定模式和信息树下完整PCC策略向量的凸包内近似；共同lambda适用于全部时段与样本"
+    }
+  },
+  "splicing_status": "infeasible",
+  "source": {
+    "joint_source": "已完成24h/96步的主程序运行；所有控制步、域、分解和相图均有保存证据",
+    "critical_first_source": "同Excel物理参数、同seed/故障样本、同场景与求解预算的独立完整24h/96步运行",
+    "no_upward": "代码支持；本附件不附完整实际执行对照结果，不虚构指标",
+    "final_source_check": "初始保存解在最终源码重建模型中通过独立物理/信息/后向校核；最终解析增量算子另与原四变量LP作随机输入逐项对照，模型语义保持",
+    "previews": "没有完整原版宋体文件；未附任何替代字体预览，可在Windows用系统宋体--redraw生成"
+  }
+}

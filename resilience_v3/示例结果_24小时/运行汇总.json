@@ -1,0 +1,41 @@
+{
+  "policies": {
+    "joint": {
+      "actual_weighted_recovery": 0.8164665383556162,
+      "actual_EENS_MWh": 23.550004829568934,
+      "actual_operation_cost_thousand": 63.678445960970826,
+      "manual_switch_operations": 12,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 3,
+      "startup_attempts": 1,
+      "reoptimizations": 39,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "有限因果作业策略类的首步滚动执行；检查信息与作业承诺分开；非完整POMDP最优值"
+    },
+    "critical_first": {
+      "actual_weighted_recovery": 0.8161082554081109,
+      "actual_EENS_MWh": 23.636571971403782,
+      "actual_operation_cost_thousand": 63.574565390768996,
+      "manual_switch_operations": 12,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 3,
+      "startup_attempts": 1,
+      "reoptimizations": 39,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "有限因果作业策略类的首步滚动执行；检查信息与作业承诺分开；非完整POMDP最优值"
+    }
+  },
+  "elapsed_seconds": 1263.93397976899,
+  "plots": "blocked",
+  "quality_warnings": [
+    "joint有38/40次分支未证明最优；实际指标不等于最优韧性。",
+    "critical_first有38/40次分支未证明最优；实际指标不等于最优韧性。",
+    "相图仅0/9格取得判据；未判点不能用来认定临界线。",
+    "等值机组辅机峰值比例偏高，须以真实启动曲线校准；不能直接当成大型火电/燃机实证。"
+  ],
+  "scope": "有限因果策略类与有限预测样本；集中MILP/LP；不是任意POMDP最优或样本外安全证明",
+  "elapsed_seconds_scope": "原主策略、域与相图那次主程序的耗时；补算critical_first独立完成，不将此时间冒充全部对照总耗时",
+  "example_assembly": "主策略完整运行与同物理参数/风灾/预算下独立完成的critical_first对照汇集；本次参数.xlsx保留原主程序原始副本，run_comparisons原为否。未附未完成额外实验。"
+}

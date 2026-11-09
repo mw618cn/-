@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\begin{document}
+% (1) 危险率与区间概率
+\begin{equation}
+\lambda_{e,k}=a_e[\max(v_{e,k}/v_e^0-1,0)]^{b_e},\quad p_{e,k}=1-e^{-\lambda_{e,k}\Delta t}
+\tag{1}
+\end{equation}
+% (2) 累计首次故障概率
+\begin{equation}
+F_e(t)=1-\exp[-\sum_{k:t_k<t}\lambda_{e,k}\Delta t]
+\tag{2}
+\end{equation}
+% (3) 预测加权恢复面积
+\begin{equation}
+R={A_{\rm past}+\sum_s\pi_s\sum_{k=k_0}^{N-1}\Delta t\sum_i(w_c\ell^c_{i,k,s}+w_g\ell^g_{i,k,s})\over A_{\rm demand}}
+\tag{3}
+\end{equation}
+% (4) 实际失供电量
+\begin{equation}
+\mathrm{EENS}=\sum_{k=0}^{N-1}\Delta t\sum_i(d^c_{i,k}+d^g_{i,k}-\ell^c_{i,k}-\ell^g_{i,k})
+\tag{4}
+\end{equation}
+% (5) SOC跨期动态
+\begin{equation}
+E_{j,k+1}=E_{j,k}+\Delta t(\eta^c_jP^{\rm ch}_{j,k}-P^{\rm dis}_{j,k}/\eta^d_j)
+\tag{5}
+\end{equation}
+% (6) MGO接口净功率
+\begin{equation}
+p_{j,k}=P^{\rm PV}_{j,k}+P^{\rm DG}_{j,k}+P^{\rm dis}_{j,k}-P^{\rm ch}_{j,k}-\ell^c_{j,k}-\ell^g_{j,k}
+\tag{6}
+\end{equation}
+% (7) 条件非预期性
+\begin{equation}
+\mathcal I_{s,k}=\mathcal I_{r,k}\ \Longrightarrow\ u_{s,k}=u_{r,k}
+\tag{7}
+\end{equation}
+% (8) 实体任务连续性
+\begin{equation}
+q_k\ne\varnothing,\ r_k>0\ \Longrightarrow\ q_{k+1}=q_k\quad\text{until completion}
+\tag{8}
+\end{equation}
+% (9) 有限规则类的最优值界
+\begin{equation}
+L_b=\max_{p\in\mathcal P}L_{b,p},\quad U_b=\max_{p\in\mathcal P}U_{b,p}
+\tag{9}
+\end{equation}
+% (10) 启动等待差值与区间
+\begin{equation}
+D_R=R^*_{\rm start}-R^*_{\rm wait}\in[L_{\rm start}-U_{\rm wait},\ U_{\rm start}-L_{\rm wait}]
+\tag{10}
+\end{equation}
+% (11) 同模型追加求解界合并
+\begin{equation}
+L^{m+1}=\max(L^m,\widehat L^{m+1}),\quad U^{m+1}=\min(U^m,\widehat U^{m+1})
+\tag{11}
+\end{equation}
+% (12) 后向管终端集合
+\begin{equation}
+\mathcal B_N=[E_{\rm terminal},E_{\max}]
+\tag{12}
+\end{equation}
+% (13) 区间前驱递推
+\begin{equation}
+\mathcal B_k=[E_{\min},E_{\max}]\cap[\underline B_{k+1}-\delta_{\max},\overline B_{k+1}-\delta_{\min}]
+\tag{13}
+\end{equation}
+% (14) 观测前先交可能子分支
+\begin{equation}
+\mathcal J_{g,k+1}=\bigcap_{h\in\operatorname{child}(g)}\mathcal B_{h,k+1},\quad\mathcal B_{g,k}=\mathcal X\cap\operatorname{Pre}(\mathcal J_{g,k+1})
+\tag{14}
+\end{equation}
+% (15) 共同系数的全轨迹内近似
+\begin{equation}
+v=\sum_r\lambda_rv^r,\quad x=\sum_r\lambda_rx^r,\quad\lambda_r\ge0,\ \sum_r\lambda_r=1
+\tag{15}
+\end{equation}
+% (16) 主配反送路径贡献的独立对照
+\begin{equation}
+\Delta R_{\rm path}=R_{\rm allow\ upward}^{\rm actual}-R_{\rm no\ upward}^{\rm actual}
+\tag{16}
+\end{equation}
+\end{document}

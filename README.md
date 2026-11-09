@@ -1,31 +1,33 @@
-# 主配微韧性恢复：原三个创新点的台风动态故障仿真版
+# 主配微协同韧性恢复 R3
 
-**r2完整包：[下载独立运行ZIP](https://github.com/mw618cn/-/raw/refs/heads/main/downloads/tdm_typhoon_33_r2.zip)**
+**[下载R3完整代码包](https://github.com/mw618cn/-/raw/refs/heads/main/downloads/tdm_resilience_r3.zip)** · [详细使用说明](resilience_v3/README.md) · [模型与求解逻辑](resilience_v3/模型与求解逻辑.md)
 
-已有台风33节点版：[下载覆盖替换包](https://github.com/mw618cn/-/raw/refs/heads/main/downloads/tdm_typhoon_33_r2_patch.zip)，操作见[替换说明](typhoon_version/替换说明.md)。
-
-完整解压，只运行main.py，只维护一份参数数据.xlsx：
+完整解压到新目录，只运行 **main.py**，只维护 **参数数据.xlsx**。首次安装依赖：
 
 ```bash
 python -m pip install -r requirements.txt
 python main.py
 ```
 
-保留三个研究点：①启动／等待决策边界；②多时段可分解支撑能力域；③信息驱动的抢修—重构—启动协同。台风只是场景输入，不新增第四个创新点。
+仓库根目录main.py调用 [resilience_v3](resilience_v3/)。独立ZIP中main.py直接位于包内顶层，无需安装项目为Python包。
 
-最新源代码在 [typhoon_version](typhoon_version/)，仓库根main.py也默认调用它。完整代码/表格说明见[使用说明](typhoon_version/README.md)，三点对应关系见[创新点与代码](typhoon_version/三个创新点与代码对应.md)。
+保留三个研究点：①启动/等待恢复价值判据；②多时段可实施能力与条件后向可达；③检查信息和实体承诺分离的抢修—重构—启动滚动协同。集中HiGHS MILP/LP及有限因果派工策略类已实现，ADMM未实现。
 
-- D1—D33配网＋T0/T1主网等值，3个微网在18/25/33；24h/96个15分钟调度时段。
-- 移动简化风场驱动动态多故障，37条配电线均暴露，含常开联络线；地理、脆弱性和道路为可替换合成参数。
-- 通用带电森林，允许无源区失电；优化开关，约束动作预算和保持时间。
-- 一队伍优化当前已报告任务，巡检后揭示轻重，天气不安全暂停并保留进度；滚动继承SOC与承诺。
-- 最大加权恢复面积为主，成本为次；D估计、求解区间和实际执行收益分开。
-- 显式MGO–DSO接口和滚动跨期能量包络进入统一优化；内部状态保留以保证分解。
-- 局部微网条件资源域与初始预测网络可送范围分开；D相图每格重新优化两分支。
-- r2始终比较充/放电候选，并保留更好的可行恢复水平；新增模式邻域、求解质量和禁反送对照。
+- 默认33配网节点＋T0/T1主网等值，三个微网；24h/96时段，故障/修复/信息事件动态更新。
+- 后向递推从终端SOC集合计算安全后备集和给定指令的条件管；同信息先交可能子分支，观测后仅保留兼容后继。
+- 每15min连续LP、周期/事件联合MILP，只执行首步；继承已执行历史、SOC、开关保持与机组/任务承诺。
+- 全时域PCC支持见证、共同系数轨迹凸包、整轨迹分解及真实拼接检验；MGO资源能力与网络可送能力分开。
+- D差值、有效上下界和未判分开保存；机组已启动后不编造新的自由启动D点，不平滑生成未经证明的临界面。
+- 事件甘特图、信息分组、SOC后向管、节点服务状态和滚动控制器图；所有交付图严格使用原版宋体。
 
-![33节点位置与开关](docs/preview_typhoon_r2/layout.png)
+云端尚缺完整原版宋体，**未提供替代字体预览**。ZIP内数值示例可在Windows使用系统宋体直接重画：
 
-仍用集中式HiGHS MILP＋条件LP，ADMM未实现。有限预测场景、未知工时上界及短限时滚动不构成完整POMDP最优策略证明。示例对照与未判区如实输出，不保证联合策略在每个样本优于规则基线。
+```bash
+python main.py --redraw 示例结果_24小时
+```
 
-验证及实际示例见[r2验证预览](docs/preview_typhoon_r2/README.md)。保留[固定初始故障33节点旧版](ieee33_version/)及[6节点旧版](simple_version/)，其结果不作为台风动态多故障仿真结果。
+参数/源码导读见[逐段说明](resilience_v3/模块与参数逐段说明.md)，研究定位见[三点对应](resilience_v3/三个创新点与代码对应.md)，图与文献边界见[图形说明](resilience_v3/图形与文献依据.md)，实际验证与限制见[验证说明](resilience_v3/验证说明.md)。Word附可编辑OMML公式，另附LaTeX源。
+
+标准33节点基础电气数据可追溯；风场、脆弱性、GIS、工时及机组等为待校准合成参数。有限样本和有限策略类不构成一般POMDP最优、样本外递归可行或暂态安全证明。默认短求解预算可能使整个D网格未判，不能据此宣称已获得临界边界或明显协同增益。
+
+旧版保留：[R2](typhoon_version/) · [R2完整包](https://github.com/mw618cn/-/raw/refs/heads/main/downloads/tdm_typhoon_33_r2.zip) · [固定故障33节点版](ieee33_version/) · [6节点版](simple_version/)。旧版结果不作为R3验证结果。

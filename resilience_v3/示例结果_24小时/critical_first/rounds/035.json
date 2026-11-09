@@ -1,0 +1,413 @@
+{
+  "hour": 8.75,
+  "policy": "critical_first",
+  "D_estimate": null,
+  "D_lower": null,
+  "D_upper": null,
+  "certified": false,
+  "decision": "机组承诺已固定或当前不在比较窗口",
+  "classification": "not_applicable",
+  "action": "free",
+  "job_count": 11,
+  "refinement_trace": [],
+  "branches": {
+    "free": {
+      "status": 1,
+      "message": "有限策略类仍有未分离的最优值界",
+      "source": "MILP",
+      "certified_infeasible": false,
+      "R_lower": 0.8073707723759191,
+      "R_upper": 0.9166923829482079,
+      "R_plan": 0.8071707723759117,
+      "cost_plan": 63.20076503176021,
+      "primary_objective_lower_bound": null,
+      "primary_objective_incumbent": -129.18248436056874,
+      "max_residual": 1.908195823574488e-15,
+      "seconds": 6.525664743996458,
+      "seed_candidates": [
+        {
+          "repair_rule": "critical_first",
+          "allow_start": true,
+          "battery": "discharge",
+          "feasible": false,
+          "R": null
+        },
+        {
+          "repair_rule": "critical_first",
+          "allow_start": true,
+          "battery": "charge",
+          "feasible": true,
+          "R": 0.7905031466046611
+        },
+        {
+          "repair_rule": "critical_first",
+          "allow_start": true,
+          "battery": "day_charge_other_discharge",
+          "feasible": true,
+          "R": 0.8073707723759265
+        }
+      ],
+      "best_seed_R": 0.8073707723759265,
+      "primary_R_plan": 0.8073707723759191,
+      "absolute_R_gap": 0.10932161057228873,
+      "MILP_improvement_over_seed_R": -7.293146613668444e-15,
+      "secondary_R_loss": 0.00020000000000741647,
+      "interface_envelope_count": 30,
+      "validation": {
+        "passed": true,
+        "checks": {
+          "matrix_and_bounds": 1.908195823574488e-15,
+          "crew_route_timing": 0.0,
+          "switch_operations": 0.0,
+          "forest_cycles": 0.0,
+          "component_source": 0.0,
+          "nodal_PQ": 1.9220736113823023e-15,
+          "SOC_balance": 3.7470027081099033e-16,
+          "conditional_nonanticipativity": 0.0
+        },
+        "tolerance": 2e-05,
+        "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+      },
+      "crew_policy": "critical",
+      "backward_certificate": {
+        "passed": true,
+        "max_tube_violation": 2.220446049250313e-16,
+        "initial_lower": [
+          0.39,
+          0.33,
+          0.27
+        ],
+        "initial_upper": [
+          2.448969119804752,
+          2.09,
+          1.71
+        ],
+        "start_index": 0,
+        "active_scenarios": [
+          0,
+          1
+        ],
+        "takeover_hour": 8.75,
+        "takeover_definition": "各预测分支机组在线，且从该时刻至24h均不再需要主配接口向上支撑；受保护服务由全模型保持",
+        "scope": "给定候选PCC/本地服务/充放电模式与因果信息树的局部后向可达管；不等同全系统精确动作可达集"
+      },
+      "policy_candidates": [
+        {
+          "crew_policy": "critical",
+          "status": 1,
+          "message": "Time limit reached",
+          "source": "MILP",
+          "certified_infeasible": false,
+          "R_lower": 0.8073707723759191,
+          "R_upper": 0.9166923829482079,
+          "R_plan": 0.8071707723759117,
+          "cost_plan": 63.20076503176021,
+          "primary_objective_lower_bound": null,
+          "primary_objective_incumbent": -129.18248436056874,
+          "max_residual": 1.908195823574488e-15,
+          "seconds": 6.525664743996458,
+          "seed_candidates": [
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "discharge",
+              "feasible": false,
+              "R": null
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "charge",
+              "feasible": true,
+              "R": 0.7905031466046611
+            },
+            {
+              "repair_rule": "critical_first",
+              "allow_start": true,
+              "battery": "day_charge_other_discharge",
+              "feasible": true,
+              "R": 0.8073707723759265
+            }
+          ],
+          "best_seed_R": 0.8073707723759265,
+          "primary_R_plan": 0.8073707723759191,
+          "absolute_R_gap": 0.10932161057228873,
+          "MILP_improvement_over_seed_R": -7.293146613668444e-15,
+          "secondary_R_loss": 0.00020000000000741647,
+          "interface_envelope_count": 30,
+          "validation": {
+            "passed": true,
+            "checks": {
+              "matrix_and_bounds": 1.908195823574488e-15,
+              "crew_route_timing": 0.0,
+              "switch_operations": 0.0,
+              "forest_cycles": 0.0,
+              "component_source": 0.0,
+              "nodal_PQ": 1.9220736113823023e-15,
+              "SOC_balance": 3.7470027081099033e-16,
+              "conditional_nonanticipativity": 0.0
+            },
+            "tolerance": 2e-05,
+            "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+          }
+        }
+      ],
+      "bound_scope": "当前有限因果作业策略类的并集；不代表任意作业路径的全局界"
+    }
+  },
+  "interface_envelope_count": 30,
+  "interface_envelopes": [
+    {
+      "scenario": 0,
+      "microgrid": 0,
+      "stop": 1,
+      "lower_mwh": -2.2116507868823576,
+      "upper_mwh": 0.20622333204284427
+    },
+    {
+      "scenario": 0,
+      "microgrid": 0,
+      "stop": 4,
+      "lower_mwh": -2.278073083774983,
+      "upper_mwh": 0.8871301957631765
+    },
+    {
+      "scenario": 0,
+      "microgrid": 0,
+      "stop": 16,
+      "lower_mwh": -2.53423374047451,
+      "upper_mwh": 4.187752418813957
+    },
+    {
+      "scenario": 0,
+      "microgrid": 0,
+      "stop": 32,
+      "lower_mwh": -2.8784464922430057,
+      "upper_mwh": 8.023237622299204
+    },
+    {
+      "scenario": 0,
+      "microgrid": 0,
+      "stop": 61,
+      "lower_mwh": -3.556293581334133,
+      "upper_mwh": 10.665068787199855
+    },
+    {
+      "scenario": 0,
+      "microgrid": 1,
+      "stop": 1,
+      "lower_mwh": -1.9561247247492481,
+      "upper_mwh": 0.16488897075153672
+    },
+    {
+      "scenario": 0,
+      "microgrid": 1,
+      "stop": 4,
+      "lower_mwh": -2.2660954435814995,
+      "upper_mwh": 0.7045598036675544
+    },
+    {
+      "scenario": 0,
+      "microgrid": 1,
+      "stop": 16,
+      "lower_mwh": -3.4615118415126265,
+      "upper_mwh": 3.2634091959465983
+    },
+    {
+      "scenario": 0,
+      "microgrid": 1,
+      "stop": 32,
+      "lower_mwh": -5.067838016432274,
+      "upper_mwh": 6.107189802976698
+    },
+    {
+      "scenario": 0,
+      "microgrid": 1,
+      "stop": 61,
+      "lower_mwh": -8.231124432190867,
+      "upper_mwh": 7.624479036739145
+    },
+    {
+      "scenario": 0,
+      "microgrid": 2,
+      "stop": 1,
+      "lower_mwh": -1.5305742087987648,
+      "upper_mwh": 0.14943378601588167
+    },
+    {
+      "scenario": 0,
+      "microgrid": 2,
+      "stop": 4,
+      "lower_mwh": -1.574855740060515,
+      "upper_mwh": 0.6414150897208778
+    },
+    {
+      "scenario": 0,
+      "microgrid": 2,
+      "stop": 16,
+      "lower_mwh": -1.7456295111935332,
+      "upper_mwh": 3.0046524552481024
+    },
+    {
+      "scenario": 0,
+      "microgrid": 2,
+      "stop": 32,
+      "lower_mwh": -1.9751046790391973,
+      "upper_mwh": 5.7378767783868705
+    },
+    {
+      "scenario": 0,
+      "microgrid": 2,
+      "stop": 61,
+      "lower_mwh": -2.4270027384332815,
+      "upper_mwh": 7.641286626636057
+    },
+    {
+      "scenario": 1,
+      "microgrid": 0,
+      "stop": 1,
+      "lower_mwh": -2.2116507868823576,
+      "upper_mwh": 0.20622333204284427
+    },
+    {
+      "scenario": 1,
+      "microgrid": 0,
+      "stop": 4,
+      "lower_mwh": -2.278073083774983,
+      "upper_mwh": 0.8871301957631765
+    },
+    {
+      "scenario": 1,
+      "microgrid": 0,
+      "stop": 16,
+      "lower_mwh": -2.53423374047451,
+      "upper_mwh": 4.187752418813957
+    },
+    {
+      "scenario": 1,
+      "microgrid": 0,
+      "stop": 32,
+      "lower_mwh": -2.8784464922430057,
+      "upper_mwh": 8.023237622299204
+    },
+    {
+      "scenario": 1,
+      "microgrid": 0,
+      "stop": 61,
+      "lower_mwh": -3.556293581334133,
+      "upper_mwh": 10.665068787199855
+    },
+    {
+      "scenario": 1,
+      "microgrid": 1,
+      "stop": 1,
+      "lower_mwh": -1.9561247247492481,
+      "upper_mwh": 0.16488897075153672
+    },
+    {
+      "scenario": 1,
+      "microgrid": 1,
+      "stop": 4,
+      "lower_mwh": -2.2660954435814995,
+      "upper_mwh": 0.7045598036675544
+    },
+    {
+      "scenario": 1,
+      "microgrid": 1,
+      "stop": 16,
+      "lower_mwh": -3.4615118415126265,
+      "upper_mwh": 3.2634091959465983
+    },
+    {
+      "scenario": 1,
+      "microgrid": 1,
+      "stop": 32,
+      "lower_mwh": -5.067838016432274,
+      "upper_mwh": 6.107189802976698
+    },
+    {
+      "scenario": 1,
+      "microgrid": 1,
+      "stop": 61,
+      "lower_mwh": -8.231124432190867,
+      "upper_mwh": 7.624479036739145
+    },
+    {
+      "scenario": 1,
+      "microgrid": 2,
+      "stop": 1,
+      "lower_mwh": -1.5305742087987648,
+      "upper_mwh": 0.14943378601588167
+    },
+    {
+      "scenario": 1,
+      "microgrid": 2,
+      "stop": 4,
+      "lower_mwh": -1.574855740060515,
+      "upper_mwh": 0.6414150897208778
+    },
+    {
+      "scenario": 1,
+      "microgrid": 2,
+      "stop": 16,
+      "lower_mwh": -1.7456295111935332,
+      "upper_mwh": 3.0046524552481024
+    },
+    {
+      "scenario": 1,
+      "microgrid": 2,
+      "stop": 32,
+      "lower_mwh": -1.9751046790391973,
+      "upper_mwh": 5.7378767783868705
+    },
+    {
+      "scenario": 1,
+      "microgrid": 2,
+      "stop": 61,
+      "lower_mwh": -2.4270027384332815,
+      "upper_mwh": 7.641286626636057
+    }
+  ],
+  "inherited_SOC": [
+    0.15,
+    0.15,
+    0.15
+  ],
+  "crew_policy": "critical",
+  "information_targets": [
+    5
+  ],
+  "task_lock": null,
+  "unit_start_commitment": 0.0,
+  "posterior_information": {
+    "21": "heavy",
+    "27": "light",
+    "4": "light"
+  },
+  "backward_certificate": {
+    "passed": true,
+    "max_tube_violation": 2.220446049250313e-16,
+    "initial_lower": [
+      0.39,
+      0.33,
+      0.27
+    ],
+    "initial_upper": [
+      2.448969119804752,
+      2.09,
+      1.71
+    ],
+    "start_index": 0,
+    "active_scenarios": [
+      0,
+      1
+    ],
+    "takeover_hour": 8.75,
+    "takeover_definition": "各预测分支机组在线，且从该时刻至24h均不再需要主配接口向上支撑；受保护服务由全模型保持",
+    "scope": "给定候选PCC/本地服务/充放电模式与因果信息树的局部后向可达管；不等同全系统精确动作可达集"
+  },
+  "bound_scope": "有限因果策略类；当前启动/等待为互斥当前动作，等待允许以后启动",
+  "execution_steps": 1,
+  "horizon_end_hour": 24.0,
+  "state_step": 35
+}
