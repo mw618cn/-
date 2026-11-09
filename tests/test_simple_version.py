@@ -69,4 +69,24 @@ class SimpleVersionTests(unittest.TestCase):
             book['基础参数'].delete_rows(4);book.save(path);book.close()
             with self.assertRaisesRegex(ValueError,'缺失'):load_parameters(path)
 
+
+    def test_default_projection_covers_every_hour(self):
+        from types import SimpleNamespace
+        from analysis import _projection_steps
+        model=SimpleNamespace(var_indices={"flow_p":np.zeros((4,6,96),dtype=int)})
+        steps=_projection_steps(model,np.array([]),{"step_minutes":15})
+        self.assertEqual(steps,list(range(0,96,4)))
+        dense=_projection_steps(model,np.array([]),{"step_minutes":15,"capability":{"interval_hours":.25}})
+        self.assertEqual(dense,list(range(96)))
+
+    def test_old_workbook_keeps_new_plot_defaults(self):
+        from data import OPTIONAL_RUN_SETTINGS
+        with tempfile.TemporaryDirectory() as d:
+            path=Path(d)/'legacy.xlsx';book=load_workbook(BOOK);ws=book['运行设置']
+            for row in range(ws.max_row,3,-1):
+                if ws.cell(row,1).value in OPTIONAL_RUN_SETTINGS:ws.delete_rows(row)
+            book.save(path);book.close();cfg,settings=load_parameters(path)
+            self.assertEqual(cfg['capability']['interval_hours'],1.0)
+            self.assertTrue(settings['compute_cost_surface'])
+
 if __name__=='__main__':unittest.main()

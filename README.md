@@ -42,3 +42,13 @@ Excel的“运行设置”控制是否计算启动/等待比较、能力域、�
 完整函数与表格说明见 [简明版README](simple_version/README.md)。原来的包结构、论文Word生成器和批量扫描工具继续保留，详细用法见 [进阶使用说明](docs/advanced_usage.md)。日常建模运行使用简明版即可。
 
 模型是自设参数研究原型：集中式HiGHS MILP、线性网络、条件能力域与固定队伍策略滚动。简明版保留同一套24h物理和信息约束，参数表对读入值进行校验。
+
+## 全天能力图与条件代价图
+
+新版默认增加图12（24个整点能力截面+同一96时段轨迹）及图13（启动需求倍率/SOC的条件费用与可行性）。模型仍为完整24h；图08只是三个代表时刻诊断。Excel的capability_interval_hours改0.25可查询96个截面，旧版Excel也兼容。
+
+![24h能力演变](docs/preview/capability_24h.png)
+
+![24h条件代价](docs/preview/conditional_cost_surface.png)
+
+上图来自实际LP计算。图13灰色仅代表固定恢复方案下不可行，不能推广成全部混合整数恢复策略的不可行域。数据与校核说明见[示例数据](docs/preview/README.md)。

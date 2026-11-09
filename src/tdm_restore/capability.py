@@ -153,24 +153,28 @@ def decompose_trajectory(
 
 
 def _projection_steps(model: Any, x: np.ndarray, cfg: dict[str, Any]) -> list[int]:
-    """选择展示时刻，内部优化仍保留完整 24 h，而不是改为三时段模型。"""
+    """默认每小时投影一次，覆盖全24h；每次求解仍保留全部96时段。
+
+    interval_hours=0.25可展示全部96个截面。projection_hours仅用于显式
+    指定的诊断时刻，不能把展示截面数误当成模型时段数。
+    """
     n = np.asarray(model.var_indices["flow_p"]).shape[2]
     dt = float(cfg.get("step_minutes", 15)) / 60
     setting = cfg.get("capability", {})
     if "projection_hours" in setting:
-        hours = list(setting["projection_hours"])
-    else:
-        # 优先展示实际启动阶段，再展示中午与晚间的可行截面。
-        first_hour = 2.0
-        if "target_start" in model.var_indices:
-            starts = x[np.asarray(model.var_indices["target_start"])]
-            selected = np.argwhere(starts > .5)
-            if len(selected):
-                slots = model.metadata.get("start_slots", [])
-                if len(slots):
-                    first_hour = float(slots[int(selected[0, 1])]) * dt
-        hours = [first_hour, min(12., (n - 1) * dt), min(20., (n - 1) * dt)]
-    return sorted({min(n - 1, max(0, int(round(float(h) / dt)))) for h in hours})
+        hours = np.asarray(setting["projection_hours"], dtype=float)
+        if not np.isfinite(hours).all() or np.any(hours < 0) or np.any(hours > n*dt):
+            raise ValueError("投影展示时刻必须位于研究时域内。")
+        return sorted({min(n-1, int(round(h/dt))) for h in hours})
+    interval = float(setting.get("interval_hours", 1.0))
+    if not np.isfinite(interval) or interval<=0:
+        raise ValueError("能力域截面间隔必须为有限正数。")
+    stride = int(round(interval/dt))
+    if stride < 1 or not np.isclose(stride*dt, interval):
+        raise ValueError("能力域截面间隔须为调度步长的正整数倍。")
+    return list(range(0, n, stride))
+
+
 
 
 def compute_capability(
@@ -179,6 +183,7 @@ def compute_capability(
     cfg: dict[str, Any],
     outdir: str | Path | None = None,
     directions: int = 8,
+    progress=None,
 ) -> dict[str, Any]:
     """生成条件 P–Q 截面、24 h 可行见证和完整轨迹分解结果。
 
@@ -208,7 +213,8 @@ def compute_capability(
     selected_trajectory: tuple[np.ndarray, np.ndarray] | None = None
     all_x: dict[str, np.ndarray] = {"incumbent": x}
 
-    for t in _projection_steps(model, x, cfg):
+    steps = _projection_steps(model, x, cfg)
+    for step_number, t in enumerate(steps, 1):
         points: list[list[float]] = []
         halfspaces: list[list[float]] = []
         records: list[dict[str, Any]] = []
@@ -242,8 +248,11 @@ def compute_capability(
             if support_certified:
                 halfspaces.append([cp, cq, h])
             all_x[witness_id] = xx
-            witnesses.append({"id": witness_id, "time_step": t, "hour": t * dt,
-                              "direction": k, "point_pq": point, **_extract_witness(conditioned, xx)})
+            record_witness = {"id": witness_id, "time_step": t, "hour": t*dt,
+                              "direction": k, "point_pq": point, "feasibility": residual}
+            if not setting.get("compact_witnesses", False) or outdir is None:
+                record_witness.update(_extract_witness(conditioned, xx))
+            witnesses.append(record_witness)
             records.append({"direction": k, "angle_rad": float(angle), "success": True,
                             "point_pq": point, "support_value": h, "witness_id": witness_id,
                             "support_certified": support_certified,
@@ -262,6 +271,8 @@ def compute_capability(
                        "points_pq": points, "inner_hull_vertices": vertices,
                        "support_halfspaces": halfspaces, "directions": records,
                        "reference_pq": [float(basep[scenario, t]), float(baseq[scenario, t])]})
+        if progress is not None:
+            progress(f"  [24h投影] {step_number}/{len(steps)}：t={t*dt:g}h；{len(points)}个可行方向点", flush=True)
 
     reference = decompose_trajectory(conditioned, basep, baseq)
     alternative = None if selected_trajectory is None else decompose_trajectory(conditioned, *selected_trajectory)
@@ -272,6 +283,10 @@ def compute_capability(
         "time_hours": (np.arange(n) * dt).tolist(), "scenario_index": scenario,
         "fixed_integer_count": int(np.count_nonzero(np.asarray(model.integrality))),
         "directions_requested": int(directions), "slices": slices,
+        "scenario_name": model.metadata.get("scenarios", [{}])[scenario].get("name", str(scenario)),
+        "projection_count": len(slices), "reference_upward_p_mw": basep.tolist(),
+        "reference_upward_q_mvar": baseq.tolist(),
+        "witness_storage": "high_dimensional_witnesses.npz; key=id in witness records",
         "witnesses": witnesses, "reference_decomposition": reference,
         "alternative_decomposition": alternative,
         "interpretation": {

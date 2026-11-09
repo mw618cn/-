@@ -1,0 +1,20 @@
+{
+  "projection_slices": 24,
+  "n_steps": 96,
+  "full_horizon_witnesses": 192,
+  "decomposition_passed": true,
+  "grid_status": {
+    "optimal": 32,
+    "infeasible": 24
+  },
+  "objective_min": 81.15084360055789,
+  "objective_max": 137.00226113370582,
+  "paths": [
+    "12_24小时能力域_Time_P_Q_完整轨迹.png",
+    "12_24小时能力域_Time_P_Q_完整轨迹.svg",
+    "12_24小时能力域_Time_P_Q_完整轨迹.pdf",
+    "13_24小时条件代价曲面_初始SOC_启动倍率.png",
+    "13_24小时条件代价曲面_初始SOC_启动倍率.svg",
+    "13_24小时条件代价曲面_初始SOC_启动倍率.pdf"
+  ]
+}

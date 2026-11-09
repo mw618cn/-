@@ -1,10 +1,16 @@
 {
   "file": "tdm_simple.zip",
-  "bytes": 87230,
-  "sha256": "d4e2a9b8a0994bb93a4f32354fbe9b013d92d0a4ef16c19610515e7fe9460815",
+  "full_day_download": "tdm_simple_24h.zip",
+  "bytes": 94268,
+  "sha256": "ce9f889836b3d173d5cb1826554ddde5876de1095e6b1d3d7fb7091475523cbe",
   "python_files": 7,
   "parameter_workbooks": 1,
-  "usage": "Edit 参数数据.xlsx then run main.py",
-  "tests_passed": 27,
-  "full_default_run": "passed: 24h,96steps,4scenarios,8policies,D,capability,8rolling_rounds,9figures"
+  "tests_passed": 30,
+  "projection_count": 24,
+  "projection_directions": 8,
+  "horizon_steps": 96,
+  "cost_surface_points": 56,
+  "actual_feasible_points": 32,
+  "actual_fixed_scheme_infeasible_points": 24,
+  "scope": "Fixed-discrete, full-horizon conditional projections/costs; grey is not global MILP infeasibility"
 }

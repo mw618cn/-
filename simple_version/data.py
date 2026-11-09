@@ -31,6 +31,13 @@ INTEGER_FIELDS = {"step_minutes", "polygon_sides", "battery_mode_minutes",
 RUN_FIELDS = {"policy_ids", "compare_start_wait", "compute_capability", "compute_baseline",
               "run_rolling", "realized_scenario", "rolling_hours", "capability_directions",
               "curve_mode", "output_dir"}
+# 新增绘图开关为可选项，旧版Excel仍能读取；只改变显示/附加分析设置。
+OPTIONAL_RUN_SETTINGS = {
+    "capability_interval_hours": 1.0,
+    "compute_cost_surface": True,
+    "surface_startup_multipliers": "0.4,0.6,0.8,1.0,1.2,1.4,1.6",
+    "surface_soc_levels": "0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9",
+}
 
 
 def _number(value, label):
@@ -173,9 +180,10 @@ def load_parameters(filename):
 
         # 04 运行开关与96点数据。后面的所有模型都使用同一个cfg。
         switches = _keyed(book, "运行设置")
-        if set(switches) != RUN_FIELDS: raise ValueError("运行设置参数缺失或有未知项")
-        settings = {key: row["value"] for key, row in switches.items()}
-        for key in ("compare_start_wait", "compute_capability", "compute_baseline", "run_rolling"):
+        if not RUN_FIELDS <= set(switches) or set(switches) - RUN_FIELDS - set(OPTIONAL_RUN_SETTINGS):
+            raise ValueError("运行设置参数缺失或有未知项")
+        settings = {**OPTIONAL_RUN_SETTINGS, **{key: row["value"] for key,row in switches.items()}}
+        for key in ("compare_start_wait", "compute_capability", "compute_baseline", "run_rolling", "compute_cost_surface"):
             settings[key] = _boolean(settings[key], key)
         settings["policy_ids"] = str(settings["policy_ids"]).strip()
         choices = {f"{s}_{i}{j}" for s in ("A", "B") for i in (0,1) for j in (0,1)}
@@ -183,7 +191,20 @@ def load_parameters(filename):
             raise ValueError("抢修策略填all或A_11、B_11等ID，可用英文逗号选多个")
         directions = _number(settings["capability_directions"], "能力域查询方向数")
         if directions < 4 or not directions.is_integer(): raise ValueError("能力域方向数应为至少4的整数")
-        cfg["experiment"] = {"capability_directions": int(directions)}
+        interval = _number(settings["capability_interval_hours"], "全天能力截面间隔")
+        dt = cfg["step_minutes"]/60
+        if interval<=0 or not np.isclose(interval/dt,round(interval/dt)):
+            raise ValueError("全天能力截面间隔须为调度步长的正整数倍")
+        cfg["capability"] = {"interval_hours":interval,"compact_witnesses":True}
+        settings["capability_interval_hours"] = interval
+        cfg["experiment"] = {"capability_directions":int(directions),"compute_cost_surface":settings["compute_cost_surface"]}
+        for key in ("surface_startup_multipliers","surface_soc_levels"):
+            values = [_number(v,key) for v in str(settings[key]).replace("，",",").split(",") if v.strip()]
+            if len(values)<2 or any(b<=a for a,b in zip(values,values[1:])):
+                raise ValueError(f"{key}应填写至少2个递增数值，用英文逗号分隔")
+            if key=="surface_startup_multipliers" and min(values)<=0:raise ValueError("启动需求倍率须为正")
+            if key=="surface_soc_levels" and (min(values)<0 or max(values)>1):raise ValueError("SOC扫描值须在[0,1]内")
+            cfg["experiment"][key] = values
         settings["realized_scenario"] = str(settings["realized_scenario"])
         if settings["realized_scenario"] not in {s["id"] for s in cfg["scenarios"]}: raise ValueError("滚动真实场景ID不在损伤场景表中")
         settings["rolling_hours"] = tuple(float(x) for x in str(settings["rolling_hours"]).split(",") if x.strip())

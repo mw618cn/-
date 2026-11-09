@@ -11,6 +11,8 @@ test_same_history_implies_same_current_crew_action (test_crew.CrewCausalityTests
 未观察到不同灾损前，不能在某个隐藏场景中提前去另一个站点。 ... ok
 test_certified_infeasible_policy_does_not_destroy_menu_bound (test_experiments.MenuBoundsTests.test_certified_infeasible_policy_does_not_destroy_menu_bound) ... ok
 test_menu_lower_bound_includes_every_candidate (test_experiments.MenuBoundsTests.test_menu_lower_bound_includes_every_candidate) ... ok
+test_conditioned_cost_grid_distinguishes_infeasible_and_invalid (test_full_model.FullHorizonIntegrationTest.test_conditioned_cost_grid_distinguishes_infeasible_and_invalid)
+真实96时段LP：大启动需求超通道极限为不可行，越界SOC为参数错误。 ... ok
 test_default_24h_stochastic_model_has_physical_incumbent (test_full_model.FullHorizonIntegrationTest.test_default_24h_stochastic_model_has_physical_incumbent)
 默认96时段下复核信息约束、完整启动、SOC、功率、成本及韧性面积。 ... ok
 test_observation_reoptimization_keeps_history_and_boundary_state (test_full_model.FullHorizonIntegrationTest.test_observation_reoptimization_keeps_history_and_boundary_state)
@@ -23,12 +25,14 @@ test_gap_tolerance_does_not_erase_valid_dual_bound (test_linear.ProjectionAndDec
 状态0可能仅达到允许间隙；D 判据仍须保留真正的下界。 ... ok
 test_absolute_curves_are_used_as_mw (test_simple_version.SimpleVersionTests.test_absolute_curves_are_used_as_mw)
 实测MW模式直接读数，不再乘装机容量或负荷基值。 ... ok
+test_default_projection_covers_every_hour (test_simple_version.SimpleVersionTests.test_default_projection_covers_every_hour) ... ok
 test_editing_capacity_load_price_in_excel_takes_effect (test_simple_version.SimpleVersionTests.test_editing_capacity_load_price_in_excel_takes_effect)
 修改用户能看到的三类数值，实际模型曲线相应变化，无隐藏覆盖。 ... ok
 test_excel_reconstructs_same_24h_model (test_simple_version.SimpleVersionTests.test_excel_reconstructs_same_24h_model)
 同一参数经Excel后，全部线性行、整数性、边界、目标与原模型相同。 ... ok
 test_invalid_probability_is_rejected (test_simple_version.SimpleVersionTests.test_invalid_probability_is_rejected) ... ok
 test_missing_parameter_is_rejected (test_simple_version.SimpleVersionTests.test_missing_parameter_is_rejected) ... ok
+test_old_workbook_keeps_new_plot_defaults (test_simple_version.SimpleVersionTests.test_old_workbook_keeps_new_plot_defaults) ... ok
 test_can_adapt_after_observation (test_validation.ValidationTests.test_can_adapt_after_observation)
 完成巡检后允许不同动作，不能把合法适应性误判为不一致。 ... ok
 test_cannot_act_on_unobserved_damage (test_validation.ValidationTests.test_cannot_act_on_unobserved_damage)
@@ -37,6 +41,6 @@ test_fractional_binary_is_rejected (test_validation.ValidationTests.test_fractio
 test_no_incumbent_never_passes (test_validation.ValidationTests.test_no_incumbent_never_passes) ... ok
 
 ----------------------------------------------------------------------
-Ran 27 tests in 10.897s
+Ran 30 tests in 14.845s
 
 OK

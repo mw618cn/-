@@ -500,14 +500,16 @@ def _plot_capability_slices(cap: dict, outdir: Path) -> list[str]:
     上排的每个点都来自一个完整24 h可行解的投影，凸包是内近似。
     下排展示其中一条完整见证；它不会把不同方向优化得到的单时段极值拼接。
     """
-    slices = [s for s in cap["slices"] if s.get("points_pq")][:3]
+    slices = [s for s in cap["slices"] if s.get("points_pq")]
+    if len(slices)>3:
+        slices=[slices[i] for i in np.rint(np.linspace(0,len(slices)-1,3)).astype(int)]
     if not slices:
         return []
     ncols = len(slices)
     fig = plt.figure(figsize=(14, 9))
     fig.subplots_adjust(left=0.075, right=0.97, top=0.84, bottom=0.09, hspace=0.55, wspace=0.31)
     gs = fig.add_gridspec(3, max(ncols, 2), height_ratios=[1.5, 1, 1])
-    _title(fig, "08  可调度域投影与完整24小时轨迹分解", "示例参数｜固定整数方案后的连续子问题；投影保留全时域SOC、网络与信息约束，离散方案改变后需要重新计算。")
+    _title(fig, "08  代表时刻切片与完整24小时轨迹分解（全天演变见图12）", "示例参数｜固定整数方案后的连续子问题；投影保留全时域SOC、网络与信息约束，离散方案改变后需要重新计算。")
     for j, sl in enumerate(slices):
         ax = fig.add_subplot(gs[0, j])
         xy = np.asarray(sl["points_pq"], dtype=float)
@@ -576,7 +578,7 @@ def _plot_capability_slices(cap: dict, outdir: Path) -> list[str]:
 
 
 def plot_all(solution: dict, outdir: str | Path, comparison: dict | None = None,
-             capability: dict | None = None) -> list[str]:
+             capability: dict | None = None, cost_surface: dict | None = None) -> list[str]:
     """从统一求解结果生成完整图包，返回所有图文件路径。
 
     Parameters
@@ -610,6 +612,8 @@ def plot_all(solution: dict, outdir: str | Path, comparison: dict | None = None,
         paths.extend(draw(solution, out))
     paths.extend(_plot_decision(comparison, out))
     paths.extend(_plot_capability(capability, out))
+    paths.extend(_plot_capability_24h(capability, out))
+    paths.extend(_plot_conditional_cost_surface(cost_surface, out))
     manifest = {
         "files": paths,
         "source": "实际求解输出，参数为可替换的示例值",
@@ -737,3 +741,119 @@ def plot_rolling(replay: dict, outdir: str | Path) -> list[str]:
         manifest["rolling"] = {"rounds": len(rounds), "realized_scenario_id": replay.get("realized_scenario_id"), "fallback_count": fallback}
         manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     return paths
+
+
+def _plot_capability_24h(cap: dict | None, outdir: Path) -> list[str]:
+    """图12：时间—P—Q三维截面序列与同一条全时域可分解轨迹。
+
+    每个面是一个时刻的投影内近似，各面不连接成虚构的高维轨迹域。
+    红线取自同一次完整轨迹分解，而非拼接各时刻最大输出。
+    """
+    if not cap: return []
+    slices=[s for s in cap.get("slices",[]) if s.get("points_pq")]
+    if not slices: return []
+    from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+    from matplotlib.colors import Normalize
+    from matplotlib.cm import ScalarMappable
+    from scipy.spatial import ConvexHull, QhullError
+    _set_style()
+    horizon=float(cap["horizon_hours"]);dt=float(cap["dt_hours"]);n=int(cap["n_steps"])
+    fig=plt.figure(figsize=(12.8,8.2))
+    ax=fig.add_axes([.015,.12,.835,.75],projection="3d",computed_zorder=False)
+    norm=Normalize(0,horizon);cmap=plt.get_cmap("viridis")
+    _title(fig,"12  24小时能力域演变：时间—P—Q投影与完整轨迹",
+        f"{len(slices)}个实际截面｜每个方向均求解完整{n}时段LP｜固定离散方案｜场景：{cap.get('scenario_name','S'+str(cap.get('scenario_index',0)+1))}")
+    for sl in slices:
+        hour=float(sl["hour"]);points=np.asarray(sl["points_pq"],dtype=float)
+        ref=sl.get("reference_pq")
+        if ref is not None:points=np.vstack((points,np.asarray(ref,dtype=float)))
+        points=np.unique(np.round(points,11),axis=0);color=cmap(norm(hour))
+        hull=None
+        if len(points)>=3:
+            try:hull=ConvexHull(points).vertices
+            except QhullError:pass
+        if hull is not None:
+            poly=[(hour,float(p),float(q)) for p,q in points[hull]]
+            face=Poly3DCollection([poly],facecolors=[color],edgecolors=[color],linewidths=.7,alpha=.14,zorder=1)
+            ax.add_collection3d(face)
+            boundary=np.vstack((points[hull],points[hull[0]]))
+            ax.plot(np.full(len(boundary),hour),boundary[:,0],boundary[:,1],color=color,lw=.8,alpha=.9)
+        elif len(points)>1:
+            order=np.argsort(points[:,int(np.argmax(np.ptp(points,axis=0)))])
+            ax.plot(np.full(len(points),hour),points[order,0],points[order,1],color=color,lw=1.1)
+        else:ax.scatter([hour],points[:,0],points[:,1],color=[color],s=12)
+    reference=cap.get("reference_decomposition",{})
+    has_trajectory=bool(reference.get("success"))
+    if has_trajectory:
+        s=int(cap.get("scenario_index",0));w=reference["witness"]
+        p=np.asarray(w["upward_p_mw"])[s];q=np.asarray(w["upward_q_mvar"])[s]
+        t=np.asarray(cap["time_hours"])
+        tt=np.repeat(np.r_[t,horizon],2)[1:-1]
+        ax.plot(tt,np.repeat(p,2),np.repeat(q,2),color="#d8415a",lw=2.1,zorder=20)
+        fig.legend(handles=[Line2D([0],[0],color="#d8415a",lw=2,label=f"同一条{n}时段轨迹（整条分解校核通过）")],
+                  loc="upper center",bbox_to_anchor=(.48,.895),fontsize=9)
+    ax.set(xlim=(0,horizon),xlabel="灾后时间 / h",ylabel="接口 P / MW",zlabel="接口 Q / Mvar")
+    ax.set_xticks(np.linspace(0,horizon,9));ax.set_box_aspect((2.2,1.25,1.0),zoom=1.02);ax.view_init(elev=25,azim=-58)
+    ax.tick_params(labelsize=8);ax.xaxis.labelpad=13;ax.yaxis.labelpad=13;ax.zaxis.labelpad=9
+    cbax=fig.add_axes([.90,.24,.016,.48])
+    fig.colorbar(ScalarMappable(norm=norm,cmap=cmap),cax=cbax,ticks=np.linspace(0,horizon,5),label="截面对应时刻 / h")
+    fig.text(.06,.058,"每个彩色截面是完整24h模型在一个时刻的投影；它们不能任意组合成一条可行轨迹。",fontsize=9,color=GREY)
+    fig.text(.06,.029,"有功正值为向主网上送、负值为向配网受电。退化截面如实显示为线段/单点；有限方向仅给内近似。",fontsize=9,color=GREY)
+    return _save(fig,outdir,"12_24小时能力域_Time_P_Q_完整轨迹")
+
+
+def _plot_conditional_cost_surface(surface: dict | None, outdir: Path) -> list[str]:
+    """图13：同一组真实24h LP网格结果的三维曲面和俯视状态图。"""
+    if not surface:return []
+    from matplotlib.colors import ListedColormap, Normalize
+    from matplotlib.cm import ScalarMappable
+    _set_style()
+    k=np.asarray(surface["startup_multipliers"],dtype=float);soc=np.asarray(surface["soc_levels"],dtype=float)
+    z=np.asarray(surface["objective_grid"],dtype=float);status=np.asarray(surface["status_grid"],dtype=object)
+    valid=(status=="optimal")&np.isfinite(z);z=np.where(valid,z,np.nan);x,y=np.meshgrid(k,soc)
+    fig=plt.figure(figsize=(14.5,7.5));gs=fig.add_gridspec(1,2,width_ratios=[1.03,1.0],wspace=.30)
+    fig.subplots_adjust(left=.065,right=.88,bottom=.18,top=.80)
+    ax=fig.add_subplot(gs[0,0],projection="3d",computed_zorder=False);top=fig.add_subplot(gs[0,1])
+    _title(fig,"13  初始条件与24小时条件最优代价：曲面 + 可行区域",
+        f"固定{surface['policy_id']}的启动、开关和电池模式｜{z.size}个参数点逐点重解完整{surface['n_steps']}时段LP｜含{surface.get('scenario_count',4)}情景期望费用")
+    finite=z[valid]
+    if finite.size:
+        low,high=float(finite.min()),float(finite.max())
+        if np.isclose(low,high):low-=.5;high+=.5
+        norm=Normalize(low,high)
+        if finite.size>=3:
+            ax.plot_surface(x,y,z,cmap="viridis",norm=norm,linewidth=.4,edgecolor="#ffffff88",antialiased=True,alpha=.94,zorder=1)
+        ax.scatter(x[valid],y[valid],z[valid],c=z[valid],cmap="viridis",norm=norm,s=9,depthshade=False)
+    else:
+        norm=Normalize(0,1);ax.text2D(.2,.5,"该网格没有已认证可行最优点",transform=ax.transAxes)
+    ax.set(xlabel="启动需求倍率 κ",ylabel="统一初始SOC",zlabel="最小费用 / 千元")
+    ax.view_init(elev=27,azim=-129);ax.set_title("(a) 固定恢复方案下的全时域最小费用",loc="left",fontsize=11,pad=12)
+    ax.set_box_aspect((1.15,1,.85));ax.tick_params(labelsize=8);ax.xaxis.labelpad=10;ax.yaxis.labelpad=10;ax.zaxis.labelpad=10
+    # 灰色只表示该固定方案LP已证不可行；未知和参数超界分别着色。
+    state_code=np.zeros(status.shape)
+    state_code[status=="infeasible"]=1
+    state_code[status=="unknown"]=2
+    state_code[status=="invalid_parameter"]=3
+    state_cmap=ListedColormap(["#ffffff","#d8dde4","#e9d5ec","#cbddea"])
+    top.pcolormesh(x,y,state_code,cmap=state_cmap,vmin=0,vmax=3,shading="nearest",edgecolors="white",linewidth=.35)
+    mesh=top.pcolormesh(x,y,np.ma.masked_invalid(z),cmap="viridis",norm=norm,shading="nearest",edgecolors="white",linewidth=.3)
+    top.set(xlabel="启动辅助功率轮廓倍率 κ",ylabel="三个微网共同初始SOC")
+    top.set_title("(b) 同一采样结果的俯视图",loc="left",fontsize=11,pad=12)
+    top.set_xticks(k);top.tick_params(axis="x",rotation=0,labelsize=8);top.set_yticks(soc)
+    handles=[]
+    for code,label,color in [("infeasible","固定方案LP已证不可行","#d8dde4"),("unknown","未获可靠求解结论","#e9d5ec"),("invalid_parameter","参数超出允许范围","#cbddea")]:
+        if np.any(status==code):handles.append(Patch(facecolor=color,label=label))
+    ref=surface.get("reference_point")
+    if ref is not None:
+        a,b,c=ref["startup_multiplier"],ref["soc_initial"],ref["objective"]
+        ax.scatter([a],[b],[c],marker="*",s=125,color="#d8415a",edgecolors="white",linewidth=.6,depthshade=False,zorder=5)
+        top.scatter([a],[b],marker="*",s=150,color="#d8415a",edgecolors="white",linewidth=.7)
+        handles.append(Line2D([0],[0],marker="*",ls="",color="#d8415a",markersize=10,label=f"参考采样点：κ={a:g}，SOC={b:g}"))
+    if handles:fig.legend(handles=handles,loc="upper center",bbox_to_anchor=(.52,.875),ncol=min(3,len(handles)),fontsize=9)
+    if finite.size:
+        cbax=fig.add_axes([.905,.22,.018,.51]);fig.colorbar(ScalarMappable(norm=norm,cmap="viridis"),cax=cbax,label="条件最小期望费用 / 千元")
+    fig.text(.065,.065,"每格均重新求解完整24h模型；网格间连面只用于显示。灰色不等于所有启动、拓扑和调度方案均不可行。",fontsize=9,color=GREY)
+    note="已加入失供损失常数项，颜色对应总期望恢复费用。"
+    if not surface.get("startup_selected",True):note+=" 当前参考方案未启机，启动倍率在该方案下不产生作用。"
+    fig.text(.065,.033,note,fontsize=9,color=GREY)
+    return _save(fig,outdir,"13_24小时条件代价曲面_初始SOC_启动倍率")

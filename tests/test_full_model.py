@@ -65,5 +65,23 @@ class FullHorizonIntegrationTest(unittest.TestCase):
             np.testing.assert_allclose(np.array(executed[external])[0, :, :step], old, atol=2e-5)
 
 
+    def test_conditioned_cost_grid_distinguishes_infeasible_and_invalid(self):
+        """真实96时段LP：大启动需求超通道极限为不可行，越界SOC为参数错误。"""
+        import copy
+        from pathlib import Path
+        import sys
+        sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"simple_version"))
+        from analysis import compute_conditional_cost_surface
+        cfg=copy.deepcopy(self.cfg)
+        cfg["experiment"].update(surface_startup_multipliers=[.4,2.0],surface_soc_levels=[.1,.7,.9])
+        self.assertTrue(np.all(self.result["x"][self.model.var_indices["target_start"][:,0]]>.5))
+        surface=compute_conditional_cost_surface(self.model,self.result["x"],cfg,progress=None)
+        self.assertEqual(surface["n_steps"],96)
+        rows=surface["records"]
+        self.assertTrue(all(r["status"]=="invalid_parameter" for r in rows if r["soc_initial"]==.1))
+        self.assertTrue(all(r["status"]=="infeasible" for r in rows if r["soc_initial"]>=.7 and r["startup_multiplier"]==2.0))
+        self.assertTrue(all(r["status"]=="optimal" and r["validation_passed"] for r in rows if r["soc_initial"]>=.7 and r["startup_multiplier"]==.4))
+
+
 if __name__ == "__main__":
     unittest.main()

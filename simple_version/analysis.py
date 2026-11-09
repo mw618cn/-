@@ -442,24 +442,28 @@ def decompose_trajectory(
 
 
 def _projection_steps(model: Any, x: np.ndarray, cfg: dict[str, Any]) -> list[int]:
-    """选择展示时刻，内部优化仍保留完整 24 h，而不是改为三时段模型。"""
+    """默认每小时投影一次，覆盖全24h；每次求解仍保留全部96时段。
+
+    interval_hours=0.25可展示全部96个截面。projection_hours仅用于显式
+    指定的诊断时刻，不能把展示截面数误当成模型时段数。
+    """
     n = np.asarray(model.var_indices["flow_p"]).shape[2]
     dt = float(cfg.get("step_minutes", 15)) / 60
     setting = cfg.get("capability", {})
     if "projection_hours" in setting:
-        hours = list(setting["projection_hours"])
-    else:
-        # 优先展示实际启动阶段，再展示中午与晚间的可行截面。
-        first_hour = 2.0
-        if "target_start" in model.var_indices:
-            starts = x[np.asarray(model.var_indices["target_start"])]
-            selected = np.argwhere(starts > .5)
-            if len(selected):
-                slots = model.metadata.get("start_slots", [])
-                if len(slots):
-                    first_hour = float(slots[int(selected[0, 1])]) * dt
-        hours = [first_hour, min(12., (n - 1) * dt), min(20., (n - 1) * dt)]
-    return sorted({min(n - 1, max(0, int(round(float(h) / dt)))) for h in hours})
+        hours = np.asarray(setting["projection_hours"], dtype=float)
+        if not np.isfinite(hours).all() or np.any(hours < 0) or np.any(hours > n*dt):
+            raise ValueError("投影展示时刻必须位于研究时域内。")
+        return sorted({min(n-1, int(round(h/dt))) for h in hours})
+    interval = float(setting.get("interval_hours", 1.0))
+    if not np.isfinite(interval) or interval<=0:
+        raise ValueError("能力域截面间隔必须为有限正数。")
+    stride = int(round(interval/dt))
+    if stride < 1 or not np.isclose(stride*dt, interval):
+        raise ValueError("能力域截面间隔须为调度步长的正整数倍。")
+    return list(range(0, n, stride))
+
+
 
 
 def compute_capability(
@@ -468,6 +472,7 @@ def compute_capability(
     cfg: dict[str, Any],
     outdir: str | Path | None = None,
     directions: int = 8,
+    progress=None,
 ) -> dict[str, Any]:
     """生成条件 P–Q 截面、24 h 可行见证和完整轨迹分解结果。
 
@@ -497,7 +502,8 @@ def compute_capability(
     selected_trajectory: tuple[np.ndarray, np.ndarray] | None = None
     all_x: dict[str, np.ndarray] = {"incumbent": x}
 
-    for t in _projection_steps(model, x, cfg):
+    steps = _projection_steps(model, x, cfg)
+    for step_number, t in enumerate(steps, 1):
         points: list[list[float]] = []
         halfspaces: list[list[float]] = []
         records: list[dict[str, Any]] = []
@@ -531,8 +537,11 @@ def compute_capability(
             if support_certified:
                 halfspaces.append([cp, cq, h])
             all_x[witness_id] = xx
-            witnesses.append({"id": witness_id, "time_step": t, "hour": t * dt,
-                              "direction": k, "point_pq": point, **_extract_witness(conditioned, xx)})
+            record_witness = {"id": witness_id, "time_step": t, "hour": t*dt,
+                              "direction": k, "point_pq": point, "feasibility": residual}
+            if not setting.get("compact_witnesses", False) or outdir is None:
+                record_witness.update(_extract_witness(conditioned, xx))
+            witnesses.append(record_witness)
             records.append({"direction": k, "angle_rad": float(angle), "success": True,
                             "point_pq": point, "support_value": h, "witness_id": witness_id,
                             "support_certified": support_certified,
@@ -551,6 +560,8 @@ def compute_capability(
                        "points_pq": points, "inner_hull_vertices": vertices,
                        "support_halfspaces": halfspaces, "directions": records,
                        "reference_pq": [float(basep[scenario, t]), float(baseq[scenario, t])]})
+        if progress is not None:
+            progress(f"  [24h投影] {step_number}/{len(steps)}：t={t*dt:g}h；{len(points)}个可行方向点", flush=True)
 
     reference = decompose_trajectory(conditioned, basep, baseq)
     alternative = None if selected_trajectory is None else decompose_trajectory(conditioned, *selected_trajectory)
@@ -561,6 +572,10 @@ def compute_capability(
         "time_hours": (np.arange(n) * dt).tolist(), "scenario_index": scenario,
         "fixed_integer_count": int(np.count_nonzero(np.asarray(model.integrality))),
         "directions_requested": int(directions), "slices": slices,
+        "scenario_name": model.metadata.get("scenarios", [{}])[scenario].get("name", str(scenario)),
+        "projection_count": len(slices), "reference_upward_p_mw": basep.tolist(),
+        "reference_upward_q_mvar": baseq.tolist(),
+        "witness_storage": "high_dimensional_witnesses.npz; key=id in witness records",
         "witnesses": witnesses, "reference_decomposition": reference,
         "alternative_decomposition": alternative,
         "interpretation": {
@@ -697,13 +712,17 @@ def run_experiment(cfg, output, policy_ids=None, branches=("start","wait"), capa
     cap=None
     if capability:
         progress("[能力域] 固定离散方案，保留全部24h约束投影与轨迹分解",flush=True)
-        cap=compute_capability(bestmodel,freebest["result"]["x"],cfg,out/"capability",directions=cfg["experiment"]["capability_directions"])
+        cap=compute_capability(bestmodel,freebest["result"]["x"],cfg,out/"capability",directions=cfg["experiment"]["capability_directions"],progress=progress)
+    surface=None
+    if cfg.get("experiment",{}).get("compute_cost_surface",False):
+        progress("[条件代价] 扫描启动需求倍率与统一初始SOC；固定离散方案，逐点重解24h LP",flush=True)
+        surface=compute_conditional_cost_surface(bestmodel,freebest["result"]["x"],cfg,out/"cost_surface",progress=progress)
     save_json(out/"branch_comparison.json",comparison)
     if screening:
         with (out/"policy_screening.csv").open("w",encoding="utf-8-sig",newline="") as f:
             writer=csv.DictWriter(f,fieldnames=list(screening[0]));writer.writeheader();writer.writerows(screening)
     export_series(solution,out)
-    plot_all(solution,out/"figures",comparison=comparison,capability=cap)
+    plot_all(solution,out/"figures",comparison=comparison,capability=cap,cost_surface=surface)
     if (out/"solution_no_upward.json").exists():
         plot_baseline_comparison(solution,json.loads((out/"solution_no_upward.json").read_text()),out/"figures")
     elapsed=time.perf_counter()-start_time
@@ -755,3 +774,100 @@ def plot_baseline_comparison(solution,baseline,out):
     fig.suptitle("主配微协同的韧性收益：同场景、同资源、同需求",fontsize=15,fontweight="bold")
     fig.text(.5,.015,"自设参数计算结果；协同可自由选择不反送，基线仅增加禁止向上反送约束。",ha="center",fontsize=9,color="#6d8090")
     fig.tight_layout(rect=(0,.04,1,.93));_save(fig,Path(out),"09_协同与禁反送基线_韧性对比")
+
+
+# ==================== 五、初始条件与24h条件最优代价 ====================
+def compute_conditional_cost_surface(model, x, cfg, outdir=None, progress=print):
+    """逐点重解24h LP，展示启动需求倍率/统一初始SOC与条件最小费用。
+
+    固定参考方案的启动、开关、充放模式和抢修策略。每个网格点只改变
+    启动辅助功率轮廓的倍率和三个微网的共同初始SOC；全部96时段、
+    四情景、末端储备、网络和信息约束均重新建立。灰色仅代表这个固定
+    方案的LP被证明不可行，不代表所有恢复方案都不可行。
+
+    返回状态区分：optimal、infeasible、unknown、invalid_parameter。
+    代价含停电损失常数项；未收敛或无可行解的点不会伪造为代价曲面。
+    """
+    import copy
+    from data import validate_config
+    from openpyxl import Workbook
+    settings = cfg.get("experiment", {})
+    kappas = np.asarray(settings.get("surface_startup_multipliers", [.4,.6,.8,1.,1.2,1.4,1.6]), dtype=float)
+    socs = np.asarray(settings.get("surface_soc_levels", [.2,.3,.4,.5,.6,.7,.8,.9]), dtype=float)
+    if (len(kappas)<2 or len(socs)<2 or not np.isfinite(kappas).all() or not np.isfinite(socs).all()
+            or np.any(kappas<=0) or np.any((socs<0)|(socs>1)) or np.any(np.diff(kappas)<=0) or np.any(np.diff(socs)<=0)):
+        raise ValueError("条件代价扫描需要递增且至少2个倍率与SOC；倍率须正、SOC位于[0,1]。")
+    x=np.asarray(x,dtype=float);policy=model.metadata["policy"]
+    base_cfg=copy.deepcopy(cfg)
+    # 包结构接口的cfg可能只存日曲线参数；此时使用已建参考模型的实际曲线。
+    # 不是重新生成一套需求，确保各扫描点与参考方案采用同一物理场景。
+    if "profiles" not in base_cfg:
+        base_cfg["profiles"]={key:np.asarray(model.metadata["profiles"][key]).tolist()
+            for key in ("pv_mw","load_critical_mw","load_general_mw","grid_price")}
+    costs=np.full((len(socs),len(kappas)),np.nan)
+    statuses=np.full(costs.shape,"unknown",dtype=object)
+    records=[];witnesses={};profile=np.asarray(cfg["generator"]["startup_profile_mw"],dtype=float)
+    for i,soc in enumerate(socs):
+        for j,kappa in enumerate(kappas):
+            point={"soc_initial":float(soc),"startup_multiplier":float(kappa),"status":"unknown",
+                   "objective":None,"lower_bound":None,"solve_seconds":0.0}
+            trial=copy.deepcopy(base_cfg)
+            for mg in trial["microgrids"]:mg["soc_initial"]=float(soc)
+            trial["generator"]["startup_profile_mw"]=(profile*kappa).tolist()
+            try:
+                validate_config(trial)
+            except ValueError as exc:
+                point.update(status="invalid_parameter",message=str(exc))
+                statuses[i,j]=point["status"];records.append(point);continue
+            trial_model=build_model(trial,policy,branch=model.metadata.get("branch","free"),
+                information=model.metadata.get("information","causal"),
+                coordination=model.metadata.get("coordination",True),
+                fixed_switches=model.metadata.get("fixed_switches",False))
+            if set(trial_model.var_indices)!=set(model.var_indices) or any(not np.array_equal(trial_model.var_indices[k],model.var_indices[k]) for k in model.var_indices):
+                raise RuntimeError("扫描参数改变了动作/变量网格，不能套用原离散恢复方案。")
+            fixed=freeze_discrete(trial_model,x)
+            solved=solve_lp(fixed)
+            point.update(solver_status=solved["status"],message=solved["message"],solve_seconds=solved["solve_seconds"])
+            if solved.get("success") and solved.get("x") is not None:
+                check=validate_solution(fixed,solved,trial,tolerance=1e-6)
+                if check["passed"]:
+                    point.update(status="optimal",objective=float(solved["objective"]),
+                                 lower_bound=float(solved["lower_bound"]),validation_passed=True)
+                    costs[i,j]=point["objective"]
+                    key=f"soc{i:02d}_task{j:02d}";point["witness_id"]=key;witnesses[key]=solved["x"]
+                else:point.update(message="LP候选没有通过物理校核",validation_passed=False)
+            elif solved.get("status")==2:
+                point["status"]="infeasible"
+            statuses[i,j]=point["status"];records.append(point)
+        if progress is not None:
+            progress(f"  [条件代价] {i+1}/{len(socs)}：SOC={soc:g}，本行{int(np.isfinite(costs[i]).sum())}/{len(kappas)}个可行最优点",flush=True)
+    reference=None
+    candidates=[r for r in records if r["status"]=="optimal"]
+    if candidates:
+        mean_soc=float(np.mean([m["soc_initial"] for m in cfg["microgrids"]]))
+        reference=min(candidates,key=lambda r:(r["startup_multiplier"]-1)**2+(r["soc_initial"]-mean_soc)**2)
+    result={"scope":"fixed_discrete_full_horizon_conditional_cost",
+        "scope_zh":"固定离散恢复方案和抢修策略，完整24h随机LP条件最小费用",
+        "horizon_hours":cfg["horizon_hours"],"n_steps":cfg["n_steps"],"scenario_count":len(cfg["scenarios"]),"policy_id":policy["id"],
+        "startup_selected":bool(np.any(x[model.var_indices["target_start"]]>.5)),
+        "startup_multipliers":kappas.tolist(),"soc_levels":socs.tolist(),
+        "objective_grid":costs.tolist(),"status_grid":statuses.tolist(),"records":records,
+        "reference_point":reference,"cost_units":"千元（含停电损失常数）",
+        "infeasible_meaning":"仅限该固定离散方案下的LP，不是整个混合整数恢复问题不可行",
+        "grid_note":"每个网格点均重新建立完整96时段模型并求解；网格间连面仅用于显示"}
+    result=jsonable(result)
+    if outdir is not None:
+        directory=Path(outdir);directory.mkdir(parents=True,exist_ok=True)
+        save_json(directory/"conditional_cost_surface.json",result)
+        np.savez_compressed(directory/"grid_witnesses.npz",**witnesses)
+        columns=["soc_initial","startup_multiplier","status","objective","lower_bound","solve_seconds"]
+        with (directory/"conditional_cost_grid.csv").open("w",encoding="utf-8-sig",newline="") as f:
+            writer=csv.DictWriter(f,fieldnames=columns);writer.writeheader()
+            writer.writerows({k:r.get(k) for k in columns} for r in records)
+        book=Workbook();ws=book.active;ws.title="条件最小费用"
+        ws.append(["统一SOC/启动倍率",*kappas.tolist()])
+        for i,soc in enumerate(socs):ws.append([float(soc),*[None if not np.isfinite(c) else float(c) for c in costs[i]]])
+        ws=book.create_sheet("求解状态");ws.append(columns)
+        for r in records:ws.append([r.get(k) for k in columns])
+        book.save(directory/"条件代价网格.xlsx")
+    return result
