@@ -1,0 +1,254 @@
+[
+  {
+    "key": "time",
+    "title": "时间与场景",
+    "latex": "\\mathcal T=\\{0,\\ldots,N-1\\},\\quad N=H/\\Delta t=96,\\quad \\sum_{\\omega\\in\\Omega}\\pi_\\omega=1",
+    "number": 1
+  },
+  {
+    "key": "resilience",
+    "title": "服务恢复比例",
+    "latex": "r_{t\\omega}=\\frac{\\sum_n(p^{c,\\mathrm{srv}}_{nt\\omega}+p^{g,\\mathrm{srv}}_{nt\\omega})}{\\sum_n(\\bar p^c_{nt}+\\bar p^g_{nt})}",
+    "number": 2
+  },
+  {
+    "key": "eens",
+    "title": "缺供电量",
+    "latex": "\\mathrm{EENS}=\\sum_\\omega\\pi_\\omega\\sum_{t,n}\\Delta t[(\\bar p^c_{nt}-p^{c,\\mathrm{srv}}_{nt\\omega})+(\\bar p^g_{nt}-p^{g,\\mathrm{srv}}_{nt\\omega})]",
+    "number": 3
+  },
+  {
+    "key": "serve",
+    "title": "负荷与保护约束",
+    "latex": "0\\le p^{k,\\mathrm{srv}}_{nt\\omega}\\le\\bar p^k_{nt};\\quad p^{c,\\mathrm{srv}}_{mt\\omega}=\\bar p^c_{mt},\\ m\\in\\mathcal M_{\\rm protected}",
+    "number": 4
+  },
+  {
+    "key": "objective",
+    "title": "期望恢复成本",
+    "latex": "\\min J=\\sum_\\omega\\pi_\\omega[C^{\\mathrm{shed}}_\\omega+C^{\\mathrm{grid}}_\\omega+C^{\\mathrm{DG}}_\\omega+C^{\\mathrm{target}}_\\omega+C^{\\mathrm{start}}_\\omega+C^{\\mathrm{ESS}}_\\omega+C^{\\mathrm{crew}}_\\omega]",
+    "number": 5
+  },
+  {
+    "key": "shed",
+    "title": "分级缺供损失",
+    "latex": "C^{\\mathrm{shed}}_\\omega=\\sum_{t,n}\\Delta t[v^c_{nt}(\\bar p^c_{nt}-p^{c,\\mathrm{srv}}_{nt\\omega})+v^g_{nt}(\\bar p^g_{nt}-p^{g,\\mathrm{srv}}_{nt\\omega})]",
+    "number": 6
+  },
+  {
+    "key": "branch",
+    "title": "当前动作条件分支",
+    "latex": "J^*_{\\rm start}=\\min_{x\\in\\mathcal F,\\,y_{0\\omega}=1}J(x),\\qquad J^*_{\\rm wait}=\\min_{x\\in\\mathcal F,\\,y_{0\\omega}=0}J(x)",
+    "number": 7
+  },
+  {
+    "key": "D",
+    "title": "启动与等待的价值差",
+    "latex": "D=J^*_{\\rm wait}-J^*_{\\rm start};\\quad D>0:\\mathrm{start},\\ D<0:\\mathrm{wait}",
+    "number": 8
+  },
+  {
+    "key": "Dbound",
+    "title": "可认证的行动区间",
+    "latex": "L_a\\le J_a^*\\le U_a\\ (a\\in\\{s,w\\}),\\quad D\\in[L_w-U_s,\\ U_w-L_s]",
+    "number": 9
+  },
+  {
+    "key": "optional",
+    "title": "可选协同的集合包含关系",
+    "latex": "\\mathcal F_{\\rm no\\mbox{-}coop}\\subseteq\\mathcal F_{\\rm optional\\mbox{-}coop}\\Rightarrow J^*_{\\rm optional\\mbox{-}coop}\\le J^*_{\\rm no\\mbox{-}coop}",
+    "number": 10
+  },
+  {
+    "key": "resource",
+    "title": "光伏与可控资源边界",
+    "latex": "0\\le p^{\\rm PV}_{mt\\omega}\\le\\bar p^{\\rm PV}_{mt},\\quad 0\\le p^{\\rm DG}_{mt\\omega}\\le\\bar P_m^{\\rm DG}",
+    "number": 11
+  },
+  {
+    "key": "soc",
+    "title": "储能跨期递推",
+    "latex": "e_{m,t+1,\\omega}=e_{mt\\omega}+\\Delta t(\\eta_m^{\\rm ch}p^{\\rm ch}_{mt\\omega}-p^{\\rm dis}_{mt\\omega}/\\eta_m^{\\rm dis})",
+    "number": 12
+  },
+  {
+    "key": "socbound",
+    "title": "初态、状态边界与末端储备",
+    "latex": "e_{m0\\omega}=e_m^0,\\quad\\underline e_m\\le e_{mt\\omega}\\le\\bar e_m,\\quad e_{mN\\omega}\\ge e_m^{\\rm reserve}",
+    "number": 13
+  },
+  {
+    "key": "modes",
+    "title": "充放互斥与模式保持",
+    "latex": "0\\le p^{\\rm ch}_{mt\\omega}\\le\\bar P_m^{\\rm ch}b_{m,g(t),\\omega},\\quad0\\le p^{\\rm dis}_{mt\\omega}\\le\\bar P_m^{\\rm dis}(1-b_{m,g(t),\\omega})",
+    "number": 14
+  },
+  {
+    "key": "mgp",
+    "title": "微网PCC净外送",
+    "latex": "p^{\\uparrow}_{mt\\omega}=p^{\\rm DG}_{mt\\omega}+p^{\\rm PV}_{mt\\omega}+p^{\\rm dis}_{mt\\omega}-p^{\\rm ch}_{mt\\omega}-p^{c,\\rm srv}_{mt\\omega}-p^{g,\\rm srv}_{mt\\omega}",
+    "number": 15
+  },
+  {
+    "key": "mgq",
+    "title": "微网无功净外送",
+    "latex": "q^{\\uparrow}_{mt\\omega}=q^{\\rm inv}_{mt\\omega}-\\tan\\varphi_m(p^{c,\\rm srv}_{mt\\omega}+p^{g,\\rm srv}_{mt\\omega})",
+    "number": 16
+  },
+  {
+    "key": "inv",
+    "title": "逆变器内接容量多边形",
+    "latex": "\\cos\\theta_k(p^{\\rm PV}_{mt\\omega}+p^{\\rm dis}_{mt\\omega}-p^{\\rm ch}_{mt\\omega})+\\sin\\theta_kq^{\\rm inv}_{mt\\omega}\\le S_m^{\\rm inv}\\cos(\\pi/K_f)",
+    "number": 17
+  },
+  {
+    "key": "nodep",
+    "title": "网络有功节点平衡",
+    "latex": "\\sum_{e\\in\\delta^-(n)}P_{et\\omega}-\\sum_{e\\in\\delta^+(n)}P_{et\\omega}+p^{\\rm gen}_{nt\\omega}+p^{\\rm grid}_{nt\\omega}-p^{\\rm aux}_{nt\\omega}-p^{\\rm srv}_{nt\\omega}=0",
+    "number": 18
+  },
+  {
+    "key": "nodeq",
+    "title": "网络无功节点平衡",
+    "latex": "\\sum_{e\\in\\delta^-(n)}Q_{et\\omega}-\\sum_{e\\in\\delta^+(n)}Q_{et\\omega}+q^{\\rm gen}_{nt\\omega}+q^{\\rm grid}_{nt\\omega}-q^{\\rm aux}_{nt\\omega}-q^{\\rm srv}_{nt\\omega}=0",
+    "number": 19
+  },
+  {
+    "key": "line",
+    "title": "线路状态与容量",
+    "latex": "\\cos\\theta_kP_{et\\omega}+\\sin\\theta_kQ_{et\\omega}\\le\\bar S_e\\cos(\\pi/K_f)z_{et\\omega},\\quad |P_{et\\omega}|,|Q_{et\\omega}|\\le\\bar S_ez_{et\\omega}",
+    "number": 20
+  },
+  {
+    "key": "voltage",
+    "title": "线性化电压降的状态放松",
+    "latex": "-M_e(1-z_{et\\omega})\\le v_{jt\\omega}-v_{it\\omega}+2(r_eP_{et\\omega}+x_eQ_{et\\omega})/S_{\\rm base}\\le M_e(1-z_{et\\omega})",
+    "number": 21
+  },
+  {
+    "key": "vbound",
+    "title": "电压范围与参考",
+    "latex": "\\underline V^2\\le v_{nt\\omega}\\le\\bar V^2,\\quad v_{T0,t,\\omega}=1;\\quad z_{A,t,\\omega}=0\\Rightarrow v_{M3,t,\\omega}=1",
+    "number": 22
+  },
+  {
+    "key": "topology",
+    "title": "径向恢复结构",
+    "latex": "z_{L0,t,\\omega}=1-z_{B,t,\\omega},\\quad z_{e,t,\\omega}\\le a_{e,t,\\omega},\\quad z_{e,t+1,\\omega}\\ge z_{e,t,\\omega}\\ (e=A,B)",
+    "number": 23
+  },
+  {
+    "key": "start",
+    "title": "一次性启动选择",
+    "latex": "y_{k\\omega}\\in\\{0,1\\},\\quad\\sum_{k\\in\\mathcal K}y_{k\\omega}\\le1,\\quad k\\Delta t\\in\\{0,1,\\ldots,8\\}\\ {\\rm h}",
+    "number": 24
+  },
+  {
+    "key": "aux",
+    "title": "完整启动厂用电轮廓",
+    "latex": "p^{\\rm aux}_{t\\omega}=\\sum_{k\\in\\mathcal K}a^P_{t-k}y_{k\\omega},\\quad q^{\\rm aux}_{t\\omega}=\\sum_{k\\in\\mathcal K}a^Q_{t-k}y_{k\\omega}",
+    "number": 25
+  },
+  {
+    "key": "online",
+    "title": "可用状态与出力",
+    "latex": "o_{t\\omega}=\\sum_k\\mathbf1(t\\ge k+L)y_{k\\omega},\\quad\\underline P^{\\rm G}o_{t\\omega}\\le p^{\\rm G}_{t\\omega}\\le\\sum_k\\bar P_{t-k}^{\\rm ramp}y_{k\\omega}",
+    "number": 26
+  },
+  {
+    "key": "ramp",
+    "title": "发电机逐步爬坡",
+    "latex": "-R^{\\downarrow}\\le p^{\\rm G}_{t\\omega}-p^{\\rm G}_{t-1,\\omega}\\le R^{\\uparrow}",
+    "number": 27
+  },
+  {
+    "key": "grid",
+    "title": "主网剩余供电能力",
+    "latex": "0\\le p^{\\rm grid}_{t\\omega}\\le\\alpha\\bar P^{\\rm grid},\\quad|q^{\\rm grid}_{t\\omega}|\\le\\alpha\\bar Q^{\\rm grid},\\quad\\alpha\\in[0,1]",
+    "number": 28
+  },
+  {
+    "key": "handover",
+    "title": "形成可用净出力的诊断时刻",
+    "latex": "\\tau^{\\rm net}_\\omega=\\min\\{t\\Delta t:p^{\\rm G}_{t\\omega}-p^{\\rm aux}_{t\\omega}\\ge P^{\\rm useful}\\}",
+    "number": 29
+  },
+  {
+    "key": "crew",
+    "title": "连续实体任务时间",
+    "latex": "T^{\\rm next}_{\\omega}=T^{\\rm end}_{\\omega}+\\tau_{ij},\\quad T^{\\rm end}_{\\omega}=T^{\\rm begin}_{\\omega}+d^{\\rm task}_{i,\\theta_i(\\omega)}",
+    "number": 30
+  },
+  {
+    "key": "history",
+    "title": "由已完成巡检决定的信息历史",
+    "latex": "\\mathcal H^\\pi_t(\\omega)=\\{(i,\\theta_i(\\omega),T^{\\rm ins,\\pi}_{i\\omega}):T^{\\rm ins,\\pi}_{i\\omega}\\le t\\Delta t\\}",
+    "number": 31
+  },
+  {
+    "key": "NA",
+    "title": "条件非预期性",
+    "latex": "\\mathcal H^\\pi_t(\\omega)=\\mathcal H^\\pi_t(\\omega')\\Rightarrow u_{t\\omega}=u_{t\\omega'}",
+    "number": 32
+  },
+  {
+    "key": "avail",
+    "title": "物理维修可用性",
+    "latex": "a_{i,t,\\omega}=\\mathbf1(t\\Delta t\\ge T^{\\rm rep,\\pi}_{i\\omega}),\\quad i\\in\\{A,B\\}",
+    "number": 33
+  },
+  {
+    "key": "posterior",
+    "title": "观测后的条件概率",
+    "latex": "\\pi_{\\omega\\mid h_t}=\\frac{\\pi_\\omega\\mathbf1[\\mathcal H_t(\\omega)=h_t]}{\\sum_{\\nu\\in\\Omega}\\pi_\\nu\\mathbf1[\\mathcal H_t(\\nu)=h_t]}",
+    "number": 34
+  },
+  {
+    "key": "menu",
+    "title": "有限因果队伍策略菜单",
+    "latex": "\\Pi=\\{A,B\\}\\times\\{0,1\\}^{\\{\\rm light,heavy\\}},\\quad|\\Pi|=8,\\qquad J_a^*=\\min_{\\pi\\in\\Pi}J^*_{a,\\pi}",
+    "number": 35
+  },
+  {
+    "key": "projection",
+    "title": "固定离散方案的24小时条件域",
+    "latex": "\\mathcal C(z,h)=\\{(\\mathbf P^\\uparrow,\\mathbf Q^\\uparrow):\\exists x\\in\\mathcal F(z,h),\\ (P^\\uparrow_{t\\omega},Q^\\uparrow_{t\\omega})=-(P_{L0,t,\\omega}+P_{B,t,\\omega},Q_{L0,t,\\omega}+Q_{B,t,\\omega})\\}",
+    "number": 36
+  },
+  {
+    "key": "support",
+    "title": "指定时段的支持函数查询",
+    "latex": "\\sigma_{\\mathcal C,t}(d)=\\max_{x\\in\\mathcal F(z,h)}d_P P^\\uparrow_{t\\omega}+d_Q Q^\\uparrow_{t\\omega}",
+    "number": 37
+  },
+  {
+    "key": "inner",
+    "title": "可行见证的条件内近似",
+    "latex": "\\mathcal C^{\\rm in}=\\operatorname{conv}\\{w^1,\\ldots,w^K\\}\\subseteq\\mathcal C(z,h)\\quad\\text{only for one common fixed-discrete convex set}",
+    "number": 38
+  },
+  {
+    "key": "decomp",
+    "title": "固定整条接口轨迹的分解校核",
+    "latex": "\\operatorname{find}\\ x\\in\\mathcal F(z,h)\\quad\\operatorname{s.t.}\\ (\\mathbf P^\\uparrow,\\mathbf Q^\\uparrow)=(\\widehat{\\mathbf P}^\\uparrow,\\widehat{\\mathbf Q}^\\uparrow)",
+    "number": 39
+  },
+  {
+    "key": "value",
+    "title": "能力与代价联合表示",
+    "latex": "V(w;z,h)=\\min\\{J(x):x\\in\\mathcal F(z,h),\\ A_{\\rm PCC}x=w\\}",
+    "number": 40
+  },
+  {
+    "key": "menubound",
+    "title": "菜单总体上下界",
+    "latex": "L_a=\\min_{\\pi\\in\\Pi}L_{a,\\pi},\\quad U_a=\\min_{\\pi\\in\\Pi}U_{a,\\pi},\\quad L_a\\le J_a^*\\le U_a",
+    "number": 41
+  },
+  {
+    "key": "rolling",
+    "title": "预设重算时刻之间的状态继承",
+    "latex": "s_{\\tau_{r+1}}=F(s_{\\tau_r},u_{\\tau_r:\\tau_{r+1}-1},o_{\\tau_r+1:\\tau_{r+1}}),\\quad\\mathcal T_r=\\{\\tau_r,\\ldots,N-1\\}",
+    "number": 42
+  }
+]

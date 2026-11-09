@@ -1,0 +1,5 @@
+{
+  "case_name": "external_support",
+  "alpha": 1.0,
+  "solver": {"time_limit": 20.0, "mip_rel_gap": 0.0002}
+}

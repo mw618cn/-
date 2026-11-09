@@ -1,0 +1,7 @@
+{
+  "case_name": "quick_check",
+  "solver": {
+    "time_limit": 8,
+    "mip_rel_gap": 0.02
+  }
+}

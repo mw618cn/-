@@ -1,0 +1,215 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb}
+\begin{document}
+% Equation numbers match the editable OMML equations in the Word report.
+% (1) 时间与场景
+\begin{equation}
+\mathcal T=\{0,\ldots,N-1\},\quad N=H/\Delta t=96,\quad \sum_{\omega\in\Omega}\pi_\omega=1
+\tag{1}
+\end{equation}
+% (2) 服务恢复比例
+\begin{equation}
+r_{t\omega}=\frac{\sum_n(p^{c,\mathrm{srv}}_{nt\omega}+p^{g,\mathrm{srv}}_{nt\omega})}{\sum_n(\bar p^c_{nt}+\bar p^g_{nt})}
+\tag{2}
+\end{equation}
+% (3) 缺供电量
+\begin{equation}
+\mathrm{EENS}=\sum_\omega\pi_\omega\sum_{t,n}\Delta t[(\bar p^c_{nt}-p^{c,\mathrm{srv}}_{nt\omega})+(\bar p^g_{nt}-p^{g,\mathrm{srv}}_{nt\omega})]
+\tag{3}
+\end{equation}
+% (4) 负荷与保护约束
+\begin{equation}
+0\le p^{k,\mathrm{srv}}_{nt\omega}\le\bar p^k_{nt};\quad p^{c,\mathrm{srv}}_{mt\omega}=\bar p^c_{mt},\ m\in\mathcal M_{\rm protected}
+\tag{4}
+\end{equation}
+% (5) 期望恢复成本
+\begin{equation}
+\min J=\sum_\omega\pi_\omega[C^{\mathrm{shed}}_\omega+C^{\mathrm{grid}}_\omega+C^{\mathrm{DG}}_\omega+C^{\mathrm{target}}_\omega+C^{\mathrm{start}}_\omega+C^{\mathrm{ESS}}_\omega+C^{\mathrm{crew}}_\omega]
+\tag{5}
+\end{equation}
+% (6) 分级缺供损失
+\begin{equation}
+C^{\mathrm{shed}}_\omega=\sum_{t,n}\Delta t[v^c_{nt}(\bar p^c_{nt}-p^{c,\mathrm{srv}}_{nt\omega})+v^g_{nt}(\bar p^g_{nt}-p^{g,\mathrm{srv}}_{nt\omega})]
+\tag{6}
+\end{equation}
+% (7) 当前动作条件分支
+\begin{equation}
+J^*_{\rm start}=\min_{x\in\mathcal F,\,y_{0\omega}=1}J(x),\qquad J^*_{\rm wait}=\min_{x\in\mathcal F,\,y_{0\omega}=0}J(x)
+\tag{7}
+\end{equation}
+% (8) 启动与等待的价值差
+\begin{equation}
+D=J^*_{\rm wait}-J^*_{\rm start};\quad D>0:\mathrm{start},\ D<0:\mathrm{wait}
+\tag{8}
+\end{equation}
+% (9) 可认证的行动区间
+\begin{equation}
+L_a\le J_a^*\le U_a\ (a\in\{s,w\}),\quad D\in[L_w-U_s,\ U_w-L_s]
+\tag{9}
+\end{equation}
+% (10) 可选协同的集合包含关系
+\begin{equation}
+\mathcal F_{\rm no\mbox{-}coop}\subseteq\mathcal F_{\rm optional\mbox{-}coop}\Rightarrow J^*_{\rm optional\mbox{-}coop}\le J^*_{\rm no\mbox{-}coop}
+\tag{10}
+\end{equation}
+% (11) 光伏与可控资源边界
+\begin{equation}
+0\le p^{\rm PV}_{mt\omega}\le\bar p^{\rm PV}_{mt},\quad 0\le p^{\rm DG}_{mt\omega}\le\bar P_m^{\rm DG}
+\tag{11}
+\end{equation}
+% (12) 储能跨期递推
+\begin{equation}
+e_{m,t+1,\omega}=e_{mt\omega}+\Delta t(\eta_m^{\rm ch}p^{\rm ch}_{mt\omega}-p^{\rm dis}_{mt\omega}/\eta_m^{\rm dis})
+\tag{12}
+\end{equation}
+% (13) 初态、状态边界与末端储备
+\begin{equation}
+e_{m0\omega}=e_m^0,\quad\underline e_m\le e_{mt\omega}\le\bar e_m,\quad e_{mN\omega}\ge e_m^{\rm reserve}
+\tag{13}
+\end{equation}
+% (14) 充放互斥与模式保持
+\begin{equation}
+0\le p^{\rm ch}_{mt\omega}\le\bar P_m^{\rm ch}b_{m,g(t),\omega},\quad0\le p^{\rm dis}_{mt\omega}\le\bar P_m^{\rm dis}(1-b_{m,g(t),\omega})
+\tag{14}
+\end{equation}
+% (15) 微网PCC净外送
+\begin{equation}
+p^{\uparrow}_{mt\omega}=p^{\rm DG}_{mt\omega}+p^{\rm PV}_{mt\omega}+p^{\rm dis}_{mt\omega}-p^{\rm ch}_{mt\omega}-p^{c,\rm srv}_{mt\omega}-p^{g,\rm srv}_{mt\omega}
+\tag{15}
+\end{equation}
+% (16) 微网无功净外送
+\begin{equation}
+q^{\uparrow}_{mt\omega}=q^{\rm inv}_{mt\omega}-\tan\varphi_m(p^{c,\rm srv}_{mt\omega}+p^{g,\rm srv}_{mt\omega})
+\tag{16}
+\end{equation}
+% (17) 逆变器内接容量多边形
+\begin{equation}
+\cos\theta_k(p^{\rm PV}_{mt\omega}+p^{\rm dis}_{mt\omega}-p^{\rm ch}_{mt\omega})+\sin\theta_kq^{\rm inv}_{mt\omega}\le S_m^{\rm inv}\cos(\pi/K_f)
+\tag{17}
+\end{equation}
+% (18) 网络有功节点平衡
+\begin{equation}
+\sum_{e\in\delta^-(n)}P_{et\omega}-\sum_{e\in\delta^+(n)}P_{et\omega}+p^{\rm gen}_{nt\omega}+p^{\rm grid}_{nt\omega}-p^{\rm aux}_{nt\omega}-p^{\rm srv}_{nt\omega}=0
+\tag{18}
+\end{equation}
+% (19) 网络无功节点平衡
+\begin{equation}
+\sum_{e\in\delta^-(n)}Q_{et\omega}-\sum_{e\in\delta^+(n)}Q_{et\omega}+q^{\rm gen}_{nt\omega}+q^{\rm grid}_{nt\omega}-q^{\rm aux}_{nt\omega}-q^{\rm srv}_{nt\omega}=0
+\tag{19}
+\end{equation}
+% (20) 线路状态与容量
+\begin{equation}
+\cos\theta_kP_{et\omega}+\sin\theta_kQ_{et\omega}\le\bar S_e\cos(\pi/K_f)z_{et\omega},\quad |P_{et\omega}|,|Q_{et\omega}|\le\bar S_ez_{et\omega}
+\tag{20}
+\end{equation}
+% (21) 线性化电压降的状态放松
+\begin{equation}
+-M_e(1-z_{et\omega})\le v_{jt\omega}-v_{it\omega}+2(r_eP_{et\omega}+x_eQ_{et\omega})/S_{\rm base}\le M_e(1-z_{et\omega})
+\tag{21}
+\end{equation}
+% (22) 电压范围与参考
+\begin{equation}
+\underline V^2\le v_{nt\omega}\le\bar V^2,\quad v_{T0,t,\omega}=1;\quad z_{A,t,\omega}=0\Rightarrow v_{M3,t,\omega}=1
+\tag{22}
+\end{equation}
+% (23) 径向恢复结构
+\begin{equation}
+z_{L0,t,\omega}=1-z_{B,t,\omega},\quad z_{e,t,\omega}\le a_{e,t,\omega},\quad z_{e,t+1,\omega}\ge z_{e,t,\omega}\ (e=A,B)
+\tag{23}
+\end{equation}
+% (24) 一次性启动选择
+\begin{equation}
+y_{k\omega}\in\{0,1\},\quad\sum_{k\in\mathcal K}y_{k\omega}\le1,\quad k\Delta t\in\{0,1,\ldots,8\}\ {\rm h}
+\tag{24}
+\end{equation}
+% (25) 完整启动厂用电轮廓
+\begin{equation}
+p^{\rm aux}_{t\omega}=\sum_{k\in\mathcal K}a^P_{t-k}y_{k\omega},\quad q^{\rm aux}_{t\omega}=\sum_{k\in\mathcal K}a^Q_{t-k}y_{k\omega}
+\tag{25}
+\end{equation}
+% (26) 可用状态与出力
+\begin{equation}
+o_{t\omega}=\sum_k\mathbf1(t\ge k+L)y_{k\omega},\quad\underline P^{\rm G}o_{t\omega}\le p^{\rm G}_{t\omega}\le\sum_k\bar P_{t-k}^{\rm ramp}y_{k\omega}
+\tag{26}
+\end{equation}
+% (27) 发电机逐步爬坡
+\begin{equation}
+-R^{\downarrow}\le p^{\rm G}_{t\omega}-p^{\rm G}_{t-1,\omega}\le R^{\uparrow}
+\tag{27}
+\end{equation}
+% (28) 主网剩余供电能力
+\begin{equation}
+0\le p^{\rm grid}_{t\omega}\le\alpha\bar P^{\rm grid},\quad|q^{\rm grid}_{t\omega}|\le\alpha\bar Q^{\rm grid},\quad\alpha\in[0,1]
+\tag{28}
+\end{equation}
+% (29) 形成可用净出力的诊断时刻
+\begin{equation}
+\tau^{\rm net}_\omega=\min\{t\Delta t:p^{\rm G}_{t\omega}-p^{\rm aux}_{t\omega}\ge P^{\rm useful}\}
+\tag{29}
+\end{equation}
+% (30) 连续实体任务时间
+\begin{equation}
+T^{\rm next}_{\omega}=T^{\rm end}_{\omega}+\tau_{ij},\quad T^{\rm end}_{\omega}=T^{\rm begin}_{\omega}+d^{\rm task}_{i,\theta_i(\omega)}
+\tag{30}
+\end{equation}
+% (31) 由已完成巡检决定的信息历史
+\begin{equation}
+\mathcal H^\pi_t(\omega)=\{(i,\theta_i(\omega),T^{\rm ins,\pi}_{i\omega}):T^{\rm ins,\pi}_{i\omega}\le t\Delta t\}
+\tag{31}
+\end{equation}
+% (32) 条件非预期性
+\begin{equation}
+\mathcal H^\pi_t(\omega)=\mathcal H^\pi_t(\omega')\Rightarrow u_{t\omega}=u_{t\omega'}
+\tag{32}
+\end{equation}
+% (33) 物理维修可用性
+\begin{equation}
+a_{i,t,\omega}=\mathbf1(t\Delta t\ge T^{\rm rep,\pi}_{i\omega}),\quad i\in\{A,B\}
+\tag{33}
+\end{equation}
+% (34) 观测后的条件概率
+\begin{equation}
+\pi_{\omega\mid h_t}=\frac{\pi_\omega\mathbf1[\mathcal H_t(\omega)=h_t]}{\sum_{\nu\in\Omega}\pi_\nu\mathbf1[\mathcal H_t(\nu)=h_t]}
+\tag{34}
+\end{equation}
+% (35) 有限因果队伍策略菜单
+\begin{equation}
+\Pi=\{A,B\}\times\{0,1\}^{\{\rm light,heavy\}},\quad|\Pi|=8,\qquad J_a^*=\min_{\pi\in\Pi}J^*_{a,\pi}
+\tag{35}
+\end{equation}
+% (36) 固定离散方案的24小时条件域
+\begin{equation}
+\mathcal C(z,h)=\{(\mathbf P^\uparrow,\mathbf Q^\uparrow):\exists x\in\mathcal F(z,h),\ (P^\uparrow_{t\omega},Q^\uparrow_{t\omega})=-(P_{L0,t,\omega}+P_{B,t,\omega},Q_{L0,t,\omega}+Q_{B,t,\omega})\}
+\tag{36}
+\end{equation}
+% (37) 指定时段的支持函数查询
+\begin{equation}
+\sigma_{\mathcal C,t}(d)=\max_{x\in\mathcal F(z,h)}d_P P^\uparrow_{t\omega}+d_Q Q^\uparrow_{t\omega}
+\tag{37}
+\end{equation}
+% (38) 可行见证的条件内近似
+\begin{equation}
+\mathcal C^{\rm in}=\operatorname{conv}\{w^1,\ldots,w^K\}\subseteq\mathcal C(z,h)\quad\text{only for one common fixed-discrete convex set}
+\tag{38}
+\end{equation}
+% (39) 固定整条接口轨迹的分解校核
+\begin{equation}
+\operatorname{find}\ x\in\mathcal F(z,h)\quad\operatorname{s.t.}\ (\mathbf P^\uparrow,\mathbf Q^\uparrow)=(\widehat{\mathbf P}^\uparrow,\widehat{\mathbf Q}^\uparrow)
+\tag{39}
+\end{equation}
+% (40) 能力与代价联合表示
+\begin{equation}
+V(w;z,h)=\min\{J(x):x\in\mathcal F(z,h),\ A_{\rm PCC}x=w\}
+\tag{40}
+\end{equation}
+% (41) 菜单总体上下界
+\begin{equation}
+L_a=\min_{\pi\in\Pi}L_{a,\pi},\quad U_a=\min_{\pi\in\Pi}U_{a,\pi},\quad L_a\le J_a^*\le U_a
+\tag{41}
+\end{equation}
+% (42) 预设重算时刻之间的状态继承
+\begin{equation}
+s_{\tau_{r+1}}=F(s_{\tau_r},u_{\tau_r:\tau_{r+1}-1},o_{\tau_r+1:\tau_{r+1}}),\quad\mathcal T_r=\{\tau_r,\ldots,N-1\}
+\tag{42}
+\end{equation}
+\end{document}

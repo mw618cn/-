@@ -1,0 +1,8 @@
+{
+  "file": "tdm_source_code.zip",
+  "bytes": 181325,
+  "sha256": "11286f2f479fc5874fc0623d630a3632bca5064931306d77a9519834d4f72792",
+  "source_files": 45,
+  "tests": "22 passed",
+  "scope": "Complete source/configuration/tests/document builders; generated results excluded"
+}
