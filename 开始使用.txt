@@ -1,19 +1,9 @@
-主配微协同韧性恢复：GitHub源码版
+简明版日常运行方法
 
-本仓库包含全部Python源码、配置参数、测试、代码说明和Word文档生成脚本。
-算例输出（results）、图片和Word可按README的命令重新生成。
+1. 只安装一次依赖：python -m pip install -r requirements.txt
+2. 打开simple_version/参数数据.xlsx，修改数值并保存。
+3. 直接运行仓库根目录的main.py：python main.py
+4. 打开打印出的结果目录，先看结果汇总.xlsx和figures。
 
-1. 建议Python 3.11/3.12，在含requirements.txt的目录打开终端。
-2. 安装依赖：
-   python -m pip install -r requirements.txt
-3. 首次单策略完整24h运行：
-   python scripts/run_demo.py --config configs/demo_24h.json --policies A_11 --branches none --output results/my_first_run --time-limit 60
-4. 完整菜单与滚动：
-   python scripts/run_demo.py --config configs/demo_24h.json --policies all --capability --baselines --rolling --output results/demo --time-limit 25
-5. 生成Word：
-   python scripts/build_paper.py --results results/demo --output results/model_and_case_study.docx
-   python scripts/build_code_guide.py --output results/python_code_guide.docx
-
-阅读顺序：README.md → docs/code_walkthrough.md → docs/data_replacement.md。
-示例系统为自设参数；24h/96时段、4损伤场景、8因果抢修策略。
-求解器为SciPy/HiGHS MILP，支持条件能力域LP和固定队伍策略滚动调度。
+也可以只下载downloads/tdm_simple.zip，解压后Excel和main.py在同一个文件夹。
+日常运行无需命令行参数，也不用编辑JSON或配置Python包。

@@ -1,0 +1,10 @@
+{
+  "file": "tdm_simple.zip",
+  "bytes": 87230,
+  "sha256": "d4e2a9b8a0994bb93a4f32354fbe9b013d92d0a4ef16c19610515e7fe9460815",
+  "python_files": 7,
+  "parameter_workbooks": 1,
+  "usage": "Edit 参数数据.xlsx then run main.py",
+  "tests_passed": 27,
+  "full_default_run": "passed: 24h,96steps,4scenarios,8policies,D,capability,8rolling_rounds,9figures"
+}

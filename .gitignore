@@ -10,3 +10,4 @@ results/
 .env
 .env.*
 .DS_Store
+~$*.xlsx

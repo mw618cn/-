@@ -1,8 +1,8 @@
 {
   "file": "tdm_source_code.zip",
-  "bytes": 181323,
-  "sha256": "a5da4aaa05ad716b33ba5ac426c279e4e47506acff8922c894dde98d6d17836f",
-  "source_files": 45,
-  "tests": "22 passed",
-  "scope": "Complete source/configuration/tests/document builders; generated results excluded"
+  "bytes": 273255,
+  "sha256": "77995a243208ef8ecf7507f3a06ec600a4f916c74271d75b9eca027aecd64526",
+  "source_files": 59,
+  "tests": "27 passed",
+  "scope": "Simple main.py/Excel workflow plus advanced source and document builders; generated results excluded"
 }
