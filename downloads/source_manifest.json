@@ -1,8 +1,8 @@
 {
   "file": "tdm_source_code.zip",
-  "bytes": 1390237,
-  "sha256": "ef3f8676595f458781ac39b333da4633c12f795624d5266cb292e43ff5d719a0",
-  "source_files": 68,
-  "tests": "30 passed",
-  "scope": "Simple and advanced source; 24h projection and cost previews; generated run folders excluded"
+  "bytes": 2671303,
+  "sha256": "b5487e93b1c0edd47c2eb8229befe1e1fa4f6d50550b3c16f435fd534a50e380",
+  "source_files": 93,
+  "tests": "31 passed",
+  "scope": "IEEE33 version + retained six-node and advanced source; preview plots; no generated run directories"
 }

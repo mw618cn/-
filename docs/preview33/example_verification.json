@@ -1,0 +1,249 @@
+{
+  "scope": "90秒MILP限时的已校核可行候选，不是已证最优",
+  "policy": "B_11",
+  "summary": {
+    "expected_cost": 213.6414164114717,
+    "expected_eens_mwh": 12.585440248478593,
+    "expected_weighted_eens_mwh": 12.585440248478593,
+    "expected_restored_energy_mwh": 93.48547595273295,
+    "total_demand_energy_mwh": 106.07091620121153,
+    "resilience_area_ratio": 0.8813488117270092,
+    "start_probability": 1.0,
+    "handover_probability": 1.0,
+    "expected_handover_hour": 1.25,
+    "scenario_eens_mwh": [
+      13.789776110049296,
+      10.670025474807913,
+      11.435597081992668,
+      14.473571470179415
+    ],
+    "scenario_handover_hour": [
+      1.25,
+      1.25,
+      1.25,
+      1.25
+    ],
+    "scenario_start_hour": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "protected_critical_served_fraction": 1.0
+  },
+  "solver": {
+    "success": false,
+    "status": 1,
+    "message": "Time limit reached. (HiGHS Status 13: Time limit reached)",
+    "objective": 213.6414164114717,
+    "lower_bound": 0.8819999999996071,
+    "mip_gap": 0.09752695736076783,
+    "solve_seconds": 100.39448954499676,
+    "node_count": 0,
+    "absolute_objective_gap": 212.7594164114721,
+    "relative_objective_gap_including_constant": 0.9958715870039876
+  },
+  "validation": {
+    "passed": true,
+    "has_incumbent": true,
+    "tolerance": 2e-05,
+    "checks": [
+      {
+        "name": "全部约束下界",
+        "max_violation": 5.362377208939506e-13,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "全部约束上界",
+        "max_violation": 2.1877622993573793e-11,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "全部变量下界",
+        "max_violation": 8.881784197001252e-16,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "全部变量上界",
+        "max_violation": 1.6209256159527285e-14,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "离散决策整数性",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "目标函数与候选解一致",
+        "max_violation": 1.3642420526593924e-12,
+        "passed": true,
+        "note": "本项使用相对尺度容差 0.00427；含停电损失常数项。"
+      },
+      {
+        "name": "储能逐时能量守恒_MWh",
+        "max_violation": 1.277589145587399e-13,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "充放电互斥_MW",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": "只有充、放电功率同时为正才记违约；模式变量另由整数性和全部约束检查。"
+      },
+      {
+        "name": "MG1初始能量_MWh",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "MG1末端储备_MWh",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "MG2初始能量_MWh",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "MG2末端储备_MWh",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "MG3初始能量_MWh",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "MG3末端储备_MWh",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "微网受保护关键负荷_MW",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "目标机组最多启动一次",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "机组启动完成前禁止发电及启动后出力上界_MW",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "目标机组在线状态不超过一",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "目标机组视在功率额定值_MVA",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "线路A未修复时不得合闸",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "线路B未修复时不得合闸",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "独立节点有功平衡_MW",
+        "max_violation": 5.362377208939506e-13,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "独立节点无功平衡_MVAr",
+        "max_violation": 1.0369483049998962e-13,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "支路圆形视在功率上界_MVA",
+        "max_violation": 2.1877622993573793e-11,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "断开线路有功_MW",
+        "max_violation": 8.372203859170228e-12,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "断开线路无功_MVAr",
+        "max_violation": 2.0212288103761135e-11,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "实际接线无环",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "所有分量含成网微网",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "各分量单一电压参考_pu平方",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "闭合支路电压降_pu平方",
+        "max_violation": 1.615580499242375e-14,
+        "passed": true,
+        "note": ""
+      },
+      {
+        "name": "真实观测历史条件下非预期性",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": "只比较当前时刻仍无法由完成巡检结果区分的场景。"
+      },
+      {
+        "name": "离散指令决定时刻的非预期性",
+        "max_violation": 0.0,
+        "passed": true,
+        "note": "特别按小时模式块起点检查电池模式，块内稍后获得的信息不能追溯改变该决定。"
+      }
+    ],
+    "n_variables": 84312,
+    "n_constraints": 206083,
+    "objective_recomputed": 213.64141641147307,
+    "interpretation": "通过表示本离散线性恢复模型内可行；不表示交流/频率暂态已验证，也不表示已证明最优。"
+  }
+}

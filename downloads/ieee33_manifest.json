@@ -1,0 +1,32 @@
+{
+  "file": "tdm_ieee33.zip",
+  "bytes": 444311,
+  "sha256": "8a140e124766220f578623d0e2e615ae6e8576a98f4e5de376010a42f34b263c",
+  "entry": "tdm_ieee33/main.py",
+  "parameters": "tdm_ieee33/参数数据.xlsx",
+  "nodes": 35,
+  "distribution_nodes": 33,
+  "branches": 39,
+  "horizon_hours": 24,
+  "steps": 96,
+  "topology_menu": 32,
+  "default_repair_policy": "B_11",
+  "default_extra_analysis": false,
+  "files": [
+    "README.md",
+    "analysis.py",
+    "data.py",
+    "main.py",
+    "network.py",
+    "plots.py",
+    "power_model.py",
+    "repair_model.py",
+    "requirements.txt",
+    "rolling.py",
+    "参数数据.xlsx",
+    "节点图/00_33节点主配微接线与开关位置.pdf",
+    "节点图/00_33节点主配微接线与开关位置.png",
+    "节点图/00_33节点主配微接线与开关位置.svg",
+    "验证说明.md"
+  ]
+}
