@@ -1,0 +1,102 @@
+[
+  {
+    "number": 1,
+    "title": "危险率与区间概率",
+    "latex": "\\lambda_{e,k}=a_e[\\max(v_{e,k}/v_e^0-1,0)]^{b_e},\\quad p_{e,k}=1-e^{-\\lambda_{e,k}\\Delta t}"
+  },
+  {
+    "number": 2,
+    "title": "累计首次故障概率",
+    "latex": "F_e(t)=1-\\exp[-\\sum_{k:t_k<t}\\lambda_{e,k}\\Delta t]"
+  },
+  {
+    "number": 3,
+    "title": "预测加权恢复面积",
+    "latex": "R={A_{\\rm past}+\\sum_s\\pi_s\\sum_{k=k_0}^{N-1}\\Delta t\\sum_i(w_c\\ell^c_{i,k,s}+w_g\\ell^g_{i,k,s})\\over A_{\\rm demand}}"
+  },
+  {
+    "number": 4,
+    "title": "实际失供电量",
+    "latex": "\\mathrm{EENS}=\\sum_{k=0}^{N-1}\\Delta t\\sum_i(d^c_{i,k}+d^g_{i,k}-\\ell^c_{i,k}-\\ell^g_{i,k})"
+  },
+  {
+    "number": 5,
+    "title": "SOC跨期动态",
+    "latex": "E_{j,k+1}=E_{j,k}+\\Delta t(\\eta^c_jP^{\\rm ch}_{j,k}-P^{\\rm dis}_{j,k}/\\eta^d_j)"
+  },
+  {
+    "number": 6,
+    "title": "MGO接口净功率",
+    "latex": "p_{j,k}=P^{\\rm PV}_{j,k}+P^{\\rm DG}_{j,k}+P^{\\rm dis}_{j,k}-P^{\\rm ch}_{j,k}-\\ell^c_{j,k}-\\ell^g_{j,k}"
+  },
+  {
+    "number": 7,
+    "title": "条件非预期性",
+    "latex": "\\mathcal I_{s,k}=\\mathcal I_{r,k}\\ \\Longrightarrow\\ u_{s,k}=u_{r,k}"
+  },
+  {
+    "number": 8,
+    "title": "实体任务连续性",
+    "latex": "q_k\\ne\\varnothing,\\ r_k>0\\ \\Longrightarrow\\ q_{k+1}=q_k\\quad\\text{until completion}"
+  },
+  {
+    "number": 9,
+    "title": "有限规则类的最优值界",
+    "latex": "L_b=\\max_{p\\in\\mathcal P}L_{b,p},\\quad U_b=\\max_{p\\in\\mathcal P}U_{b,p}"
+  },
+  {
+    "number": 10,
+    "title": "启动等待差值与区间",
+    "latex": "D_R=R^*_{\\rm start}-R^*_{\\rm wait}\\in[L_{\\rm start}-U_{\\rm wait},\\ U_{\\rm start}-L_{\\rm wait}]"
+  },
+  {
+    "number": 11,
+    "title": "同模型追加求解界合并",
+    "latex": "L^{m+1}=\\max(L^m,\\widehat L^{m+1}),\\quad U^{m+1}=\\min(U^m,\\widehat U^{m+1})"
+  },
+  {
+    "number": 12,
+    "title": "后向管终端集合",
+    "latex": "\\mathcal B_N=[E_{\\rm terminal},E_{\\max}]"
+  },
+  {
+    "number": 13,
+    "title": "区间前驱递推",
+    "latex": "\\mathcal B_k=[E_{\\min},E_{\\max}]\\cap[\\underline B_{k+1}-\\delta_{\\max},\\overline B_{k+1}-\\delta_{\\min}]"
+  },
+  {
+    "number": 14,
+    "title": "观测前先交可能子分支",
+    "latex": "\\mathcal J_{g,k+1}=\\bigcap_{h\\in\\operatorname{child}(g)}\\mathcal B_{h,k+1},\\quad\\mathcal B_{g,k}=\\mathcal X\\cap\\operatorname{Pre}(\\mathcal J_{g,k+1})"
+  },
+  {
+    "number": 15,
+    "title": "共同系数的全轨迹内近似",
+    "latex": "v=\\sum_r\\lambda_rv^r,\\quad x=\\sum_r\\lambda_rx^r,\\quad\\lambda_r\\ge0,\\ \\sum_r\\lambda_r=1"
+  },
+  {
+    "number": 16,
+    "title": "主配反送路径贡献的独立对照",
+    "latex": "\\Delta R_{\\rm path}=R_{\\rm allow\\ upward}^{\\rm actual}-R_{\\rm no\\ upward}^{\\rm actual}"
+  },
+  {
+    "number": 17,
+    "title": "含有限盒余项的拉格朗日界",
+    "latex": "g(\\lambda,\\mu)=b^T\\lambda+d^T\\mu+\\sum_j\\min(r_jl_j,r_ju_j),\\quad r=c-A^T\\lambda-C^T\\mu,\\ \\lambda\\le0"
+  },
+  {
+    "number": 18,
+    "title": "完整轨迹列进入限制主问题",
+    "latex": "z=V\\lambda,\\quad A_yy+A_zV\\lambda\\le b,\\quad l_z\\le V\\lambda\\le u_z,\\quad \\mathbf{1}^T\\lambda=1,\\ \\lambda\\ge0"
+  },
+  {
+    "number": 19,
+    "title": "保持终端条件的前缀可延续性",
+    "latex": "n_{\\rm fail}=\\min\\{n:\\nexists x\\in\\mathcal F,\\ p_{:n}=\\hat p_{:n},\\ q_{:n}=\\hat q_{:n}\\}"
+  },
+  {
+    "number": 20,
+    "title": "最小接口跟踪修正",
+    "latex": "\\min_{x\\in\\mathcal F}\\frac{1}{H}\\sum_{s,k}\\pi_s\\Delta t\\left(\\frac{|p_{s,k}-\\hat p_{s,k}|}{P_{\\rm base}}+\\frac{|q_{s,k}-\\hat q_{s,k}|}{Q_{\\rm base}}\\right)"
+  }
+]

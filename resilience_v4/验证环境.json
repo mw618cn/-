@@ -1,0 +1,13 @@
+{
+  "python": "3.12.14",
+  "platform": "Linux",
+  "packages": {
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "matplotlib": "3.10.8",
+    "openpyxl": "3.1.5",
+    "python-docx": "1.2.0",
+    "highspy": "1.15.1"
+  },
+  "scope": "本轮数值验证环境；限时MIP受硬件/负载/版本影响，不承诺逐位重现。未安装完整原版宋体。"
+}

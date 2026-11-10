@@ -1,0 +1,31 @@
+{
+  "method": "用交付源码重建初始模型，复核保存完整见证；不重新求最优值",
+  "model_source_sha256_current": "20e3234eee11238bb4198c6d42151c837313597034eddb71637ac07566946157",
+  "model_fingerprint": "0aa5a6aa1c38fbffa849d3fe5fa99d7d2d6a14dd57c84c4623971b945f5c775b",
+  "validation": {
+    "passed": true,
+    "checks": {
+      "matrix_and_bounds": 3.085032229677154e-14,
+      "crew_route_timing": 0.0,
+      "switch_operations": 0.0,
+      "forest_cycles": 0.0,
+      "component_source": 0.0,
+      "nodal_PQ": 3.085032229677154e-14,
+      "SOC_balance": 4.996003610813204e-16,
+      "conditional_nonanticipativity": 0.0
+    },
+    "tolerance": 2e-05,
+    "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+  },
+  "backward_passed": true,
+  "column_residuals": [
+    2.5424107263916085e-14,
+    2.220446049250313e-16,
+    2.220446049250313e-16,
+    2.220446049250313e-16,
+    2.220446049250313e-16,
+    2.220446049250313e-16
+  ],
+  "common_lambda_reconstruction_error": 0.0,
+  "scope": "首次完整R4计算后，元数据/缓存/参数选项/导出完善；不是同一源码哈希的全24h重算"
+}

@@ -1,0 +1,396 @@
+{
+  "repository_tests_passed": 66,
+  "R4_mechanism_tests_passed": 23,
+  "physical_rolling": {
+    "version": "2026-11-10-r4",
+    "warnings": [
+      "joint有37/40次分支未证明最优；实际指标不等于最优韧性。",
+      "critical_first有36/40次分支未证明最优；实际指标不等于最优韧性。",
+      "nearest有39/41次分支未证明最优；实际指标不等于最优韧性。",
+      "相图仅2/9格取得判据；未判点不能用来认定临界线。",
+      "等值机组辅机峰值比例偏高，须以真实启动曲线校准；不能直接当成大型火电/燃机实证。"
+    ],
+    "policies": {
+      "joint": {
+        "branch_solves": 40,
+        "unclosed_bound_count": 37,
+        "max_R_gap": 0.37445142512764373,
+        "discharge_MWh": 7.4746000000000015,
+        "first_discharge_hour": 0.0,
+        "statistics_error": 3.3306690738754696e-16,
+        "interface_envelopes_per_round": [
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          48,
+          48,
+          48,
+          48,
+          48,
+          36,
+          36,
+          36,
+          24,
+          24
+        ]
+      },
+      "critical_first": {
+        "branch_solves": 40,
+        "unclosed_bound_count": 36,
+        "max_R_gap": 0.28137978751186066,
+        "discharge_MWh": 7.463961713706914,
+        "first_discharge_hour": 0.0,
+        "statistics_error": 1.1102230246251565e-16,
+        "interface_envelopes_per_round": [
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          48,
+          48,
+          48,
+          48,
+          48,
+          36,
+          36,
+          36,
+          24,
+          24
+        ]
+      },
+      "nearest": {
+        "branch_solves": 41,
+        "unclosed_bound_count": 39,
+        "max_R_gap": 0.24872173978548473,
+        "discharge_MWh": 6.5881924893689625,
+        "first_discharge_hour": 0.0,
+        "statistics_error": 3.3306690738754696e-16,
+        "interface_envelopes_per_round": [
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          72,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          48,
+          48,
+          48,
+          48,
+          48,
+          48,
+          36,
+          36,
+          36,
+          36,
+          24
+        ]
+      }
+    },
+    "comparisons": [
+      {
+        "baseline": "critical_first",
+        "same_trajectory": false,
+        "delta_R": 0.0002935646428318117,
+        "delta_EENS_MWh": 0.07093011892053624,
+        "scope": "抢修日程规则对照，双方均保留电力协同"
+      },
+      {
+        "baseline": "nearest",
+        "same_trajectory": false,
+        "delta_R": -0.008845267204523721,
+        "delta_EENS_MWh": -1.202050483791254,
+        "scope": "抢修日程规则对照，双方均保留电力协同"
+      }
+    ],
+    "phase": {
+      "grid_points": 9,
+      "certified_points": 2,
+      "sign_or_tie_certified": 2,
+      "infeasibility_certified": 0
+    },
+    "capability": {
+      "decomposition_success": true,
+      "resource_zero_hours": [],
+      "tracking_error": 0.0
+    },
+    "scope": "有限因果策略类、有限预测样本的数值校核；不证明一般POMDP最优、样本外递归可行或暂态安全；ADMM未实现。",
+    "rolling_by_policy": {
+      "joint": {
+        "controller_steps": 96,
+        "joint_MILP": 39,
+        "continuous_LP": 57,
+        "backward_passed_steps": 96,
+        "domain_steps": 96
+      },
+      "critical_first": {
+        "controller_steps": 96,
+        "joint_MILP": 39,
+        "continuous_LP": 57,
+        "backward_passed_steps": 96,
+        "domain_steps": 96
+      },
+      "nearest": {
+        "controller_steps": 96,
+        "joint_MILP": 40,
+        "continuous_LP": 56,
+        "backward_passed_steps": 96,
+        "domain_steps": 96
+      }
+    },
+    "rolling": {
+      "controller_steps": 96,
+      "joint_MILP": 39,
+      "continuous_LP": 57,
+      "backward_passed_steps": 96,
+      "domain_steps": 96
+    },
+    "actual_physics": {
+      "nodal_PQ_max_residual": 4.829470157119431e-14,
+      "SOC_max_residual": 8.239936510889834e-15,
+      "damaged_line_closed": false
+    },
+    "parameter_scale": {
+      "aux_peak_ratio": 0.3125,
+      "aux_energy_MWh": 0.5,
+      "calibration": "MATPOWER接线/RX/PQ可追溯；气象/道路/机组与损伤先验仍为合成参数"
+    }
+  },
+  "policies": {
+    "joint": {
+      "actual_weighted_recovery": 0.8155011922140039,
+      "actual_EENS_MWh": 23.78324857433131,
+      "actual_operation_cost_thousand": 63.5114184549326,
+      "manual_switch_operations": 12,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 3,
+      "startup_attempts": 1,
+      "reoptimizations": 39,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "有限因果作业策略类的首步滚动执行；检查信息与作业承诺分开；非完整POMDP最优值"
+    },
+    "critical_first": {
+      "actual_weighted_recovery": 0.815207627571172,
+      "actual_EENS_MWh": 23.854178693251846,
+      "actual_operation_cost_thousand": 63.44676185304292,
+      "manual_switch_operations": 12,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 3,
+      "startup_attempts": 1,
+      "reoptimizations": 39,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "有限因果作业策略类的首步滚动执行；检查信息与作业承诺分开；非完整POMDP最优值"
+    },
+    "nearest": {
+      "actual_weighted_recovery": 0.8243464594185276,
+      "actual_EENS_MWh": 22.581198090540056,
+      "actual_operation_cost_thousand": 64.56455356303923,
+      "manual_switch_operations": 12,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 2,
+      "startup_attempts": 1,
+      "reoptimizations": 40,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "有限因果作业策略类的首步滚动执行；检查信息与作业承诺分开；非完整POMDP最优值"
+    }
+  },
+  "initial_decision": {
+    "classification": "start",
+    "certified": true,
+    "D_estimate": 0.007449816314140434,
+    "D_lower": 0.007087513462224582,
+    "D_upper": 0.38190124144178383
+  },
+  "domain": {
+    "used": true,
+    "columns": 6,
+    "original_variables": 133897,
+    "master_variables": 122371,
+    "eliminated_local_variables": 11532,
+    "lambda": [
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      -0.0,
+      0.0
+    ],
+    "lambda_min": 0.0,
+    "lambda_sum_error": 0.0,
+    "full_model_residual": 2.0463630789890885e-12,
+    "seconds": 4.1829487799841445,
+    "scope": "当前离散方案/信息树下的限制主问题；目标为可行恢复下界，不是原MILP上界",
+    "generation_seconds": 0.695143677003216,
+    "directions": [
+      "verified_incumbent",
+      "total_export",
+      "startup_support",
+      "solar_charging",
+      "local_service",
+      "local_operation_cost"
+    ],
+    "query_count": 5
+  },
+  "full_trajectory_residual": 2.5424107263916085e-14,
+  "splice": {
+    "first_nonextendable_prefix_end_hour": 2.25,
+    "P_correction_MWh": 3.573214848391701,
+    "Q_correction_Mvarh": 0.0,
+    "residual": 8.548717289613705e-15
+  },
+  "information_same_history_max_control_spread": 2.5424107263916085e-14,
+  "source_witness_recheck": {
+    "method": "用交付源码重建初始模型，复核保存完整见证；不重新求最优值",
+    "model_source_sha256_current": "20e3234eee11238bb4198c6d42151c837313597034eddb71637ac07566946157",
+    "model_fingerprint": "0aa5a6aa1c38fbffa849d3fe5fa99d7d2d6a14dd57c84c4623971b945f5c775b",
+    "validation": {
+      "passed": true,
+      "checks": {
+        "matrix_and_bounds": 3.085032229677154e-14,
+        "crew_route_timing": 0.0,
+        "switch_operations": 0.0,
+        "forest_cycles": 0.0,
+        "component_source": 0.0,
+        "nodal_PQ": 3.085032229677154e-14,
+        "SOC_balance": 4.996003610813204e-16,
+        "conditional_nonanticipativity": 0.0
+      },
+      "tolerance": 2e-05,
+      "scope": "预测场景下的线性无损准稳态模型；不代表频率/同期/涌流暂态验证"
+    },
+    "backward_passed": true,
+    "column_residuals": [
+      2.5424107263916085e-14,
+      2.220446049250313e-16,
+      2.220446049250313e-16,
+      2.220446049250313e-16,
+      2.220446049250313e-16,
+      2.220446049250313e-16
+    ],
+    "common_lambda_reconstruction_error": 0.0,
+    "scope": "首次完整R4计算后，元数据/缓存/参数选项/导出完善；不是同一源码哈希的全24h重算"
+  },
+  "provenance": {
+    "run_id": "运行_20261110_163251_605374",
+    "parameter_sha256": "3e7d0e9127371abb9b2286dad5b6591fc7d8c2e9eb24e7f27f68594e023ba7f9",
+    "full_rollout_source_sha256": "7317452033c7661f49c2fc5fcc6e29e16b4d53edf60dcfb5fc4552d980e4b5a6",
+    "default_input_physics_and_primary_solver_equal": true,
+    "workers": [
+      {
+        "policy": "critical_first",
+        "same_input_sha256": true,
+        "execution": "independent 96-step causal rollout, same generated world and solver settings"
+      },
+      {
+        "policy": "nearest",
+        "same_input_sha256": true,
+        "execution": "independent 96-step causal rollout, same generated world and solver settings"
+      }
+    ],
+    "phase_parts": 2,
+    "world_source": "同一参数和seed生成；未替换实际故障样本",
+    "profile_changes": "完整主运行关闭自动对照和相图后单独并行计算；全局模型、96步、预测支持和主预算一致。完善缓存指纹/导出/绘图/相图可选精化后，用最终源码重建核查初始完整见证，未称整个24h逐位重放。",
+    "plots": "blocked：无完整原版宋体，未提供替代字体预览"
+  },
+  "phase_profile": {
+    "primary_seconds": 2.0,
+    "additional_MIP_refinement": {
+      "point": [
+        0.0,
+        0.65
+      ],
+      "attempts": [
+        {
+          "classification": "unknown",
+          "D_lower": -0.07611715804975927,
+          "D_upper": 0.3829942950465418,
+          "primary_seconds": 2.0
+        },
+        {
+          "classification": "unknown",
+          "D_lower": -0.024151478074906585,
+          "D_upper": 0.045930969790563214,
+          "primary_seconds": 20.0
+        }
+      ]
+    },
+    "scope": "原9点分区网格，加上最终源码对alpha=0、SOC=.65的独立按需精化；其余点未追加精化。"
+  },
+  "plots": "blocked_original_simsun_missing"
+}

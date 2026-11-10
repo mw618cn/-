@@ -1,0 +1,14 @@
+{
+  "version": "2026-11-10-r4",
+  "file": "tdm_resilience_r4.zip",
+  "bytes": 3379895,
+  "sha256": "e80571da6fc37bab63591aabd3e5ed72601e6e40ea7e4cf9d30640d056ece23e",
+  "files": 218,
+  "runtime_python_modules": 17,
+  "entry": "tdm_resilience_r4/main.py",
+  "parameter": "tdm_resilience_r4/参数数据.xlsx",
+  "standalone_tests": 23,
+  "tests_scope": "R4 mechanisms, saved numerical plot interfaces without rendering, JSON-to-Excel export; see validation report for complete physical rollout audits",
+  "plots": "Original SimSun required; no substitute-font previews included",
+  "scope": "Central MILP + full-trajectory column continuous coordinator; finite causal crew rules; conditional backward SOC tube; no ADMM/global POMDP proof"
+}

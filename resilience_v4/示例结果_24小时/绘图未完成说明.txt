@@ -1,0 +1,1 @@
+未发现原版宋体。请安装系统宋体，或在算法与绘图设置填写plots.font_file。数值结果可先保存，在Windows用 --redraw 重画。

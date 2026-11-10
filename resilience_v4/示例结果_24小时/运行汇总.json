@@ -1,0 +1,55 @@
+{
+  "policies": {
+    "joint": {
+      "actual_weighted_recovery": 0.8155011922140039,
+      "actual_EENS_MWh": 23.78324857433131,
+      "actual_operation_cost_thousand": 63.5114184549326,
+      "manual_switch_operations": 12,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 3,
+      "startup_attempts": 1,
+      "reoptimizations": 39,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "有限因果作业策略类的首步滚动执行；检查信息与作业承诺分开；非完整POMDP最优值"
+    },
+    "critical_first": {
+      "actual_weighted_recovery": 0.815207627571172,
+      "actual_EENS_MWh": 23.854178693251846,
+      "actual_operation_cost_thousand": 63.44676185304292,
+      "manual_switch_operations": 12,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 3,
+      "startup_attempts": 1,
+      "reoptimizations": 39,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "有限因果作业策略类的首步滚动执行；检查信息与作业承诺分开；非完整POMDP最优值"
+    },
+    "nearest": {
+      "actual_weighted_recovery": 0.8243464594185276,
+      "actual_EENS_MWh": 22.581198090540056,
+      "actual_operation_cost_thousand": 64.56455356303923,
+      "manual_switch_operations": 12,
+      "reported_fault_count": 12,
+      "unrepaired_end_count": 2,
+      "startup_attempts": 1,
+      "reoptimizations": 40,
+      "emergency_rounds": 0,
+      "terminal_reserve_satisfied": true,
+      "scope": "有限因果作业策略类的首步滚动执行；检查信息与作业承诺分开；非完整POMDP最优值"
+    }
+  },
+  "elapsed_seconds": 1969.290940514009,
+  "plots": "blocked",
+  "quality_warnings": [
+    "joint有37/40次分支未证明最优；实际指标不等于最优韧性。",
+    "critical_first有36/40次分支未证明最优；实际指标不等于最优韧性。",
+    "nearest有39/41次分支未证明最优；实际指标不等于最优韧性。",
+    "相图仅2/9格取得判据；未判点不能用来认定临界线。",
+    "等值机组辅机峰值比例偏高，须以真实启动曲线校准；不能直接当成大型火电/燃机实证。"
+  ],
+  "scope": "有限因果策略类与有限预测样本；集中MILP/LP；不是任意POMDP最优或样本外安全证明",
+  "elapsed_seconds_scope": "原完整joint+能力查询主进程；不包含独立补充策略/相图的总耗时",
+  "assembly_scope": "独立同输入对照与分区网格汇集；各自计算不共享完美信息；不把并行墙钟相加当单机耗时"
+}

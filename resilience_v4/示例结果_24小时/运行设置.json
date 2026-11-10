@@ -1,0 +1,24 @@
+{
+  "forecast_scenarios": 1,
+  "compute_capability": true,
+  "capability_directions": 8,
+  "compute_phase_map": false,
+  "phase_alphas": [
+    0.0,
+    0.5,
+    1.0
+  ],
+  "phase_socs": [
+    0.35,
+    0.65,
+    0.85
+  ],
+  "run_comparisons": false,
+  "run_coordination_baseline": false,
+  "policies": [
+    "joint",
+    "critical_first",
+    "nearest"
+  ],
+  "output_dir": "results"
+}

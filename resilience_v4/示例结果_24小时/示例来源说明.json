@@ -1,0 +1,22 @@
+{
+  "run_id": "运行_20261110_163251_605374",
+  "parameter_sha256": "3e7d0e9127371abb9b2286dad5b6591fc7d8c2e9eb24e7f27f68594e023ba7f9",
+  "full_rollout_source_sha256": "7317452033c7661f49c2fc5fcc6e29e16b4d53edf60dcfb5fc4552d980e4b5a6",
+  "default_input_physics_and_primary_solver_equal": true,
+  "workers": [
+    {
+      "policy": "critical_first",
+      "same_input_sha256": true,
+      "execution": "independent 96-step causal rollout, same generated world and solver settings"
+    },
+    {
+      "policy": "nearest",
+      "same_input_sha256": true,
+      "execution": "independent 96-step causal rollout, same generated world and solver settings"
+    }
+  ],
+  "phase_parts": 2,
+  "world_source": "同一参数和seed生成；未替换实际故障样本",
+  "profile_changes": "完整主运行关闭自动对照和相图后单独并行计算；全局模型、96步、预测支持和主预算一致。完善缓存指纹/导出/绘图/相图可选精化后，用最终源码重建核查初始完整见证，未称整个24h逐位重放。",
+  "plots": "blocked：无完整原版宋体，未提供替代字体预览"
+}

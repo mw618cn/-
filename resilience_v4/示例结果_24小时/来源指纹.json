@@ -1,0 +1,6 @@
+{
+  "run_id": "运行_20261110_163251_605374",
+  "parameter_sha256": "3e7d0e9127371abb9b2286dad5b6591fc7d8c2e9eb24e7f27f68594e023ba7f9",
+  "model_source_sha256": "7317452033c7661f49c2fc5fcc6e29e16b4d53edf60dcfb5fc4552d980e4b5a6",
+  "scope": "同一输入工作簿及运行时刻；不混合不同运行的图/界"
+}
